@@ -3,12 +3,12 @@
 Um sistema computacional RISCV
 
 Participantes:
-- Ângelo Renato Pazin Malaguti   - 165429  - @llturtle22ll
-- Claudio dos Santos Junior      - 195727  - @jr-santos98
-- Elton Cardoso do Nascimento    - 233840  - @eltoncn
-- Gabriel Costa Kinder           - 234720  - @Kinder-Eggs
-- Iago Caran Aquino              - 198921  - @iagocaran
-- João Pedro de Moraes Bonucci   - 218733  - @Joao-Pedro-MB
+- Ângelo Renato Pazin Malaguti   - 165429  - [@llturtle22ll](https://github.com/llTurtle22ll)
+- Claudio dos Santos Junior      - 195727  - [@jr-santos98](https://github.com/jr-santos98)
+- Elton Cardoso do Nascimento    - 233840  - [@eltoncn](https://github.com/EltonCN)
+- Gabriel Costa Kinder           - 234720  - [@Kinder-Eggs](https://github.com/Kinder-Eggs)
+- Iago Caran Aquino              - 198921  - [@iagocaran](https://github.com/iagocaran)
+- João Pedro de Moraes Bonucci   - 218733  - [@Joao-Pedro-MB](https://github.com/Joao-Pedro-MB)
 
 [This GitHub](https://github.com/arRISCado/arRISCado)
 
