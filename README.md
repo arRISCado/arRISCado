@@ -10,9 +10,9 @@ Participantes:
 - Iago Caran Aquino              - 198921  - [@iagocaran](https://github.com/iagocaran)
 - João Pedro de Moraes Bonucci   - 218733  - [@Joao-Pedro-MB](https://github.com/Joao-Pedro-MB)
 
-[This GitHub](https://github.com/arRISCado/arRISCado)
+[This project](https://github.com/arRISCado/arRISCado)
 
-## Entrega 1
+## Entrega 1 - Suporte a RV32I
 
 Meta:
 Para essa entrega, os alunos devem planejar e desenvolver um processador RISC-V de 32 bits, com pipeline, que suporte o conjunto RV32I. Deve ser possível desenvolver programas em alto nível para o processador e executa-los corretamente no kit de FPGA.
@@ -24,7 +24,7 @@ Para realizar essa entrega, o grupo deve:
 - Compreender e desenvolver um ambiente de execução (restrito ao momento) para o processador;
 - Compreender e utilizar o ambiente de execução em FPGA para implementar o processador;
 
-## Entrega 2
+## Entrega 2 - Suporte a RV32IMA
 
 Meta:
 Para essa entrega, o conjunto de instruções do processador deve ser incrementado para suportar RV32IMA, novamente com suporte de software para execução em FPGA. Além disso, um primeiro periférico precisa ser desenvolvido e integrado ao processador.
@@ -37,7 +37,7 @@ Para realizar essa entrega, o grupo deve:
 - Compreender e utilizar o ambiente de execução em FPGA para implementar o periférico;
 - Demonstrar um código que utilize as instruções e o periférico em FPGA;
   
-## Entrega 3
+## Entrega 3 - Instruções Compactas
 
 Para essa entrega, o conjunto de instruções do processador deve ser incrementado para suportar as instruções compactas. Além disso, outro periférico precisa ser desenvolvido em integrado ao processador.
 
@@ -48,7 +48,7 @@ Para realizar essa entrega, o grupo deve:
 - Co-mpreender e utilizar o ambiente de execução em FPGA para implementar o periférico;
 - Demonstrar um código que utilize as instruções e os periféricos em FPGA;
   
-## Entrega 4
+## Entrega 4 - Suporte a RV32IMAC
 
 A meta para essa entrega é complementar o sistema computacional desejado. Além disso, o processador deve conseguir executar programas em alto nível, compilados para o conjunto de instruções RV32IMAC.
 
