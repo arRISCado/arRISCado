@@ -15,6 +15,8 @@ module Stage_if(clk, step_clk, branch_target, pc_src, pc, instr);
     wire [63:0] static_4;    
 
     Mux mux(pc_src, next_pc_usual, branch_target, next_pc);
+    defparam mux.n = 64;
+
     Register pc_reg(clk, next_pc, 1, current_pc);
     defparam pc_reg.n = 64;
 
