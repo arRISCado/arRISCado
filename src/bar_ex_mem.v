@@ -1,7 +1,6 @@
 `include "register.v"
 
 module Bar_ex_mem(step_clk, 
-                branch_target_in, branch_target_out,
                 alu_result_in, alu_result_out,
                 alu_zero_in, alu_zero_out,
                 read_data2_in, read_data2_out,
@@ -10,9 +9,6 @@ module Bar_ex_mem(step_clk,
                 m_in, m_out);
 
     input step_clk;
-    
-    input [63:0]  branch_target_in;
-    output [63:0] branch_target_out;
 
     input [31:0]  alu_result_in;
     output [31:0] alu_result_out;
@@ -28,9 +24,6 @@ module Bar_ex_mem(step_clk,
 
     input [1:0] wb_in, [2:0] m_in;
     output [1:0] wb_out, [2:0] m_out;
-
-    Register branch_target(step_clk, branch_target_in, 1, branch_target_out);
-    branch_target.n = 64;
 
     Register alu_result(step_clk, alu_result_in, 1, alu_result_out);
     alu_result.n = 32;
