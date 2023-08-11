@@ -5,7 +5,7 @@ module Bar_ex_mem(step_clk,
                 alu_result_in, alu_result_out,
                 alu_zero_in, alu_zero_out,
                 read_data2_in, read_data2_out,
-                instr_11_7_in, instr_11_7_out,
+                write_reg_in, write_reg_out,
                 wb_in, wb_out,
                 m_in, m_out);
 
@@ -23,8 +23,8 @@ module Bar_ex_mem(step_clk,
     input [31:0]  read_data2_in;
     output [31:0] read_data2_out;
 
-    input [4:0]  instr_11_7_in;
-    output [4:0] instr_11_7_out;
+    input [3:0] write_reg_in;
+    output[3:0] write_reg_out;
 
     input [1:0] wb_in, [2:0] m_in;
     output [1:0] wb_out, [2:0] m_out;
@@ -41,8 +41,8 @@ module Bar_ex_mem(step_clk,
     Register read_data_2(step_clk, read_data2_in, 1, read_data2_out);
     read_data_2.n = 32;
 
-    Register instr_11_7(step_clk, instr_11_7_in, 1, instr_11_7_out);
-    instr_11_7.n = 4;
+    Register write_reg(step_clk, write_reg_in, 1, write_reg_out);
+    write_reg.n = 64;
 
     Register wb(step_clk, wb_in, 1, wb_out);
     wb.n = 2;
