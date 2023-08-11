@@ -1,7 +1,7 @@
 `include "mux.v";
 `include "register.v";
 
-module Stage_if(clk, step_clk, read_data, alu_result, wb, write_data);
+module Stage_wb(clk, step_clk, read_data, alu_result, wb, write_data);
     input clk, step_clk;
     input [31:0] read_data;
     input [31:0] alu_result;
