@@ -5,8 +5,8 @@ module Stage_if(clk, step_clk, branch_target, pc_src, pc, instr);
     input clk, step_clk, pc_src;
     input [63:0] branch_target;
 
-    output [63:0] pc;
-    output [31:0] instr;
+    output reg [63:0] pc;
+    output reg [31:0] instr;
 
     wire [63:0] next_pc_usual;
     wire [63:0] next_pc;
