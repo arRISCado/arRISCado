@@ -1,4 +1,4 @@
-`include "bar_if_id.v"
+`include "register.v"
 
 module Bar_id_ex(step_clk, pc_in, pc_out, 
                 read_data1_in, read_data1_out, 
@@ -11,13 +11,16 @@ module Bar_id_ex(step_clk, pc_in, pc_out,
     input step_clk;
     
     input [63:0] pc_in;
-    output[63:0] pc_out;
+    output [63:0] pc_out;
 
     input [31:0] read_data1_in, read_data2_in;
     output [31:0] read_data1_out, read_data2_out;
 
     input [63:0] imm_in;
     output[63:0] imm_out;
+
+    input [1:0] wb_in, [2:0] m_in, [1:0] ex_in;
+    output [1:0] wb_out, [2:0] m_out, [1:0] ex_out;
 
     Register pc(step_clk, pc_in, 1, pc_out);
     pc.n = 64;
@@ -32,9 +35,12 @@ module Bar_id_ex(step_clk, pc_in, pc_out,
     pc.n = 64;
 
     Register wb(step_clk, wb_in, 1, wb_out);
-    wb.n = 1;
+    wb.n = 2;
+
+    Register m(step_clk, m_in, 1, m_out);
+    m.n = 3;
 
     Register ex(step_clk, ex_in, 1, ex_out);
-    ex.n = 1;
+    ex.n = 2;
 
 endmodule
