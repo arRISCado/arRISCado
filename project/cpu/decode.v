@@ -116,8 +116,19 @@ always @(posedge clock) begin
                 else if ((func3 == 001) || (func3 == 101)) begin
                     assign func7 = instruction[31:25];
                     assign rd = instruction[11:7];
+                    assign rs1 = instruction[19:15];
+                    assign shamt = instruction[24:20];
+                end
+                // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
+                else begin
+                    assign func7 = instruction[31:25];
+                    assign rd = instruction[11:7];
+                    assign rs1 = instruction[19:15];
+                    assign rs2 = instruction[24:20];
                 end
 
+        // FENCE: Synch Thread
+        2'b
             end
         default: 
     endcase
