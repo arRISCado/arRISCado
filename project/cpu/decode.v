@@ -1,6 +1,6 @@
 // Decode Stage
 module decode (
-    input instruction[31:0],
+    input [31:0] instruction,
     input clock,
     output opcode,
     output imm,
@@ -16,7 +16,7 @@ always @(posedge clock) begin
 
 
     // Definição default de todos os sinais de controle (NOP)
-    imm = 2'b000000000000;
+    imm = 7'b000000000000;
     rd = 0;
     rs1 = 0;
     rs2 = 0;
@@ -33,34 +33,34 @@ always @(posedge clock) begin
 
     case (opcode)
         // LUI: Load Upper Immediate
-        2'b0110111 : 
+        7'b0110111 : 
             begin        
                 rd = instruction[11:7];
                 imm = instruction[31:12];
             end
         
         // AUIPC: Add U-Immediate with PC
-        2'b0010111 :
+        7'b0010111 :
             begin
                 rd = instruction[11:7];
                 imm = instruction[31:12];
             end
 
         // JAL: Jump And Link
-        2'b110111 : 
+        7'b110111 : 
         begin
             rd = instruction[11:7];
             imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
         end
 
         //JARL: Jump And Link Register
-        2'b1100111 :
+        7'b1100111 :
         begin
             func3 = instruction[14:12];
             
 
             case (func3)
-            2'b000 :
+            7'b000 :
                 begin
                     rd = instruction[11:7];
                     rs1 = instruction[19:15];
@@ -71,7 +71,7 @@ always @(posedge clock) begin
         end
 
         // Instruções de Branch: dependedem de func3
-        2'b1100011 :
+        7'b1100011 :
         begin
 
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
@@ -87,7 +87,7 @@ always @(posedge clock) begin
         end
 
         // Instruções dos tipos de Loads: dependem do func3
-        2'b0000011 :
+        7'b0000011 :
             begin
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
                 func3 = instruction[14:12];
@@ -98,7 +98,7 @@ always @(posedge clock) begin
             end
         
         // Instruções pros tipos de Save: dependem do func3
-        2'b0100011 :
+        7'b0100011 :
             begin
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
                 func3 = instruction[14:12];
@@ -109,14 +109,14 @@ always @(posedge clock) begin
             end
         
         // Instruções para operações com Imediato ou Registrador
-        2'b0010011 :
+        7'b0010011 :
             begin
                 func3 = instruction[14:12];
 
                 // ADDI, SLTI, SLTIU, XORI, ORI, ANDI
-                if ((func3 == 2'b000) || (func3 == 2'b010) || 
-                (func3 == 2'b011) || (func3 == 2'b100) ||
-                (func3 == 2'b110) || (func3 == 2'b111)) begin
+                if ((func3 == 7'b000) || (func3 == 7'b010) || 
+                (func3 == 7'b011) || (func3 == 7'b100) ||
+                (func3 == 7'b110) || (func3 == 7'b111)) begin
                     rd = instruction[11:7];
                     rs1 = instruction[19:15];
                     imm = instruction[31:20];
@@ -136,9 +136,10 @@ always @(posedge clock) begin
                     rs1 = instruction[19:15];
                     rs2 = instruction[24:20];
                 end
+            end
 
         // // FENCE: Synch Thread
-        // 2'b000111 :
+        // 7'b000111 :
         // begin
 				    // rd = instruction[11:7];
         //     func3 = instruction[14:12];
@@ -149,7 +150,7 @@ always @(posedge clock) begin
         // end
 
         // // FENCE.TSO : não faço ideia do que é isso
-        // 2'b0001111 :
+        // 7'b0001111 :
         // begin
         //     // rd = instruction[11:7];
         //     func3 = instruction[14:12];
@@ -160,18 +161,18 @@ always @(posedge clock) begin
         // end
 
         // ECALL : chamada de sistema
-        2'b1110011 :
+        7'b1110011 :
         begin
             imm = instruction[31:20];
         end
 
         // EBREAK : chama de sistema de novo?
-        2'b1110011 :
+        7'b1110011 :
         begin
             imm = instruction[31:20];
         end
         default :    
-            opcode = 2'b0010011;
+            opcode = 7'b0010011;
         endcase
 
 end
