@@ -20,7 +20,7 @@ module Stage_if(clk, step_clk, branch_target, pc_src, pc, instr);
     Register pc_reg(clk, next_pc, 1, current_pc);
     defparam pc_reg.n = 64;
 
-    Adder add(clk, current_pc, static_4, next_pc_usual);
+    Adder add(current_pc, static_4, 0, next_pc_usual);
     defparam add.n = 64;
 
     InstructionMemory instrMem(clk, current_pc, next_instr);
