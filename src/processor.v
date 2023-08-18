@@ -1,7 +1,6 @@
-/*
-module Processor();
+module Processor(clk);
 
-    wire clk;
+    input clk;
     wire step_clk;
 
     wire [63:0] mem_branch_target;
