@@ -36,6 +36,11 @@ module Processor();
     wire [31:0] wb_write_data; //Ligar no ID
     wire [3:0] wb_write_reg; //Ligar no ID
 
+    Clk_generator clk_generator(clk);
+    Clk_divider clk_divider(clk, step_clk);
+    clk_divider.n_bit = 3;
+    clk_divider.divisor = 3'd4; //???
+
     Stage_if stage1_if(clk, step_clk, mem_branch_target, mem_pc_src, if_pc, if_instr);
     
     Bar_if_id bar1_if_id(step_clk, if_pc, id_pc, if_instr, id_instr);
