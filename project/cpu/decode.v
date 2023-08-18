@@ -128,8 +128,38 @@ always @(posedge clock) begin
                 end
 
         // FENCE: Synch Thread
-        2'b
-            end
+        2'b000111 :
+        begin
+				    assign rd = instruction[11:7];
+            assign func3 = instruction[14:12];
+            assign rs1 = instruction[19:15];
+            assign succ = instruction[22:20];
+            assign pred = instruction[26:23];
+            assign fm = instruction[27:31];        
+        end
+
+        // FENCE.TSO : não faço ideia do que é isso
+        2'b0001111 :
+        begin
+            // assign rd = instruction[11:7];
+            assign func3 = instruction[14:12];
+            // assign rs1 = instruction[19:15];
+            // assign succ = instruction[22:20];
+            // assign pred = instruction[26:23];
+            // assign fm = instruction[27:31];        
+        end
+
+        // ECALL : chamada de sistema
+        2'b1110011 :
+        begin
+            assign imm = instruction[31:20];
+        end
+
+        // EBREAK : chama de sistema de novo?
+        2'b1110011 :
+        begin
+            assign imm = instruction[31:20];
+        end
         default: 
     endcase
 
