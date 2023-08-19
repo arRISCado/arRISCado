@@ -1,7 +1,7 @@
 // Arithmetic Logic Unit
 
 module alu (
-  input [3:0] opcode,
+  input [3:0] op,
   input [31:0] a,
   input [31:0] b,
   output [31:0] result,
@@ -27,10 +27,10 @@ module alu (
       // Shift Left
       // Shift Right
       // Arithmetic Shift Right
-      default: result = 8'b0; // Default output
+      default: result = 32'b0; // Default output
     endcase
 
-    zero = (result == 8'b0);
+    zero = (result == 32'b0);
   end
 
 endmodule
