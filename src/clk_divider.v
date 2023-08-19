@@ -1,5 +1,5 @@
 module Clk_divider(clk_in, clk_out);
-    parameter n_bit;
+    parameter n_bit = 32;
     parameter [n_bit-1 : 0] divisor = 3'd2;
     input clk_in;
     output reg clk_out;
@@ -11,10 +11,10 @@ module Clk_divider(clk_in, clk_out);
         if(counter >= divisor-1)
             counter <= n_bit'd0;
 
-        if counter < divisor/2
+        if (counter < divisor/2)
             clk_out <= 1'b1;
         else
-            clk_out <= 0'b1;
+            clk_out <= 1'b0;
     end
 
 

@@ -1,5 +1,5 @@
-`include "mux.v";
-`include "register.v";
+`include "mux.v"
+`include "register.v"
 
 module Stage_if(clk, step_clk, branch_target, pc_src, pc, instr);
     input clk, step_clk, pc_src;

@@ -1,5 +1,5 @@
-`include "mux.v";
-`include "register.v";
+`include "mux.v"
+`include "register.v"
 
 module Stage_wb(clk, step_clk, read_data, alu_result, wb, write_data);
     input clk, step_clk;
