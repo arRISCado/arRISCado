@@ -1,0 +1,14 @@
+{
+    "name": "string",
+    "includedFiles": "all",
+    "externalFlashFiles": [],
+    "top": "primer20k",
+    "constraintsFile": "constraints.cst",
+    "programMode": "ram",
+    "testBenches": "all",
+    "nextPnrGowinOptions": [],
+    "synthGowinOptions": [],
+    "baudRate": 115200,
+    "board": "tangprimer20k",
+    "skipCstChecking": false
+}

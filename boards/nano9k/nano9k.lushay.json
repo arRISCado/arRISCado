@@ -1,0 +1,14 @@
+{
+    "name": "string",
+    "includedFiles": "all",
+    "externalFlashFiles": [],
+    "top": "nano9k",
+    "constraintsFile": "constraints.cst",
+    "programMode": "ram",
+    "testBenches": "all",
+    "nextPnrGowinOptions": ["--top", "nano9k"],
+    "synthGowinOptions": [],
+    "baudRate": 115200,
+    "board": "tangnano9k",
+    "skipCstChecking": false
+}
