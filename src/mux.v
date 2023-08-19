@@ -1,3 +1,6 @@
+`ifndef Mux
+`define Mux
+
 module Mux(select, in1, in2, out);
     parameter n = 1;
     input select;
@@ -16,3 +19,5 @@ module Mux(select, in1, in2, out);
             end
     end
 endmodule
+
+`endif

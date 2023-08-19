@@ -1,3 +1,6 @@
+`ifndef Register
+`define Register
+
 module Register(clk, in, w_enable, out);
     parameter n = 1;
     input clk, w_enable;
@@ -14,3 +17,5 @@ module Register(clk, in, w_enable, out);
     end
 
 endmodule
+
+`endif

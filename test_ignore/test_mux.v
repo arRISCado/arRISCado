@@ -1,4 +1,4 @@
-module jdoodle;
+module test_mux;
     reg s;
     
     reg [1:0] i1_1, i2_1;
@@ -15,7 +15,6 @@ module jdoodle;
     defparam mux2.n = 1;
 
     initial begin
-        
         s = 0;
         i1_1[0] = 0;
         i1_1[1] = 0;
@@ -27,9 +26,9 @@ module jdoodle;
         i2_2 = 1;
         
         #50;
-        $display("o1 = %b", o1);
-        $display("o2 = %b", o2);
+        // $display("o1 = %b", o1);
+        // $display("o2 = %b", o2);
         
-        $finish;
+        // $finish;
     end
 endmodule

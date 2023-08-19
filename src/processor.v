@@ -1,3 +1,4 @@
+/*
 module Processor();
 
     wire clk;
@@ -38,8 +39,8 @@ module Processor();
 
     Clk_generator clk_generator(clk);
     Clk_divider clk_divider(clk, step_clk);
-    clk_divider.n_bit = 3;
-    clk_divider.divisor = 3'd4; //???
+    defparam clk_divider.n_bit = 3;
+    defparam clk_divider.divisor = 3'd4; //???
 
     Stage_if stage1_if(clk, step_clk, mem_branch_target, mem_pc_src, if_pc, if_instr);
     
@@ -80,3 +81,4 @@ module Processor();
     Stage_wb stage5_wb(clk, step_clk, wb_read_data, wb_alu_result, wb_wb, wb_write_data);
 
 endmodule
+*/

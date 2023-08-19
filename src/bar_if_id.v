@@ -8,10 +8,10 @@ module Bar_if_id(step_clk, pc_in, pc_out, instr_in, instr_out);
     output [31:0] instr_out;
     
     Register pc(step_clk, pc_in, 1, pc_out);
-    pc.n = 64;
+    defparam pc.n = 64;
 
     Register instr(step_clk, instr_in, 1, instr_out);
-    intr.n = 32;
+    defparam instr.n = 32;
 
     
 

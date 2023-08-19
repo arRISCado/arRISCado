@@ -1,4 +1,4 @@
-module jdoodle;
+module test_register;
     reg clk;
     reg i;
     wire o;
@@ -15,24 +15,24 @@ module jdoodle;
         clk <= 0;
         #50;
         
-        $display("x %b", o);
+        // $display("x %0b", o);
         w <= 1;
         
         clk <= 1;
         #50;
         
-        $display("0 %b", o);
+        // $display("0 %0b", o);
         i <= 1;
         
         clk <= 0;
         #50;
         
-        $display("0 %b", o);
+        // $display("0 %0b", o);
         
         clk <= 1;
         #50;
         
-        $display("1 %b", o);
+        // $display("1 %0b", o);
         w <= 0;
         i <= 0;
         
@@ -41,9 +41,9 @@ module jdoodle;
         clk <=1;
         #50;
         
-        $display("1 %b", o);
+        // $display("1 %0b", o);
         
         
-        $finish;
+        // $finish;
     end
 endmodule
