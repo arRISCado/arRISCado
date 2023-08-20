@@ -22,17 +22,17 @@ module Processor(clk,
     wire mem_alu_zero;
     wire [31:0] mem_alu_result;
     wire mem_read_data_2;
-    wire mem_m;
+    wire [2:0] mem_m;
     wire mem_pc_src;
 
-    wire id_wb; //Ligar no ID 
-    wire id_m; //Ligar no ID
-    wire id_ex; //Ligar no ID
+    wire [1:0] id_wb; //Ligar no ID 
+    wire [2:0] id_m; //Ligar no ID
+    wire [1:0] id_ex; //Ligar no ID
     
 
-    wire ex_wb; //Ligar no EX
-    wire ex_m; //Ligar no EX
-    wire ex_ex; //Ligar no EX
+    wire [1:0] ex_wb; //Ligar no EX
+    wire [2:0] ex_m; //Ligar no EX
+    wire [1:0] ex_ex; //Ligar no EX
     
     wire [31:0] mem_read_data;
     wire [31:0] mem_alu_result;
