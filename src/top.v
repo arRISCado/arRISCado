@@ -9,6 +9,6 @@ module top(clk);
 
     Processor processor(clk, mem_addr, mem_w_data, mem_r_data, mem_w_enable, mem_r_enable);
 
-    Memory memory(mem_addr, mem_w_data, mem_r_data, mem_w_enable, mem_r_enable);
+    Memory memory(clk, mem_addr, mem_w_data, mem_r_data, mem_w_enable, mem_r_enable);
 
 endmodule
