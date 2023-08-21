@@ -33,7 +33,7 @@ always @* begin
 
     // Definição default de todos os sinais de controle
     opcode_in <= instruction[6:0];
-    imm_in <= instruction[31:12];
+    imm_in <= instruction[31:12]; // definindo o 
     rd_in <= instruction[11:7];
     rs1_in <= instruction[19:15];
     rs2_in <= instruction[24:20];
@@ -104,15 +104,15 @@ always @* begin
         7'b0010011 :
             begin
                 // ADDI, SLTI, SLTIU, XORI, ORI, ANDI
-                if ((func3_in== 7'b000) || (func3_in== 7'b010) || 
-                (func3_in== 7'b011) || (func3_in== 7'b100) ||
-                (func3_in== 7'b110) || (func3_in== 7'b111)) begin
+                if ((func3_in == 3'b000) || (func3_in== 3'b010) || 
+                (func3_in== 3'b011) || (func3_in== 3'b100) ||
+                (func3_in== 3'b110) || (func3_in== 3'b111)) begin
                     imm_in <= instruction[31:20];  
                 end
 
                 // SLLI, SRLI, SRAI
-                else if ((func3_in== 001) || (func3_in== 101)) begin
-                end
+                else if ((func3_in == 3'b001) || (func3_in == 3'b101)) begin
+                // end
                 // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND
                 else begin
                 end
