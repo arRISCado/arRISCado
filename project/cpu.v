@@ -1,4 +1,5 @@
 `include "ram.v"
+`include "rom.v"
 `include "cpu/register_bank.v"
 `include "cpu/fetch.v"
 `include "cpu/decode.v"
@@ -8,7 +9,14 @@
 
 module cpu(
     input clk,
+    input reset,
 );
-    // ram main_ram(clk);
+    ram ram(clk, reset);
+    rom rom(clk);
+
+    always @(reset)
+    begin
+        // TODO: Reset everything
+    end
 
 endmodule
