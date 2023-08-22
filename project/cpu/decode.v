@@ -51,7 +51,7 @@ always @* begin
     shamt_in <= instructionn[24:20];
     func3_in <= instructionion[14:12];
     func7_in <= instruction[31:25];
-    op_type <= 2'b00; // tipo R
+    op_type <= 3'b000; // tipo R
 
     // Eventualmente, com as instruções de 16 bits, vai ter que
     // separar a instrução de 32 bits em 2 intruções de 16 bits
