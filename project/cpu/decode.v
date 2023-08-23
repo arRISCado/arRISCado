@@ -111,9 +111,22 @@ always @* begin
         // Instruções dos tipos de Loads: dependem do func3 (Tipo I)
         7'b0000011 :
             begin
-                AluOp <= 3'b001;
-                // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
+                AluOp <= 2'b00;
+                AluSrc <= 1;
+                MemToReg <= 1;
+                RegWrite <= 1;
+                MemRead <= 1;
+                MemWrite <= 0;
+                Branch <= 0;
+                AluControl <= 3'b0010; // LW performa uma soma na ALU pra calculcar endereço
                 imm <= instruction[31:20];
+
+                // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
+                // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
+                // if (func3 == 010) 
+                begin
+                    
+                end
             end
         
         // Instruções pros tipos de Save: dependem do func3 (Tipo S)
@@ -145,7 +158,6 @@ always @* begin
                 // SLTI
                 else if (func3 == 010)
                     begin
-                        AluControl <= 2'b0111;
                     end
 
                 // SLLI, SRLI, SRAI (Tipo I)
