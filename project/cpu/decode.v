@@ -118,7 +118,7 @@ always @* begin
                 MemRead <= 1;
                 MemWrite <= 0;
                 Branch <= 0;
-                AluControl <= 3'b0010; // LW performa uma soma na ALU pra calculcar endereço
+                AluControl <= 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
                 imm <= instruction[31:20];
 
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
@@ -132,9 +132,19 @@ always @* begin
         // Instruções pros tipos de Save: dependem do func3 (Tipo S)
         7'b0100011 :
             begin
-                AluOp <= 3'b010;
-                // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
-                imm <= {instruction[11:7], instruction[31:25]}; 
+                AluOp <= 2'b00;
+                AluSrc <= 1;
+                // MemToReg <= 1; Don't Care
+                RegWrite <= 1;
+                MemRead <= 1;
+                MemWrite <= 0;
+                Branch <= 0;
+                AluControl <= 4'b0010; // SW performa uma soma na ALU pra calculcar endereço
+                imm <= {instruction[11:7], instruction[31:25]};
+                
+                // Esse sinal irá indicar pra ALU/MEM qual o tipo de store
+                // (Não sei oq fazer pra diferenciar os tipos de store ainda, então o padrão vai ser SW por hora)
+                // if (func3 == 010) 
             end
         
         // Instruções para operações com Imediato (Tipo I)
