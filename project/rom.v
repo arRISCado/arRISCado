@@ -1,6 +1,6 @@
 module rom (
-  input [31:0] address;
-  output [31:0] data;
+  input [31:0] address,
+  output [31:0] data
 );
 
   reg [31:0] memory[255:0];
@@ -12,8 +12,8 @@ module rom (
 
   always @(address)
   begin
-    if (address <= 8'd_255)
-      data <= memory[address]
+    if (address <= 8'd255)
+      data <= memory[address];
     else
       data <= 32'bZ; // High-impedance
   end
