@@ -55,8 +55,8 @@ always @* begin
     rd <= instruction[11:7];
     rs1 <= instruction[19:15];
     rs2 <= instruction[24:20];
-    shamt <= instructionn[24:20];
-    func3 <= instructionion[14:12];
+    shamt <= instruction[24:20];
+    func3 <= instruction[14:12];
     func7 <= instruction[31:25];
 
     // Eventualmente, com as instruções de 16 bits, vai ter que
@@ -70,7 +70,7 @@ always @* begin
         // LUI: Load Upper Immediate (Tipo U)
         7'b0110111 : 
             begin
-                AluOp <= 2'b100;
+                AluOp <= 3'b100;
                 imm <= instruction[31:12];
             end
         
