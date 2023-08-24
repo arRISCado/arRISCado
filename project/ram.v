@@ -2,6 +2,7 @@
 
 module ram (
     input clk,
+    input reset,
     input [31:0] address,
     input [31:0] data_in,
     input write_enable,
@@ -13,6 +14,13 @@ module ram (
 
     integer i;
     initial begin
+        for (i = 0; i < 256; i = i + 1) begin
+            storage[i] = 0;
+        end
+    end
+
+    always @(reset)
+    begin
         for (i = 0; i < 256; i = i + 1) begin
             storage[i] = 0;
         end
