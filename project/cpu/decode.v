@@ -1,57 +1,63 @@
 // Decode Stage
 module decode (
-    input [31:0] instruction,
-    //input clock,
-    output [6:0] opcode, // serve pra depurar, mas nao é saida de fato
-    output [20:0] imm,
-    output [5:0] rd,
-    output [5:0] rs1,
-    output [5:0] rs2,
-    output [5:0] shamt,
-    output [2:0] func3, // serve pra depurar, mas nao é saida de fato
-    output [6:0] func7, // serve pra depurar, mas nao é saida de fato
+    instruction,
+    // clock,
+    opcode, // serve pra depurar, mas nao é saida de fato
+    imm,
+    rd,
+    rs1,
+    rs2,
+    shamt,
+    func3,  // serve pra depurar, mas nao é saida de fato
+    func7,  // serve pra depurar, mas nao é saida de fato
+   
     // output sinais de controle 
-    /** 
-        op_type: define o tipo de operação a ser relaizada:
-        - Tipo R: 2'b000
-        - Tipo I: 2'b001
-        - Tipo S: 2'b010
-        - Tipo B: 2'b011
-        - Tipo U: 2'b100
-        - Tipo J: 2'b101
-    */
-    output [2:0] op_type
+    MemWrite,
+    MemRead,
+    RegWrite,
+    RegDest,
+    AluSrc,
+    AluOp,
+    Branch,
+    MemToReg,
+    RegDataSrc,
+    AluControl,
+    PCSrc
 );
 
 
-reg [6:0] opcode_in;
-reg [20:0] imm_in;
-reg [5:0] rd_in;
-reg [5:0] rs1_in;
-reg [5:0] rs2_in;
-reg [5:0] shamt_in;
-reg [2:0] func3_in;
-reg [6:0] func7_in;
-reg [2:0] op_type;
+input [31:0] instruction;
+input [6:0] opcode;
+input [20:0] imm;
+input [5:0] rd, rs1, rs2;
+input [5:0] shamt;
+input [2:0] func3;
+input [6:0] func7;
 
-assign imm = imm_in;
-assign rd = rd_in;
-assign rs1 = rs1_in;
-assign rs2 = rs2_in;
-assign shamt = shamt_in;
+
+output MemWrite;         // True or False depending if the operation Writes in the Memory or not
+output MemRead;          // True or False depending if the operation Reads from the Memory or not
+output RegWrite;         // True or False depending if the operation writes in a Register or not
+output [4:0] RegDest;    // Determines which register to write the ALU result
+output AluSrc;           // Determines if the value comes from the Register Bank or is an IMM
+output [1:0] AluOp;      // Operation type ALU will perform
+output [3:0] AluControl; // Exact operation ALU will perform
+output branch;           // True or False depending if the instruction is a Branch
+output MemToReg;         // True or False depending if the operation writes from the Memory into the Resgister Bank
+output RegDataSrc;       // Determines where the register data to be writen will come from: memory or ALU result
+output PCSrc;            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
 always @* begin
 
     // Definição default de todos os sinais de controle
-    opcode_in <= instruction[6:0];
-    imm_in <= instruction[31:12]; // definindo o tipo de imediato mais comum
-    rd_in <= instruction[11:7];
-    rs1_in <= instruction[19:15];
-    rs2_in <= instruction[24:20];
-    shamt_in <= instructionn[24:20];
-    func3_in <= instructionion[14:12];
-    func7_in <= instruction[31:25];
-    op_type <= 3'b000; // tipo R
+    opcode <= instruction[6:0];
+    imm <= instruction[31:12]; // definindo o tipo de imediato mais comum
+    rd <= instruction[11:7];
+    rs1 <= instruction[19:15];
+    rs2 <= instruction[24:20];
+    shamt <= instruction[24:20];
+    func3 <= instruction[14:12];
+    func7 <= instruction[31:25];
 
     // Eventualmente, com as instruções de 16 bits, vai ter que
     // separar a instrução de 32 bits em 2 intruções de 16 bits
@@ -60,92 +66,118 @@ always @* begin
     // definem se é 32, 16 ou 64 bits.
 
 
-    case (opcode_in)
+    case (opcode)
         // LUI: Load Upper Immediate (Tipo U)
         7'b0110111 : 
             begin
-                op_type <= 3'b100;
-                imm_in <= instruction[31:12];
+                AluOp <= 3'b100;
+                imm <= instruction[31:12];
             end
         
         // AUIPC: Add U-Immediate with PC (Tipo U)
-        7'b0010111 :
-            begin
-                op_type <= 3'b100;
-                imm_in <= instruction[31:12];
+        7'b0010111 : begin
+                AluOp <= 3'b100;
+                imm <= instruction[31:12];
             end
 
         // JAL: Jump And Link (Tipo J)
         7'b1101111 : 
         begin
-            op_type <= 3'b011;
-            imm_in <= {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
+            AluOp <= 3'b011;
+            imm <= {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
         end
 
         //JARL: Jump And Link Register (Tipo I)
         7'b1100111 :
         begin
-            op_type <= 3'b001;
+            AluOp <= 3'b001;
             case (func3)
             7'b000 :
                 begin
-                    imm_in <= instruction[31:20];
+                    imm <= instruction[31:20];
                 end
-            
+
             endcase
         end
 
         // Instruções de Branch: dependedem de func3 (Tipo B)
         7'b1100011 :
         begin
-            op_type <= 3'b011;
+            AluOp <= 3'b011;
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
-            imm_in <= {instruction[11:8], instruction[30:25], instruction[7], instruction[31]};
+            imm <= {instruction[11:8], instruction[30:25], instruction[7], instruction[31]};
         end
 
         // Instruções dos tipos de Loads: dependem do func3 (Tipo I)
         7'b0000011 :
             begin
-                op_type <= 3'b001;
+                AluOp <= 2'b00;
+                AluSrc <= 1;
+                MemToReg <= 1;
+                RegWrite <= 1;
+                MemRead <= 1;
+                MemWrite <= 0;
+                Branch <= 0;
+                AluControl <= 3'b0010; // LW performa uma soma na ALU pra calculcar endereço
+                imm <= instruction[31:20];
+
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
-                imm_in <= instruction[31:20];
+                // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
+                // if (func3 == 010) 
+                begin
+                    
+                end
             end
         
         // Instruções pros tipos de Save: dependem do func3 (Tipo S)
         7'b0100011 :
             begin
-                op_type <= 3'b010;
+                AluOp <= 3'b010;
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
-                imm_in <= {instruction[11:7], instruction[31:25]}; 
+                imm <= {instruction[11:7], instruction[31:25]}; 
             end
         
-        // Instruções para operações com Imediato ou Registrador (Tipo I ou R)
+        // Instruções para operações com Imediato (Tipo I)
         7'b0010011 :
             begin
-                // ADDI, SLTI, SLTIU, XORI, ORI, ANDI (Tipo I)
-                if ((func3_in == 3'b000) || (func3_in == 3'b010) || 
-                (func3_in == 3'b011) || (func3_in == 3'b100) ||
-                (func3_in == 3'b110) || (func3_in == 3'b111)) begin
-                    op_type <= 3'b001;
-                    imm_in <= instruction[31:20];
+                aluSrc  <= 1;
+                MemToReg <= 0;
+                RegWrite <= 1;
+                MemRead <= 0;
+                MemWrite <= 0;
+                Branch <= 0;
+                AluOp <= 2'b10;
+                imm <= instruction[31:20];
+
+                // ADDI
+                if (func3 == 000)
+                begin
+                    AluControl <= 4'b0010;
                 end
 
+                // SLTI
+                else if (func3 == 010)
+                    begin
+                    end
+
                 // SLLI, SRLI, SRAI (Tipo I)
-                else if ((func3_in == 3'b001) || (func3_in == 3'b101)) begin
-                    op_type <= 3'b001;
+                else if ((func3 == 3'b001) || (func3 == 3'b101)) begin
+                    AluOp <= 3'b001;
                 end
                 
-                // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND (Tipo R)
-                else begin
-                    op_type <= 3'b000;
-                end
+            end
+       
+        // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND (Tipo R)
+        7'b0110011 :
+            begin
+
             end
 
         // // FENCE: Synch Thread
         // 7'b000111 :
         // begin
 				    // rd <= instruction[11:7];
-        //     func3_in<= instruction[14:12];
+        //     func3<= instruction[14:12];
         //     rs1 <= instruction[19:15];
         //     succ <= instruction[22:20];
         //     pred <= instruction[26:23];
@@ -156,7 +188,7 @@ always @* begin
         // 7'b0001111 :
         // begin
         //     // rd <= instruction[11:7];
-        //     func3_in<= instruction[14:12];
+        //     func3<= instruction[14:12];
         //     // rs1 <= instruction[19:15];
         //     // succ <= instruction[22:20];
         //     // pred <= instruction[26:23];
@@ -166,8 +198,8 @@ always @* begin
         // ECALL and EBREAK: chamada de sistema (Tipo I)
         7'b1110011 :
         begin
-            op_type <= 3'b001;
-            imm_in <= instruction[31:20];
+            AluOp <= 3'b001;
+            imm <= instruction[31:20];
         end
 
         default :
