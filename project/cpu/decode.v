@@ -103,9 +103,19 @@ always @* begin
         // Instruções de Branch: dependedem de func3 (Tipo B)
         7'b1100011 :
         begin
-            AluOp <= 3'b011;
+            AluOp <= 2'b01;
+            AluSrc <= 0;
+            // MemToReg <= 1; Don't Care
+            RegWrite <= 0;
+            MemRead <= 0;
+            MemWrite <= 0;
+            Branch <= 1;
+            AluControl <= 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
+            imm <= {instruction[11:8], instruction[30:25], instruction[7], instruction[31]}; // Imediato usado pra somar no PC
+
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
-            imm <= {instruction[11:8], instruction[30:25], instruction[7], instruction[31]};
+            // (Não sei oq fazer pra diferenciar os tipos de Branch ainda, então o padrão vai ser BGE por hora)
+            // if (func3 == 010) 
         end
 
         // Instruções dos tipos de Loads: dependem do func3 (Tipo I)
