@@ -42,7 +42,7 @@ output [4:0] RegDest;    // Determines which register to write the ALU result
 output AluSrc;           // Determines if the value comes from the Register Bank or is an IMM
 output [1:0] AluOp;      // Operation type ALU will perform
 output [3:0] AluControl; // Exact operation ALU will perform
-output branch;           // True or False depending if the instruction is a Branch
+output Branch;           // True or False depending if the instruction is a Branch
 output MemToReg;         // True or False depending if the operation writes from the Memory into the Resgister Bank
 output RegDataSrc;       // Determines where the register data to be writen will come from: memory or ALU result
 output PCSrc;            // Determines if the PC will come from the PC+4 or from a Branch calculation
