@@ -1,49 +1,45 @@
-`include "utils/mux.v"
-`include "utils/register.v"
-`include "utils/instruction_memory.v"
-
-// Fetch Stage
 module fetch (
-    clk, // aplication clock
-    branch_target, // brach address to jump to if needed
-    pc_src, // signal to define if we jump branches or not
-    pc, // register if the adress if the next instruction
-    instr, // instruction recovered from the memory
+    input clk,                  // Application clock
+    input pc_src,               // Signal to define if we jump branches or not
+    input [31:0] branch_target, // Branch address to jump to if needed
+    output reg [31:0] pc,        // Register for the address of the next instruction (10-bit address for 1024 registers)
+    output reg [31:0] instr     // Instruction fetched from memory
 );
 
-    input clk, pc_src;
-    input [31:0] branch_target;
+    reg [9:0] pc_next;
 
-    output reg [31:0] pc;
-    output reg [31:0] instr;
-
-    wire [31:0] normal_pc;
-    wire [31:0] current_pc;
-    wire [31:0] next_pc;
-    wire [31:0] next_instr;
-
-    wire [31:0] static_4 = 32'b0000_0000_0000_0000_0000_0000_0000_0100
-
-    // multiplexer to define if we use normal_pc or the target_brnch jump address
-    // if pc_src signal high we jump
-    Mux mux(pc_src, normal_pc, branch_target, current_pc);
-    defparam mux.n = 32;
-
-    // recover the instruction in current_pc address from memory
-    InstructionMemory instrMem(clk, current_pc, next_instr);
-
-    // add 4 to the current_pc and sends to the output next_pc
-    // adds current_pc and static_4 and saves in next_pc_usual
-    Adder add(current_pc, static_4, 0, next_pc_usual);
-    defparam add.n = 64;
-
-
-    always @(next_pc_usual) begin
-        pc = next_pc_usual
+    // Initial value for the program counter
+    initial begin
+        pc = 32'b0000_0000_0000_0000_0000_0000_0000_0000; // Set initial PC value to the start of memory
     end
 
-    always @(next_instr) begin
-        instr = next_instr
+    always @(posedge clk) begin
+        if (pc_src) begin
+            pc_next <= branch_target; // Use non-blocking assignment here
+        end else begin
+            pc_next <= pc + 32'b0000_0000_0000_0000_0000_0000_0000_0100; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+        end
     end
-    
+
+    // Instruction memory as a 1024-register array of 32 bits each
+    reg [31:0] instr_memory [0:1023];
+    initial begin
+        // Initialize instr_memory with example instructions
+        instr_memory[0]  = 32'b0000000_00000_00001_000_00000_0110011; // ADDI x1, x0, 0
+        instr_memory[1]  = 32'b0000000_00000_00010_010_00000_0110011; // SUB x2, x0, 0
+        instr_memory[2]  = 32'b0000101_00010_00001_000_00000_0100011; // STORE x1, x2, 0
+        instr_memory[3]  = 32'b0000000_00000_00011_001_00000_0000011; // LOAD x3, x0, 0
+        instr_memory[4]  = 32'b0000000_00001_00010_000_00000_0110011; // ADD x2, x1, x0
+        instr_memory[5]  = 32'b0000000_00010_00001_100_00000_0110011; // XOR x1, x2, x0
+        instr_memory[6]  = 32'b0000000_00000_00010_010_00000_0010011; // ANDI x2, x0, 0
+        instr_memory[7]  = 32'b0000101_00010_00011_000_00000_0100011; // STORE x3, x2, 0
+        instr_memory[8]  = 32'b0000000_00000_00001_001_00000_0000011; // LOAD x1, x0, 0
+        instr_memory[9]  = 32'b0000000_00001_00010_000_00000_0110011; // ADD x2, x1, x0
+    end
+
+    // Use the PC to fetch the instruction from instr_memory
+    always @(posedge clk) begin
+        pc <= pc_next;
+        instr <= instr_memory[pc[9:0]];
+    end
 endmodule

@@ -1,30 +1,39 @@
-`include "utils/mux.v"
-`include "utils/register.v"
-`include "utils/data_memory.v"
+module memory (
+    input clk,             // Clock signal
+    input [31:0] addr,     // Address input
+    input [31:0] data_in,  // Data input to be written
+    input mem_write,       // Write enable signal
+    input mem_read,        // Read enable signal
+    input load_store,      // Load/store instruction signal
+    input [1:0] op,        // Operation type (00: Load, 01: Store)
+    output reg [31:0] data_out, // Data output read from memory
+    output mem_done        // Memory operation done signal
+);
 
-// Memory Stage
-module Stage_mem(clk, step_clk, alu_zero, alu_result, read_data_2, m, read_data, pc_src,
-        mem_addr, mem_w_data, mem_r_data, mem_w_enable, mem_r_enable);
+    reg [31:0] mem[0:1023]; // Example memory with 1024 locations, each storing a 32-bit word
+
+    reg mem_done_reg;
     
-    input clk, step_clk;
-    input alu_zero;
-    input [31:0] alu_result, read_data_2;
-    input [2:0] m;
-
-    output [31:0] read_data;
-    output reg pc_src;
-
-    output [31:0] mem_addr;
-    output [31:0] mem_w_data;
-    input  [31:0] mem_r_data;
-    output mem_w_enable;
-    output mem_r_enable;
-
-    DataMemory data_memory(alu_result, read_data_2, read_data, m[0], m[1],
-        mem_addr, mem_w_data, mem_r_data, mem_w_enable, mem_r_enable);
-
-    always @(m[2], alu_zero) begin
-        pc_src <= m[2] && alu_zero;
+    always @(posedge clk) begin
+        if (mem_write) // Write data to memory
+            mem[addr[9:2]] <= data_in;
+        
+        if (mem_read) // Read data from memory
+            data_out <= mem[addr[9:2]];
+        
+        mem_done_reg <= 0; // Default: memory operation not done
+        
+        if (load_store && (op == 2'b00)) begin // Load operation
+            data_out <= mem[addr[9:2]];
+            mem_done_reg <= 1; // Memory operation is done
+        end
+        
+        if (load_store && (op == 2'b01)) begin // Store operation
+            mem[addr[9:2]] <= data_in;
+            mem_done_reg <= 1; // Memory operation is done
+        end
     end
+    
+    assign mem_done = mem_done_reg;
 
 endmodule
