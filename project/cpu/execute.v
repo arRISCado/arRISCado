@@ -9,9 +9,12 @@ module execute (
     input [31:0] rs1_value,
     input [31:0] rs2_value,
     input [31:0] imm,
+    output [31:0] result,
+
+    // Sinais de controle
+    input [1:0] AluOp,
+    input AluSrc,
     input [7:0] rd,            // Destination register
-    
-    output [31:0] result
 );
 
     wire [31:0] alu_result;
@@ -37,13 +40,12 @@ module execute (
 
     always @(*)
     begin
-        case(op_type)
-        // exemplo hipotetico: op_type 000 são operações do tipo R
-        3'b000 :
+        case(AluOp)
+        // AluOp 2'b10 são operações do tipo I
+        2'b10 :
         begin
-            a = rs1;
-            b = rs2;
-            //como que passa o RD pra escrever no banco de REGs dps?
+            a = rs1_value;
+            b = imm;
         end
 
         // Tipo I
