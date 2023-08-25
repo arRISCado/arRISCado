@@ -1,48 +1,35 @@
-`include "utils/register.v"
+module bus_execute_emory (
+    input clk,                  // Clock signal
+    input rst,                  // Reset signal
+    input [31:0] instr_ex,      // Instruction from EX stage
+    input [4:0] rd_ex,          // Destination register from EX stage
+    input mem_read_ex,          // Memory read control from EX stage
+    input reg_write_ex,         // Register write control from EX stage
+    input [31:0] alu_result_ex, // ALU result from EX stage
+    output reg [31:0] instr_mem, // Instruction to MEM stage
+    output reg [4:0] rd_mem,     // Destination register to MEM stage
+    output reg mem_read_mem,    // Memory read control to MEM stage
+    output reg reg_write_mem,   // Register write control to MEM stage
+    output reg [31:0] alu_result_mem // ALU result to MEM stage
+);
 
-module Bar_ex_mem(step_clk, 
-                alu_result_in, alu_result_out,
-                alu_zero_in, alu_zero_out,
-                read_data2_in, read_data2_out,
-                write_reg_in, write_reg_out,
-                wb_in, wb_out,
-                m_in, m_out);
-
-    input step_clk;
-
-    input [31:0]  alu_result_in;
-    output [31:0] alu_result_out;
-
-    input  alu_zero_in;
-    output alu_zero_out;
-
-    input [31:0]  read_data2_in;
-    output [31:0] read_data2_out;
-
-    input [3:0] write_reg_in;
-    output[3:0] write_reg_out;
-
-    input [1:0] wb_in;
-    input [2:0] m_in;
-    output [1:0] wb_out;
-    output [2:0] m_out;
-
-    Register alu_result(step_clk, alu_result_in, 1, alu_result_out);
-    defparam alu_result.n = 32;
-
-    Register alu_zero(step_clk, alu_zero_in, 1, alu_zero_out);
-    defparam alu_zero.n = 32;
-
-    Register read_data_2(step_clk, read_data2_in, 1, read_data2_out);
-    defparam read_data_2.n = 32;
-
-    Register write_reg(step_clk, write_reg_in, 1, write_reg_out);
-    defparam write_reg.n = 64;
-
-    Register wb(step_clk, wb_in, 1, wb_out);
-    defparam wb.n = 2;
-
-    Register m(step_clk, m_in, 1, m_out);
-    defparam m.n = 3;
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            begin
+                instr_mem <= 32'b0;
+                rd_mem <= 5'b0;
+                mem_read_mem <= 1'b0;
+                reg_write_mem <= 1'b0;
+                alu_result_mem <= 32'b0;
+            end
+        else
+            begin
+                instr_mem <= instr_ex;
+                rd_mem <= rd_ex;
+                mem_read_mem <= mem_read_ex;
+                reg_write_mem <= reg_write_ex;
+                alu_result_mem <= alu_result_ex;
+            end
+    end
 
 endmodule

@@ -1,62 +1,31 @@
-`include "utils/register.v"
+module bus_decode_execute (
+    input clk,                 // Clock signal
+    input rst,                 // Reset signal
+    input [31:0] instr_id,     // Instruction from ID stage
+    input [4:0] rd_id,         // Destination register from ID stage
+    input mem_read_id,         // Memory read control from ID stage
+    input reg_write_id,        // Register write control from ID stage
+    output reg [31:0] instr_ex, // Instruction to EX stage
+    output reg [4:0] rd_ex,     // Destination register to EX stage
+    output reg mem_read_ex,    // Memory read control to EX stage
+    output reg reg_write_ex    // Register write control to EX stage
+);
 
-module Bar_id_ex(step_clk, pc_in, pc_out, 
-                read_data1_in, read_data1_out, 
-                read_data2_in, read_data2_out,
-                imm_in, imm_out,
-                alu_op_in, alu_op_out,
-                write_reg_in, write_reg_out,
-                wb_in, wb_out,
-                m_in, m_out,
-                ex_in, ex_out);
-
-    input step_clk;
-    
-    input [63:0] pc_in;
-    output [63:0] pc_out;
-
-    input [31:0] read_data1_in, read_data2_in;
-    output [31:0] read_data1_out, read_data2_out;
-
-    input [63:0] imm_in;
-    output[63:0] imm_out;
-
-    input [2:0] alu_op_in;
-    output[2:0] alu_op_out;
-
-    input [3:0] write_reg_in;
-    output[3:0] write_reg_out;
-
-    input [1:0] wb_in, ex_in;
-    input [2:0] m_in;
-    output [1:0] wb_out, ex_out;
-    output [2:0] m_out;
-
-    Register pc(step_clk, pc_in, 1, pc_out);
-    defparam pc.n = 64;
-
-    Register read_data_1(step_clk, read_data1_in, 1, read_data1_out);
-    defparam read_data_1.n = 32;
-
-    Register read_data_2(step_clk, read_data2_in, 1, read_data2_out);
-    defparam read_data_2.n = 32;
-
-    Register imm(step_clk, imm_in, 1, imm_out);
-    defparam imm.n = 64;
-
-    Register alu_op(step_clk, alu_op_in, 1, alu_op_out);
-    defparam alu_op.n = 64;
-
-    Register write_reg(step_clk, write_reg_in, 1, write_reg_out);
-    defparam write_reg.n = 64;
-
-    Register wb(step_clk, wb_in, 1, wb_out);
-    defparam wb.n = 2;
-
-    Register m(step_clk, m_in, 1, m_out);
-    defparam m.n = 3;
-
-    Register ex(step_clk, ex_in, 1, ex_out);
-    defparam ex.n = 2;
+    always @(posedge clk or posedge rst) begin
+        if (rst)
+            begin
+                instr_ex <= 32'b0;
+                rd_ex <= 5'b0;
+                mem_read_ex <= 1'b0;
+                reg_write_ex <= 1'b0;
+            end
+        else
+            begin
+                instr_ex <= instr_id;
+                rd_ex <= rd_id;
+                mem_read_ex <= mem_read_id;
+                reg_write_ex <= reg_write_id;
+            end
+    end
 
 endmodule
