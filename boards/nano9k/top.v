@@ -3,8 +3,8 @@
 
 module nano9k (
     input clk,
-    input reset
+    input btn1,
 );
-    cpu cpu(clk, reset);
+    cpu cpu(clk, btn1);
     
 endmodule
