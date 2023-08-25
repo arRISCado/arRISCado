@@ -1,6 +1,8 @@
 main:
 	addi a0, zero, 3
 	addi a1, zero, -24
+	addi zero, zero, 0
+	addi zero, zero, 0
 	slt a2, a0, a1
 	sltu a3, a0, a1
 	slti a4, a0, 2
