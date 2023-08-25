@@ -4,8 +4,6 @@ main:
 	addi a2, zero, -3
 	addi a3, zero, 5
 	addi a4, zero, 69
-	addi zero, zero, 0
-	addi zero, zero, 0
 	beq a1, a3, .L1
 .L0:
 	addi a0, zero, -1
