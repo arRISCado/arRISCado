@@ -60,26 +60,20 @@ begin
         7'b0110111 : 
             begin
                 AluOp = 3'b100;
-                imm = instruction[31:12];
-                AluOp = 3'b100;
-                imm = instruction[31:12];
+                imm = {instruction[31:12], 12'b000000000000};
             end
         
         // AUIPC: Add U-Immediate with PC (Tipo U)
         7'b0010111 : begin
                 AluOp = 3'b100;
-                imm = instruction[31:12];
-                AluOp = 3'b100;
-                imm = instruction[31:12];
+                imm = {instruction[31:12], 12'b000000000000};
             end
 
         // JAL: Jump And Link (Tipo J)
         7'b1101111 : 
         begin
             AluOp = 3'b011;
-            imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
-            AluOp = 3'b011;
-            imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
+            imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12], 2'b0};
         end
 
         //JARL: Jump And Link Register (Tipo I)
@@ -90,7 +84,6 @@ begin
             case (func3)
             7'b000 :
                 begin
-                    imm = instruction[31:20];
                     imm = instruction[31:20];
                 end
 
@@ -108,16 +101,7 @@ begin
             MemWrite = 0;
             Branch = 1;
             AluControl = 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
-            imm = {instruction[11:8], instruction[30:25], instruction[7], instruction[31]}; // Imediato usado pra somar no PC
-            AluOp = 2'b01;
-            AluSrc = 0;
-            // MemToReg = 1; Don't Care
-            RegWrite = 0;
-            MemRead = 0;
-            MemWrite = 0;
-            Branch = 1;
-            AluControl = 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
-            imm = {instruction[11:8], instruction[30:25], instruction[7], instruction[31]}; // Imediato usado pra somar no PC
+            imm = {instruction[11:8], instruction[30:25], instruction[7], instruction[31], 2'b0}; // Imediato usado pra somar no PC
 
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
             // (Não sei oq fazer pra diferenciar os tipos de Branch ainda, então o padrão vai ser BGE por hora)
@@ -127,15 +111,6 @@ begin
         // Instruções dos tipos de Loads: dependem do func3 (Tipo I)
         7'b0000011 :
             begin
-                AluOp = 2'b00;
-                AluSrc = 1;
-                MemToReg = 1;
-                RegWrite = 1;
-                MemRead = 1;
-                MemWrite = 0;
-                Branch = 0;
-                AluControl = 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
-                imm = instruction[31:20];
                 AluOp = 2'b00;
                 AluSrc = 1;
                 MemToReg = 1;
@@ -157,15 +132,6 @@ begin
         // Instruções pros tipos de Save: dependem do func3 (Tipo S)
         7'b0100011 :
             begin
-                AluOp = 2'b00;
-                AluSrc = 1;
-                // MemToReg = 1; Don't Care
-                RegWrite = 1;
-                MemRead = 1;
-                MemWrite = 0;
-                Branch = 0;
-                AluControl = 4'b0010; // SW performa uma soma na ALU pra calculcar endereço
-                imm = {instruction[11:7], instruction[31:25]};
                 AluOp = 2'b00;
                 AluSrc = 1;
                 // MemToReg = 1; Don't Care
