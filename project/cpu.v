@@ -33,26 +33,6 @@ module cpu(
         .instr(instr),
     );
 
-    wire rb_write_enable;
-    wire rb_write_address;
-    wire rb_write_value;
-    wire rb_read_address1;
-    wire rb_read_address2;
-    wire rb_value1;
-    wire rb_value2;
-
-    register_bank RegisterBank(
-        .clk(clk),
-        .reset(reset),
-        .write_enable(rb_write_enable),
-        .write_address(rb_write_address),
-        .write_value(rb_write_value),
-        .read_address1(rb_read_address1),
-        .read_address2(rb_read_address2),
-        .value1(rb_value1),
-        .value2(rb_value2),
-    );
-
     wire [20:0] imm;
     wire [6:0] opcode;
     wire [1:0] aluOp;
@@ -68,12 +48,46 @@ module cpu(
         .rs2(rb_read_address2),
     );
 
+    wire [20:0] t_imm;
+    wire [6:0] t_opcode;
+    wire [1:0] t_aluOp;
+    wire [31:0] t_rb_value1;
+    wire [31:0] t_rb_value2;
+
+    always @(posedge clk) begin
+        t_opcode = opcode;
+        t_aluOp = aluOp;
+        t_imm = imm;
+        t_rb_value1 = rb_value1;
+        t_rb_value2 = rb_value2;
+    end
+
+    wire rb_write_enable;
+    wire [7:0] rb_write_address;
+    wire [31:0] rb_write_value;
+    wire [7:0] rb_read_address1;
+    wire [7:0] rb_read_address2;
+    wire [31:0] rb_value1;
+    wire [31:0] rb_value2;
+
+    register_bank RegisterBank(
+        .clk(clk),
+        .reset(reset),
+        .write_enable(rb_write_enable),
+        .write_address(rb_write_address),
+        .write_value(rb_write_value),
+        .read_address1(rb_read_address1),
+        .read_address2(rb_read_address2),
+        .value1(rb_value1),
+        .value2(rb_value2),
+    );
+
     execute execute(
-        .op(opcode),
-        .op_type(aluOp),
-        .rs1_value(rb_value1),
-        .rs2_value(rb_value1),
-        .imm(imm),
+        .op(t_opcode),
+        .op_type(t_aluOp),
+        .rs1_value(t_rb_value1),
+        .rs2_value(t_rb_value1),
+        .imm(t_imm),
         // .result(),
     );
 

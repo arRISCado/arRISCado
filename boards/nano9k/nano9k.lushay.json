@@ -5,7 +5,11 @@
     "top": "nano9k",
     "constraintsFile": "constraints.cst",
     "programMode": "ram",
-    "testBenches": ["../../testbenches/rom_tb.v", "../../testbenches/fetch_tb.v"],
+    "testBenches": [
+        "../../testbenches/rom_tb.v", 
+        "../../testbenches/fetch_tb.v", 
+        "../../testbenches/fetch_decode_tb.v"
+    ],
     "nextPnrGowinOptions": ["--top", "nano9k"],
     "synthGowinOptions": [],
     "baudRate": 115200,
