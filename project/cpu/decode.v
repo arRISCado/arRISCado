@@ -27,14 +27,13 @@ module decode (
 
 
 input [31:0] instruction;
-input [6:0] opcode;
-input [20:0] imm;
-input [5:0] rd, rs1, rs2;
-input [5:0] shamt;
-input [2:0] func3;
-input [6:0] func7;
 
-
+output [20:0] imm;
+output [5:0] rd, rs1, rs2;
+output [5:0] shamt;
+output [2:0] func3;
+output [6:0] func7;
+output [6:0] opcode;
 output MemWrite;         // True or False depending if the operation Writes in the Memory or not
 output MemRead;          // True or False depending if the operation Reads from the Memory or not
 output RegWrite;         // True or False depending if the operation writes in a Register or not
