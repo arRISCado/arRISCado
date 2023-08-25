@@ -41,7 +41,8 @@ module execute (
         // exemplo hipotetico: op_type 000 são operações do tipo R
         3'b000 :
         begin
-            // alu(op, rs1, rs2, alu_result);
+            a = rs1;
+            b = rs2;
             //como que passa o RD pra escrever no banco de REGs dps?
         end
 
