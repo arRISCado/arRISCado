@@ -1,2 +1,5 @@
-*.cst
 *.out
+*.o
+*.fs
+boards/nano9k/string.json
+boards/nano9k/string_pnr.json
