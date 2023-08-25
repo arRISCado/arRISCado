@@ -61,10 +61,14 @@ begin
             begin
                 AluOp = 3'b100;
                 imm = instruction[31:12];
+                AluOp = 3'b100;
+                imm = instruction[31:12];
             end
         
         // AUIPC: Add U-Immediate with PC (Tipo U)
         7'b0010111 : begin
+                AluOp = 3'b100;
+                imm = instruction[31:12];
                 AluOp = 3'b100;
                 imm = instruction[31:12];
             end
@@ -74,15 +78,19 @@ begin
         begin
             AluOp = 3'b011;
             imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
+            AluOp = 3'b011;
+            imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12]};
         end
 
         //JARL: Jump And Link Register (Tipo I)
         7'b1100111 :
         begin
             AluOp = 3'b001;
+            AluOp = 3'b001;
             case (func3)
             7'b000 :
                 begin
+                    imm = instruction[31:20];
                     imm = instruction[31:20];
                 end
 
@@ -92,6 +100,15 @@ begin
         // Instruções de Branch: dependedem de func3 (Tipo B)
         7'b1100011 :
         begin
+            AluOp = 2'b01;
+            AluSrc = 0;
+            // MemToReg = 1; Don't Care
+            RegWrite = 0;
+            MemRead = 0;
+            MemWrite = 0;
+            Branch = 1;
+            AluControl = 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
+            imm = {instruction[11:8], instruction[30:25], instruction[7], instruction[31]}; // Imediato usado pra somar no PC
             AluOp = 2'b01;
             AluSrc = 0;
             // MemToReg = 1; Don't Care
@@ -119,6 +136,15 @@ begin
                 Branch = 0;
                 AluControl = 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
                 imm = instruction[31:20];
+                AluOp = 2'b00;
+                AluSrc = 1;
+                MemToReg = 1;
+                RegWrite = 1;
+                MemRead = 1;
+                MemWrite = 0;
+                Branch = 0;
+                AluControl = 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
+                imm = instruction[31:20];
 
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
                 // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
@@ -131,6 +157,15 @@ begin
         // Instruções pros tipos de Save: dependem do func3 (Tipo S)
         7'b0100011 :
             begin
+                AluOp = 2'b00;
+                AluSrc = 1;
+                // MemToReg = 1; Don't Care
+                RegWrite = 1;
+                MemRead = 1;
+                MemWrite = 0;
+                Branch = 0;
+                AluControl = 4'b0010; // SW performa uma soma na ALU pra calculcar endereço
+                imm = {instruction[11:7], instruction[31:25]};
                 AluOp = 2'b00;
                 AluSrc = 1;
                 // MemToReg = 1; Don't Care
@@ -162,6 +197,7 @@ begin
                 if (func3 == 000)
                 begin
                     AluControl = 4'b0010;
+                    AluControl = 4'b0010;
                 end
 
                 // SLTI
@@ -171,6 +207,7 @@ begin
 
                 // SLLI, SRLI, SRAI (Tipo I)
                 else if ((func3 == 3'b001) || (func3 == 3'b101)) begin
+                    AluOp = 3'b001;
                     AluOp = 3'b001;
                 end
                 
@@ -191,6 +228,12 @@ begin
         //     succ = instruction[22:20];
         //     pred = instruction[26:23];
         //     fm = instruction[27:31];        
+				    // rd = instruction[11:7];
+        //     func3= instruction[14:12];
+        //     rs1 = instruction[19:15];
+        //     succ = instruction[22:20];
+        //     pred = instruction[26:23];
+        //     fm = instruction[27:31];        
         // end
 
         // // FENCE.TSO : não faço ideia do que é isso
@@ -202,11 +245,19 @@ begin
         //     // succ = instruction[22:20];
         //     // pred = instruction[26:23];
         //     // fm = instruction[27:31];        
+        //     // rd = instruction[11:7];
+        //     func3= instruction[14:12];
+        //     // rs1 = instruction[19:15];
+        //     // succ = instruction[22:20];
+        //     // pred = instruction[26:23];
+        //     // fm = instruction[27:31];        
         // end
 
         // ECALL and EBREAK: chamada de sistema (Tipo I)
         7'b1110011 :
         begin
+            AluOp = 3'b001;
+            imm = instruction[31:20];
             AluOp = 3'b001;
             imm = instruction[31:20];
         end
