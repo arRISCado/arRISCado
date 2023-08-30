@@ -9,12 +9,13 @@ module execute (
     input [31:0] rs1_value,
     input [31:0] rs2_value,
     input [31:0] imm,
+    input [31:0] PC,
     output [31:0] result,
 
     // Sinais de controle
-    input [1:0] AluOp,
-    input AluSrc,
-    input [7:0] rd,            // Destination register
+    input [2:0] AluOp, // Define os operandos a e b
+    input AluSrc, // Define se b é rs2 ou imediato
+    input [7:0] rd            // Destination register
 );
 
     wire [31:0] alu_result;
@@ -23,7 +24,7 @@ module execute (
     reg [31:0] a;
     reg [31:0] b;
 
-    alu alu(op, a, b, alu_result); 
+    alu alu(AluSrc, a, b, alu_result); 
 
     always @(posedge clk or posedge rst)
     begin
@@ -41,50 +42,70 @@ module execute (
     always @(*)
     begin
         case(AluOp)
-        // AluOp 2'b10 são operações do tipo I
-        2'b10 :
+        // Tipo Load ou Store
+        3'b000 :
         begin
             a = rs1_value;
             b = imm;
-        end
-
-        // Tipo I
-        3'b001 :
-        begin
-            a = rs1_value;
-            b = imm;
-            // alu(op, mem[rs1], imm, alu_result);
-            //como que passa o RD pra escrever no banco de REGs dps?
-        end
-
-        // Tipo S
-        3'b010:
-        begin
-            // alu(op, rs1, rs2, alu_result);
-            //tem imeidato nessa tbm, mas n sei onde colocar
         end
 
         // Tipo B
-        3'b011:
+        3'b001 :
         begin
-            // alu(op, rs1, rs2, alu_result);
-            //tem imediato, mas n sei onde colocar
+            a = rs1_value;
+            b = rs2_value;
+            //como que passa o RD pra escrever no banco de REGs dps?
         end
 
-        // Tipo U
+        // Tipo R OU I
+        3'b010 :
+        begin
+            a = rs1_value;
+            case(AluSrc)
+            1'b1 :
+            begin
+                b = imm;
+            end
+            1'b0 :
+            begin
+                b = rs2_value;
+            end
+            endcase
+        end
+
+        // Tipo U LUI
         3'b100:
         begin
-            // alu(op, rd, imm, alu_result);
-            // nessa só tem rd e immediato, entao n sei como se encaixa nesse caso
+            a = rd;
+            b = imm;
+            // é Literalmente isso o LUI, coloca isso no rd direto
+        end
+
+        // Tipo U AUIPC
+        3'b101:
+        begin
+            a = PC;
+            b = imm;
+            // é Literalmente isso o AIUPC, coloca isso no PC direto
         end
 
         // Tipo J
-        3'b101:
+        3'b011:
         begin
-            // alu(op, rd, imm, alu_result);
+            a = PC;
+            b = imm;
             //isso pula pra um endereço X, então acho q o mais certo é usar o PC pra fazer os cálculos
         end
-        endcase
+
+        3'b111 :
+        begin
+            a = PC;
+            b = 3'b100;
+            // rd recebe Pc + 4
+            PC = rs1_value + imm; //dá pra fazer isso aqui?
+            // Sets PC = Reg[rs1] + immediate COMO????
+        end
+    endcase
 
 end
 
