@@ -1,7 +1,10 @@
 // Decode Stage
 module decode (
-    input [31:0] instruction,
-    // clock,
+    input clk,                // Clock signal
+    input rst,                // Reset signal
+
+    input [31:0] next_instruction,
+
     output reg [20:0] imm,
     output [5:0] rd, rs1, rs2,
     output [5:0] shamt,
@@ -23,7 +26,17 @@ module decode (
     output reg PCSrc             // Determines if the PC will come from the PC+4 or from a Branch calculation
 );
 
-// Definição default de todos os sinais de controle
+reg [31:0] instruction;
+
+always @(posedge clk or posedge rst) 
+begin
+    if (rst)
+        instruction = 0;
+    else
+        instruction = next_instruction;
+end
+
+// Divide each possible part of an instruction
 assign opcode = instruction[6:0];
 assign rd = instruction[11:7];
 assign rs1 = instruction[19:15];
@@ -32,7 +45,8 @@ assign shamt = instruction[24:20];
 assign func3 = instruction[14:12];
 assign func7 = instruction[31:25];
 
-always @(*) begin
+always @(*) 
+begin
     imm = instruction[31:12]; // definindo o tipo de imediato mais comum
     
     // Eventualmente, com as instruções de 16 bits, vai ter que
@@ -203,7 +217,6 @@ always @(*) begin
         end
         
     endcase
-
 end
     
 endmodule
