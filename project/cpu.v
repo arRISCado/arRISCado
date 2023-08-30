@@ -35,7 +35,8 @@ module cpu(
 
     wire [20:0] imm;
     wire [6:0] opcode;
-    wire [1:0] aluOp;
+    wire [2:0] aluOp;
+    wire aluSrc;
 
     decode decode(
         .instruction(instr),
@@ -44,6 +45,7 @@ module cpu(
         //.rd(),
         .opcode(opcode),
         .AluOp(aluOp),
+        .AluSrc(aluSrc),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
     );
@@ -83,8 +85,8 @@ module cpu(
     );
 
     execute execute(
-        .op(t_opcode),
-        .op_type(t_aluOp),
+        .AluSrc(aluSrc),
+        .AluOp(aluOp),
         .rs1_value(t_rb_value1),
         .rs2_value(t_rb_value1),
         .imm(t_imm),
