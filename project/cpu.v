@@ -108,13 +108,15 @@ module cpu(
         .clk(clock),
         .rst(reset),
 
+        .rs1_value(rb_value1),
+        .rs2_value(rb_value1),
+        .imm(imm),
+       
+        .result(result),
+
+    // Control signals
         .AluSrc(t_AluSrc),
         .AluOp(t_AluOp),
-        .rs1_value(t_rb_value1),
-        .rs2_value(t_rb_value1),
-        .imm(t_imm),
-
-        // Control signals
         .in_MemWrite(t_MemWrite),
         .in_MemRead(t_MemRead),
         .in_RegWrite(t_RegWrite),
@@ -123,9 +125,7 @@ module cpu(
         .in_Branch(t_Branch),
         .in_MemToReg(t_MemToReg),
         .in_RegDataSrc(t_RegDataSrc),
-        .in_PCSrc(t_PCSrc),
-
-        .result()
+        .in_PCSrc(t_PCSrc)
     );
 
 endmodule
