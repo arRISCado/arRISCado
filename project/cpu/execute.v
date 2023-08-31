@@ -34,7 +34,7 @@ module execute (
     output out_Branch,           // True or False depending if the instruction is a Branch
     output out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
-    output out_PCSrc             // Determines if the PC will come from the PC+4 or from a Branch calculation
+    output out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
     output [31:0] result
 );

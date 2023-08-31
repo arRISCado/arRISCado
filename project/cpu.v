@@ -105,9 +105,12 @@ module cpu(
 
     wire [31:0] result;
 
+    wire [31:0] result;
+
     execute execute(
         .clk(clock),
         .rst(reset),
+
         .rs1_value(rb_value1),
         .rs2_value(rb_value1),
         .imm(imm),
@@ -127,5 +130,6 @@ module cpu(
         .in_RegDataSrc(t_RegDataSrc),
         .in_PCSrc(t_PCSrc)
     );
+
 
 endmodule
