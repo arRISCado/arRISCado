@@ -8,10 +8,13 @@
 // `include "cpu/writeback.v"
 
 module cpu(
-    input clk,
+    input clock,
     input reset,
 );
-    ram ram(clk, reset);
+    ram ram(
+        .clk(clock), 
+        .reset(reset)
+    );
     rom rom(
         .address(rom_address),
         .data(rom_data),
@@ -26,54 +29,45 @@ module cpu(
 
     fetch fetch(
         .clk(clock),
+        .rst(reset),
         .pc_src(pc_src),
         .branch_target(branch_target),
         .rom_data(rom_data),
+
         .pc(pc),
         .instr(instr),
     );
 
     wire [20:0] imm;
-    wire [6:0] opcode;
     wire [2:0] aluOp;
     wire aluSrc;
+    wire pc_src;
 
     decode decode(
+        .clk(clock),
+        .rst(reset),
         .instruction(instr),
         
         .imm(imm),
-        //.rd(),
-        .opcode(opcode),
-        .AluOp(aluOp),
-        .AluSrc(aluSrc),
+        .rd(rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
+        
+        .AluOp(aluOp),
+        .AluSrc(aluSrc),
+        .PCSrc(pc_src),
     );
-
-    wire [20:0] t_imm;
-    wire [6:0] t_opcode;
-    wire [1:0] t_aluOp;
-    wire [31:0] t_rb_value1;
-    wire [31:0] t_rb_value2;
-
-    always @(posedge clk) begin
-        t_opcode = opcode;
-        t_aluOp = aluOp;
-        t_imm = imm;
-        t_rb_value1 = rb_value1;
-        t_rb_value2 = rb_value2;
-    end
 
     wire rb_write_enable;
     wire [7:0] rb_write_address;
     wire [31:0] rb_write_value;
-    wire [7:0] rb_read_address1;
-    wire [7:0] rb_read_address2;
+    wire [5:0] rb_read_address1;
+    wire [5:0] rb_read_address2;
     wire [31:0] rb_value1;
     wire [31:0] rb_value2;
 
     register_bank RegisterBank(
-        .clk(clk),
+        .clk(clock),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
@@ -84,14 +78,22 @@ module cpu(
         .value2(rb_value2),
     );
 
-    execute execute(
-        .AluSrc(aluSrc),
-        .AluOp(aluOp),
-        .rs1_value(t_rb_value1),
-        .rs2_value(t_rb_value1),
-        .imm(t_imm),
-        // .result(),
-    );
+    wire [31:0] result;
 
+    execute execute(
+        .clk(clock),
+        .rst(reset),
+
+        .rs1_value(rb_value1),
+        .rs2_value(rb_value1),
+        .imm(imm),
+        .pc_src(pc_src),
+
+        .AluOp(aluOp),
+        .AluSrc(aluSrc),
+        .rd(rd),
+        
+        .result(result),
+    );
 
 endmodule

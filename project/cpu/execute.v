@@ -4,27 +4,26 @@
 module execute (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
-    input [3:0] op,            // Instruction
-    input [1:0] op_type,
+    
+    // input [3:0] op,            // Instruction
+    // input [1:0] op_type,
     input [31:0] rs1_value,
     input [31:0] rs2_value,
     input [31:0] imm,
-    input [31:0] PC,
-    output [31:0] result,
+    input [31:0] pc_src,
 
     // Sinais de controle
-    input [2:0] AluOp, // Define os operandos a e b
-    input AluSrc, // Define se b é rs2 ou imediato
-    input [7:0] rd            // Destination register
-);
+    input [2:0] AluOp,  // Define os operandos a e b
+    input AluSrc,       // Define se b é rs2 ou imediato
+    input [7:0] rd,     // Destination register
 
-    wire [31:0] alu_result;
-    wire [3:0] alu_op; //talvez n prescise
+    output [31:0] result
+);
 
     reg [31:0] a;
     reg [31:0] b;
 
-    alu alu(AluSrc, a, b, alu_result); 
+    alu alu(AluSrc, a, b, result); 
 
     always @(posedge clk or posedge rst)
     begin
@@ -108,7 +107,5 @@ module execute (
     endcase
 
 end
-
-    assign result = alu_result;
     
 endmodule

@@ -3,8 +3,9 @@ module decode (
     input clk,                // Clock signal
     input rst,                // Reset signal
 
-    input [31:0] next_instruction,
+    input [31:0] instruction,
 
+    // TODO: Clean unused outputs
     output reg [20:0] imm,
     output [5:0] rd, rs1, rs2,
     output [5:0] shamt,
@@ -26,28 +27,28 @@ module decode (
     output reg PCSrc             // Determines if the PC will come from the PC+4 or from a Branch calculation
 );
 
-reg [31:0] instruction;
+reg [31:0] _instruction;
 
 always @(posedge clk or posedge rst) 
 begin
     if (rst)
-        instruction = 0;
+        _instruction = 0;
     else
-        instruction = next_instruction;
+        _instruction = instruction;
 end
 
 // Divide each possible part of an instruction
-assign opcode = instruction[6:0];
-assign rd = instruction[11:7];
-assign rs1 = instruction[19:15];
-assign rs2 = instruction[24:20];
-assign shamt = instruction[24:20];
-assign func3 = instruction[14:12];
-assign func7 = instruction[31:25];
+assign opcode = _instruction[6:0];
+assign rd = _instruction[11:7];
+assign rs1 = _instruction[19:15];
+assign rs2 = _instruction[24:20];
+assign shamt = _instruction[24:20];
+assign func3 = _instruction[14:12];
+assign func7 = _instruction[31:25];
 
 always @(*) 
 begin
-    imm = instruction[31:20]; // definindo o tipo de imediato mais comum
+    imm = _instruction[31:20]; // definindo o tipo de imediato mais comum
     
     // Eventualmente, com as instruções de 16 bits, vai ter que
     // separar a instrução de 32 bits em 2 intruções de 16 bits
@@ -67,7 +68,7 @@ begin
                 MemWrite = 0;
                 Branch = 0;
                 AluControl = 4'b0110;
-                imm = {instruction[31:12], 12'b000000000000};
+                imm = {_instruction[31:12], 12'b0};
             end
         
         // AUIPC: Add U-Immediate with PC (Tipo U)
@@ -80,7 +81,7 @@ begin
                 MemWrite = 0;
                 Branch = 1;
                 AluControl = 4'b0110;
-                imm = {instruction[31:12], 12'b000000000000};
+                imm = {_instruction[31:12], 12'b0};
             end
 
         // JAL: Jump And Link (Tipo J)
@@ -94,7 +95,7 @@ begin
             MemWrite = 0;
             Branch = 1;
             AluControl = 4'b0110;
-            imm = {instruction[31], instruction[30:21], instruction[20], instruction[19:12], 2'b0};
+            imm = {_instruction[31:12], 2'b0};
         end
 
         //JARL: Jump And Link Register (Tipo I)
@@ -104,7 +105,7 @@ begin
             case (func3)
             7'b000 :
                 begin
-                    imm = instruction[31:20];
+                    imm = _instruction[31:20];
                 end
 
             endcase
@@ -121,7 +122,7 @@ begin
             MemWrite = 0;
             Branch = 1;
             AluControl = 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
-            imm = {instruction[11:8], instruction[30:25], instruction[7], instruction[31], 2'b0}; // Imediato usado pra somar no PC
+            imm = {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
 
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
             // (Não sei oq fazer pra diferenciar os tipos de Branch ainda, então o padrão vai ser BGE por hora)
@@ -139,7 +140,7 @@ begin
                 MemWrite = 0;
                 Branch = 0;
                 AluControl = 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
-                imm = instruction[31:20];
+                imm = _instruction[31:20];
 
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
                 // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
@@ -160,7 +161,7 @@ begin
                 MemWrite = 1;
                 Branch = 0;
                 AluControl = 4'b0010; // SW performa uma soma na ALU pra calculcar endereço
-                imm = {instruction[11:7], instruction[31:25]};
+                imm = {_instruction[11:7], _instruction[31:25]};
                 
                 // Esse sinal irá indicar pra ALU/MEM qual o tipo de store
                 // (Não sei oq fazer pra diferenciar os tipos de store ainda, então o padrão vai ser SW por hora)
@@ -177,7 +178,7 @@ begin
                 MemRead = 0;
                 MemWrite = 0;
                 Branch = 0;
-                imm = instruction[31:20];
+                imm = _instruction[31:20];
 
                 // ADDI
                 if (func3 == 000)
@@ -187,12 +188,12 @@ begin
 
                 // SLTI
                 else if (func3 == 010)
-                    begin
-                    end
+                begin
+                end
 
                 // SLLI, SRLI, SRAI (Tipo I)
-                else if ((func3 == 3'b001) || (func3 == 3'b101)) begin
-
+                else if ((func3 == 3'b001) || (func3 == 3'b101))
+                begin
                 end
                 
             end
@@ -280,11 +281,12 @@ begin
         7'b1110011 :
         begin
             AluOp = 3'b001;
-            imm = instruction[31:20];
+            imm = _instruction[31:20];
             AluOp = 3'b001;
-            imm = instruction[31:20];
+            imm = _instruction[31:20];
         end
 
+        // Should traslate to NOP
         default :
         begin
             // isso tem que virar sinal de controle

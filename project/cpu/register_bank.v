@@ -5,14 +5,13 @@ module register_bank(
     input write_enable,
     input [7:0] write_address,
     input [31:0] write_value,
-    input [7:0] read_address1,
-    input [7:0] read_address2,
+    input [5:0] read_address1,
+    input [5:0] read_address2,
     output [31:0] value1,
     output [31:0] value2,
 );
 
     reg [31:0] register [31:1];
-    // TODO: Add other registers (PC, SP etc)
 
     integer i;
     
