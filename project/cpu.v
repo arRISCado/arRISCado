@@ -108,14 +108,13 @@ module cpu(
     execute execute(
         .clk(clock),
         .rst(reset),
-
         .rs1_value(rb_value1),
         .rs2_value(rb_value1),
         .imm(imm),
        
         .result(result),
 
-    // Control signals
+        // Control signals
         .AluSrc(t_AluSrc),
         .AluOp(t_AluOp),
         .in_MemWrite(t_MemWrite),
