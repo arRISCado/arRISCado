@@ -1,5 +1,3 @@
-# TODO: Fix register names based on our implementation
-
 main:
 	addi a0, zero, 1
 	sub a1, zero, a0
