@@ -3,7 +3,7 @@ module decode (
     input clk,                // Clock signal
     input rst,                // Reset signal
 
-    input [31:0] instruction,
+    input [31:0] next_instruction,
 
     // TODO: Clean unused outputs
     output reg [20:0] imm,
