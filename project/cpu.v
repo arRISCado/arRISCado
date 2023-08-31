@@ -46,7 +46,7 @@ module cpu(
     decode decode(
         .clk(clock),
         .rst(reset),
-        .instruction(instr),
+        .next_instruction(instr),
         
         .imm(imm),
         .rd(rd),
@@ -57,6 +57,30 @@ module cpu(
         .AluSrc(aluSrc),
         .PCSrc(pc_src),
     );
+
+    wire [20:0] t_imm;
+    wire [6:0] t_opcode;
+    wire [31:0] t_rb_value1;
+    wire [31:0] t_rb_value2;
+    wire t_MemWrite;          
+    wire t_MemRead;           
+    wire t_RegWrite;          
+    wire [4:0] t_RegDest;     
+    wire t_AluSrc;            
+    wire [2:0] t_AluOp;      
+    wire [3:0] t_AluControl; 
+    wire t_Branch;            
+    wire t_MemToReg;          
+    wire t_RegDataSrc;        
+    wire t_PCSrc;
+
+    always @(posedge clk) begin
+        t_opcode = opcode;
+        t_aluOp = aluOp;
+        t_imm = imm;
+        t_rb_value1 = rb_value1;
+        t_rb_value2 = rb_value2;
+    end
 
     wire rb_write_enable;
     wire [7:0] rb_write_address;
@@ -84,16 +108,24 @@ module cpu(
         .clk(clock),
         .rst(reset),
 
-        .rs1_value(rb_value1),
-        .rs2_value(rb_value1),
-        .imm(imm),
-        .pc_src(pc_src),
+        .AluSrc(t_AluSrc),
+        .AluOp(t_AluOp),
+        .rs1_value(t_rb_value1),
+        .rs2_value(t_rb_value1),
+        .imm(t_imm),
 
-        .AluOp(aluOp),
-        .AluSrc(aluSrc),
-        .rd(rd),
-        
-        .result(result),
+        // Control signals
+        .in_MemWrite(t_MemWrite),
+        .in_MemRead(t_MemRead),
+        .in_RegWrite(t_RegWrite),
+        .in_RegDest(t_RegDest),
+        .in_AluControl(t_AluControl),
+        .in_Branch(t_Branch),
+        .in_MemToReg(t_MemToReg),
+        .in_RegDataSrc(t_RegDataSrc),
+        .in_PCSrc(t_PCSrc),
+
+        .result()
     );
 
 endmodule
