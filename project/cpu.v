@@ -4,16 +4,24 @@
 `include "cpu/fetch.v"
 `include "cpu/decode.v"
 `include "cpu/execute.v"
-// `include "cpu/memory.v"
-// `include "cpu/writeback.v"
+`include "cpu/memory.v"
+`include "cpu/writeback.v"
 
 module cpu(
     input clock,
     input reset,
 );
+    // TODO: Reorganize
+    wire [31:0] ram_address, ram_data_in, ram_data_out;
+    wire ram_write_enable;
+
     ram ram(
         .clk(clock), 
-        .reset(reset)
+        .reset(reset),
+        .address(ram_address),
+        .data_in(ram_data_in),
+        .write_enable(ram_write_enable),
+        .data_out(ram_data_out),
     );
     rom rom(
         .address(rom_address),
@@ -100,12 +108,9 @@ module cpu(
         .read_address2(rb_read_address2),
         .value1(rb_value1),
         .value2(rb_value2),
-
     );
 
-    wire [31:0] result;
-
-    wire [31:0] result;
+    wire [31:0] ex_result;
 
     execute execute(
         .clk(clock),
@@ -114,7 +119,7 @@ module cpu(
         .rs2_value(rb_value1),
         .imm(imm),
        
-        .result(result),
+        .result(ex_result),
 
         // Control signals
         .AluSrc(t_AluSrc),
@@ -128,6 +133,44 @@ module cpu(
         .in_MemToReg(t_MemToReg),
         .in_RegDataSrc(t_RegDataSrc),
         .in_PCSrc(t_PCSrc)
+    );
+
+    wire [31:0] mem_wr_data_out;
+    wire mem_wr_mem_done;
+    wire mem_we_rd;
+
+    memory memory(
+        .clk(clock),
+        .rst(reset),
+
+        .addr(),
+        .data_in(ex_result),
+        .load_store(),
+        .op(),
+        .mem_read_data(ram_data_out),
+        .rd(mem_we_rd),
+
+        .mem_addr(ram_address),
+        .mem_write_data(ram_data_in),
+        .mem_write_enable(ram_write_enable),
+        .data_out(mem_wr_data_out),
+        .mem_done(mem_wr_mem_done),
+        .rd_out(),
+    );
+
+    writeback writeback(
+        .clk(clock),
+        .rst(reset),
+
+        .mem_done(mem_wr_mem_done),
+        .rd(mem_we_rd),
+        .data_mem(mem_wr_data_out),
+        .result_alu(),
+        .mem_to_reg_ctrl(),
+
+        .rd_out(rb_write_address),
+        .rb_write_en(rb_write_enable),
+        .data_wb(rb_write_value),
     );
 
 
