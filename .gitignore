@@ -1,5 +1,6 @@
 *.out
 *.o
 *.fs
-boards/nano9k/string.json
-boards/nano9k/string_pnr.json
+boards/**/string.json
+boards/**/string_pnr.json
+boards/**/abc.history
