@@ -100,6 +100,7 @@ module cpu(
         .read_address2(rb_read_address2),
         .value1(rb_value1),
         .value2(rb_value2),
+
     );
 
     wire [31:0] result;
