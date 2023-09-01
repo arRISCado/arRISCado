@@ -4,8 +4,8 @@ module alu (
   input [3:0] AluControl,
   input [31:0] a,
   input [31:0] b,
-  output [31:0] result,
-  output zero
+  output reg [31:0] result,
+  output reg zero
 );
 
   always @(*)
@@ -19,7 +19,7 @@ module alu (
       4'b0101: result = ~a; // Bitwise NOT
       4'b0110: result = a << b; // Shift Left
       4'b0111: result = a >> b; // Shift Right
-      4'b1000: result = a >>> b; // Arithmetic Shift Right
+      4'b1000: result = a >>> b; // Arithmetic Shift Right // TODO: Must be signed
       default: result = 32'b0; // Default output
     endcase
 
