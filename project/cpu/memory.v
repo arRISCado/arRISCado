@@ -1,4 +1,20 @@
 module memory (
+    input clk,             // Clock signal
+    input [31:0] addr,     // Address input
+    input [31:0] data_in,  // Data input to be written
+    input mem_write,       // Write enable signal
+    input mem_read,        // Read enable signal
+    input load_store,      // Load/store instruction signal
+    input [1:0] op,        // Operation type (00: Load, 01: Store)
+    output reg [31:0] data_out, // Data output read from memory
+    output mem_done,        // Memory operation done signal
+    output reg [31:0] out_peripherals[1:0], // Output data to peripherals
+    output reg write_to_peripheral[1:0] // 1 if data was write to peripheral
+);
+
+    reg [31:0] mem[0:1023]; // Example memory with 1024 locations, each storing a 32-bit word
+
+    reg mem_done_reg;
     input clk,                 // Clock signal
     input rst,                 // Reset signal
     input [31:0] addr,         // Address input
