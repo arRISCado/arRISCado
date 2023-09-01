@@ -12,7 +12,6 @@ module writeback (
     input [4:0] in_RegDest,
     input in_PCSrc,
 
-    output reg [4:0] out_RegDest,    // Destination register for writeback
     output reg rb_write_en,
     output reg [31:0] data_wb,   // Data to be written back
 

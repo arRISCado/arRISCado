@@ -22,28 +22,19 @@ module execute (
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
-    output out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
-    output out_MemRead,          // True or False depending if the operation Reads from the Memory or not
-    output out_RegWrite,         // True or False depending if the operation writes in a Register or not
-    output [4:0] out_RegDest,    // Determines which register to write the ALU result
-    output out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    output out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
-    output out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
+    output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
+    output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
+    output reg out_RegWrite,         // True or False depending if the operation writes in a Register or not
+    output reg [4:0] out_RegDest,    // Determines which register to write the ALU result
+    output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
+    output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
+    output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
     output reg [4:0] rd_out,
     output [31:0] result,
     output reg [31:0] a,
     output reg [31:0] b
 );
-    
-    // Control signals that go to next stage
-    reg out_MemWrite;         // True or False depending if the operation Writes in the Memory or not
-    reg out_MemRead;          // True or False depending if the operation Reads from the Memory or not
-    reg out_RegWrite;         // True or False depending if the operation writes in a Register or not
-    reg [4:0] out_RegDest;    // Determines which register to write the ALU result
-    reg out_MemToReg;         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    reg out_RegDataSrc;       // Determines where the register data to be writen will come from: memory or ALU result
-    reg out_PCSrc;            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
     reg [31:0] _rd;
     reg [31:0] _rs1_value;
