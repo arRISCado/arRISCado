@@ -90,7 +90,7 @@ module test;
         .clk(clock),
         .rst(reset),
         
-        .pc_src(pc_src), // May come from writeback, but ideally from memory stage
+        .PCSrc(pc_src), // May come from writeback, but ideally from memory stage
         .branch_target(branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
@@ -125,15 +125,6 @@ module test;
         // Control signals
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
-        .in_MemWrite(),
-        .in_MemRead(),
-        .in_RegWrite(),
-        .in_RegDest(),
-        .in_AluControl(),
-        .in_Branch(),
-        .in_MemToReg(),
-        .in_RegDataSrc(),
-        .in_PCSrc(),
 
         .result(ex_mem_result),
         .a(a),
@@ -146,13 +137,13 @@ module test;
         .rst(reset),
 
         .mem_done(mem_wr_mem_done),
-        .rd(mem_wr_rd_out),
+        .in_RegDest(mem_wr_rd_out),
         .data_mem(mem_wr_data_out),
         .result_alu(ex_mem_result),
         // .mem_to_reg_ctrl(),
         // .pc_src(wr_if_pc_src),
 
-        .rd_out(rb_write_address),
+        .out_RegDest(rb_write_address),
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value)
     );
