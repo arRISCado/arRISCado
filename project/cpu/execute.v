@@ -1,5 +1,3 @@
-`include "alu.v"
-
 // Execute Stage
 module execute (
     input clk,                 // Clock signal
@@ -7,11 +5,11 @@ module execute (
     
     // input [3:0] op,            // Instruction
     // input [1:0] op_type,
+    input [31:0] rd,
     input [31:0] rs1_value,
     input [31:0] rs2_value,
     input [31:0] imm,
     input [31:0] PC,
-    output [31:0] result,
 
     // Sinais de controle
     input AluSrc,           // Determines if the value comes from the Register Bank or is an IMM
@@ -30,19 +28,19 @@ module execute (
     output out_MemRead,          // True or False depending if the operation Reads from the Memory or not
     output out_RegWrite,         // True or False depending if the operation writes in a Register or not
     output [4:0] out_RegDest,    // Determines which register to write the ALU result
-    output [3:0] out_AluControl, // Exact operation ALU will perform
     output out_Branch,           // True or False depending if the instruction is a Branch
     output out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
     output reg [4:0] rd_out,
-    output [31:0] result
+    output [31:0] result,
+    output reg [31:0] a
 );
 
-    reg [31:0] a, b;
+    reg [31:0] b;
 
-    alu alu(AluSrc, a, b, result); 
+    alu alu(in_AluControl, a, b, result);
 
     always @(posedge clk or posedge rst)
     begin
@@ -116,12 +114,15 @@ module execute (
             //isso pula pra um endereço X, então acho q o mais certo é usar o PC pra fazer os cálculos
         end
 
-        3'b111 :
+        // TODO: JALR
+        3'b111:
         begin
             a = PC;
-            b = 3'b100;
+            b = imm;
+            // TODO: Set rd target
             // rd recebe Pc + 4
-            PC = rs1_value + imm; //dá pra fazer isso aqui?
+            // PC = rs1_value + imm; //dá pra fazer isso aqui?
+            // TODO: Isso tem que virar um sinal de controle
             // Sets PC = Reg[rs1] + immediate COMO????
         end
     endcase

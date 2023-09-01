@@ -1,6 +1,7 @@
 `include "ram.v"
 `include "rom.v"
 `include "cpu/register_bank.v"
+`include "cpu/alu.v"
 `include "cpu/fetch.v"
 `include "cpu/decode.v"
 `include "cpu/execute.v"

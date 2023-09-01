@@ -6,7 +6,7 @@ module decode (
     input [31:0] next_instruction,
 
     // TODO: Clean unused outputs
-    output reg [20:0] imm,
+    output reg [31:0] imm,
     output [4:0] rd, rs1, rs2,
     output [5:0] shamt,
     output [2:0] func3,
@@ -23,7 +23,7 @@ module decode (
     output reg [3:0] AluControl, // Exact operation ALU will perform
     output reg Branch,           // True or False depending if the instruction is a Branch
     output reg MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    output reg RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
+    output reg RegDataSrc       // Determines where the register data to be writen will come from: memory or ALU result
 );
 
 reg [31:0] _instruction;
