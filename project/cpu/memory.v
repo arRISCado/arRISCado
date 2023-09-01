@@ -6,14 +6,27 @@ module memory (
     input load_store,      // Load/store instruction signal
     input [1:0] op,        // Operation type (00: Load, 01: Store)
     input [31:0] mem_read_data,
-    input [4:0] rd,
+
+    // Control Signals
+    input MemRead,
+    input MemWrite,
+    input MemToReg,
+    input in_RegWrite,
+    input [4:0] in_RegDest,
+    input in_RegDataSrc,
+    input in_PCSrc,
 
     output reg [31:0] mem_addr,
     output reg [31:0] mem_write_data,
     output reg mem_write_enable,
     output [31:0] data_out,    // Data output read from memory
     output reg mem_done,       // Memory operation done signal
-    output reg [4:0] rd_out,
+
+    // Control Signals
+    output reg out_RegWrite,
+    output reg [4:0] out_RegDest,
+    output reg out_RegDataSrc,
+    output reg out_PCSrc
 );
     reg [31:0] _addr, _data_in;
     reg _mem_write, _mem_read, _load_store;
@@ -27,7 +40,7 @@ module memory (
             _data_in = 0;
             _load_store = 0;
             _op = 0;
-            rd_out = 0;
+            out_RegDest = 0;
         end
         else
         begin
@@ -35,7 +48,12 @@ module memory (
             _data_in = data_in;
             _load_store = load_store;
             _op = op;
-            rd_out = rd;
+
+            // Control Signals
+            out_RegWrite = in_RegWrite;
+            out_RegDest = in_RegDest;
+            out_RegDataSrc = in_RegDataSrc;
+            out_PCSrc = in_PCSrc;
         end
     end
 

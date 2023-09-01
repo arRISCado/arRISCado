@@ -22,7 +22,6 @@ module cpu(
     wire ram_write_enable;
     
     // Register Bank
-
     wire rb_write_enable;
     wire [4:0] rb_write_address, rb_read_address1, rb_read_address2;
     wire [31:0] rb_value1, rb_value2, rb_write_value;
@@ -62,24 +61,43 @@ module cpu(
     wire [31:0] if_de_instr;
 
     // Decode -> Execute
-    wire [20:0] de_ex_imm;
-    wire [2:0] de_ex_aluOp;
-    wire de_ex_aluSrc;
-    wire [4:0] de_ex_rd;
+    wire [31:0] de_ex_imm;          // Dies on execute
+    wire [2:0] de_ex_aluOp;         // Dies on execute
+    wire de_ex_aluSrc;              // Dies on execute
+    wire [3:0] de_ex_AluControl;    // Dies on execute
+    wire de_ex_Branch;              // Dies on Execute
+    wire de_ex_MemWrite;            // Goes to MEM stage
+    wire de_ex_MemRead;             // Goes to MEM stage
+    wire de_ex_RegWrite;            // Goes to WB
+    wire [4:0] de_ex_RegDest;       // Goes to WB
+    wire de_ex_MemToReg;            // Goes to MEM
+    wire de_ex_RegDataSrc;          // Goes to WB
+    wire de_ex_PCSrc;               // Goes to next Fetch
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
-    wire [4:0] ex_mem_rd;
+
+    wire ex_mem_MemRead;             // Dies on MEM
+    wire ex_mem_MemWrite;            // Dies on MEM
+    wire ex_mem_MemToReg;            // Dies on MEM
+    wire ex_mem_RegWrite;            // Goes to WB
+    wire [4:0] ex_mem_RegDest;       // Goes to WB
+    wire ex_mem_RegDataSrc;          // Goes to WB
+    wire ex_mem_PCSrc;               // Goes to next Fetch
 
     // Memory -> Writeback
     wire [31:0] mem_wr_data_out;
     wire mem_wr_mem_done;
-    wire mem_we_rd;
-    wire [4:0] mem_wr_rd_out;
+
+    wire mem_wr_RegWrite;            // Dies on WB
+    wire mem_wr_RegDataSrc;          // Dies on WB
+    wire [4:0] mem_wr_RegDest;       // Goes to RB
+    wire mem_wr_PCSrc;               // Goes to next Fetch
 
     // Writeback -> Fetch
-    wire wr_if_pc_src;
     wire [31:0] wr_if_branch_target;
+
+    wire wr_if_PCSrc;               // Dies on Fetch
 
     // ### Pipeline ###
 
@@ -87,9 +105,10 @@ module cpu(
         .clk(clock),
         .rst(reset),
         
-        .pc_src(wr_if_pc_src), // May come from writeback, but ideally from memory stage
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
+
+        .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
         .instr(if_de_instr),
@@ -121,18 +140,17 @@ module cpu(
         // Control signals
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
-        .in_MemWrite(),
-        .in_MemRead(),
-        .in_RegWrite(),
-        .in_RegDest(),
-        .in_AluControl(),
-        .in_Branch(),
-        .in_MemToReg(),
-        .in_RegDataSrc(),
-        .in_PCSrc(),
+        .AluControl(de_ex_AluControl),
+        .Branch(de_ex_Branch),
+        .in_MemWrite(de_ex_MemWrite),
+        .in_MemRead(de_ex_MemRead),
+        .in_RegWrite(de_ex_RegWrite),
+        .in_RegDest(de_ex_RegDest),
+        .in_MemToReg(de_ex_MemToReg),
+        .in_RegDataSrc(de_ex_RegDataSrc),
+        .in_PCSrc(de_ex_PCSrc),
 
         .result(ex_mem_result),
-        .rd_out(ex_mem_rd),
     );
 
     memory memory(
@@ -144,14 +162,21 @@ module cpu(
         .load_store(),
         .op(),
         .mem_read_data(ram_data_out),
-        .rd(ex_mem_rd),
+
+        .MemRead(ex_mem_MemRead),
+        .MemWrite(ex_mem_MemWrite),
+        .MemToReg(ex_mem_MemToReg),
+
+        .in_RegWrite(ex_mem_RegWrite),
+        .in_RegDest(ex_mem_RegDest),
+        .in_RegDataSrc(ex_mem_RegDataSrc),
+        .in_PCSrc(ex_mem_PCSrc),
 
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
         .mem_write_enable(ram_write_enable),
         .data_out(mem_wr_data_out),
         .mem_done(mem_wr_mem_done),
-        .rd_out(mem_wr_rd_out),
     );
 
     writeback writeback(
@@ -159,13 +184,15 @@ module cpu(
         .rst(reset),
 
         .mem_done(mem_wr_mem_done),
-        .rd(mem_wr_rd_out),
         .data_mem(mem_wr_data_out),
         .result_alu(),
         .mem_to_reg_ctrl(),
-        // .pc_src(wr_if_pc_src),
 
-        .rd_out(rb_write_address),
+        .RegWrite(mem_wr_RegWrite),
+        .RegDataSrc(mem_wr_RegDataSrc),
+        .in_RegDest(mem_wr_RegDest),
+        .in_PCSrc(mem_wr_PCSrc),
+
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
     );
