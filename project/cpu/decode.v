@@ -34,7 +34,7 @@ begin
     if (rst)
         _instruction = 0;
     else
-        _instruction = instruction;
+        _instruction = next_instruction;
 end
 
 // Divide each possible part of an instruction

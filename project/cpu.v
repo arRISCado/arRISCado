@@ -66,30 +66,6 @@ module cpu(
         .PCSrc(pc_src),
     );
 
-    wire [20:0] t_imm;
-    wire [6:0] t_opcode;
-    wire [31:0] t_rb_value1;
-    wire [31:0] t_rb_value2;
-    wire t_MemWrite;          
-    wire t_MemRead;           
-    wire t_RegWrite;          
-    wire [4:0] t_RegDest;     
-    wire t_AluSrc;            
-    wire [2:0] t_AluOp;      
-    wire [3:0] t_AluControl; 
-    wire t_Branch;            
-    wire t_MemToReg;          
-    wire t_RegDataSrc;        
-    wire t_PCSrc;
-
-    always @(posedge clk) begin
-        t_opcode = opcode;
-        t_aluOp = aluOp;
-        t_imm = imm;
-        t_rb_value1 = rb_value1;
-        t_rb_value2 = rb_value2;
-    end
-
     wire rb_write_enable;
     wire [7:0] rb_write_address;
     wire [31:0] rb_write_value;
