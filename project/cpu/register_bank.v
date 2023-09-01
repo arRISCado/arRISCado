@@ -28,13 +28,13 @@ module register_bank(
                 register[i] = 0;
         else begin
             if (read_address1 == 32'b0)
-                value1 = 32'b0;
+                value1 = 0;
             else
                 value1 = register[read_address1];
             if (read_address2 == 0)
-                value1 = 32'b0;
+                value2 = 0;
             else
-                value1 = register[read_address2];
+                value2 = register[read_address2];
         end
     end
 

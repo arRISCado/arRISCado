@@ -8,7 +8,8 @@
     "testBenches": [
         "../../testbenches/rom_tb.v", 
         "../../testbenches/fetch_tb.v", 
-        "../../testbenches/fetch_decode_tb.v"
+        "../../testbenches/fetch_decode_tb.v",
+        "../../testbenches/if_de_ex_tb.v"
     ],
     "nextPnrGowinOptions": ["--top", "nano9k"],
     "synthGowinOptions": [],
