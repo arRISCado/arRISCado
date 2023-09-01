@@ -9,11 +9,7 @@ module test;
     reg [31:0] branch_target;
 
     // Outputs
-    wire [31:0] pc;
-    wire [31:0] instr;
-
-    wire [31:0] rom_data;
-    wire [31:0] rom_address;
+    wire [31:0] pc, instr, rom_data, rom_address;
 
     // Instantiate the fetch module
     fetch fetch_inst(
@@ -34,7 +30,7 @@ module test;
     initial begin
         // Initialize inputs
         pc_src = 0;
-        branch_target = 32'hAABBCCDD; // Example branch target
+        branch_target = 32'h5; // Example branch target
 
         #10;
 
