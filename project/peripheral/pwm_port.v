@@ -9,8 +9,10 @@ module pwm_port(
     input [31:0] mem_data; //Data from memory
     output reg port_out; //The port output
 )
-    //Checar se parâmetro com tamanho funciona    
-    parameter [31:0] clk_per_cycle = 10; //Number of clk in one duty cycle 
+    //Number of clk in one duty cycle
+    //More clk in one duty cycle gives more resolution, but it worsens the perception of an analog signal
+    parameter [31:0] clk_per_cycle = 10;  
+    //Checar se parâmetro com tamanho funciona
 
     reg [31:0] clk_on = 1'd0; //Number of cycles to keep on
     reg [31:0] clk_off = 1'd0; //Number of cycles to keep off
