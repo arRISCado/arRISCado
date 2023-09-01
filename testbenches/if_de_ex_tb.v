@@ -1,18 +1,17 @@
-`include "ram.v"
-`include "rom.v"
-`include "cpu/register_bank.v"
-`include "cpu/alu.v"
-`include "cpu/fetch.v"
-`include "cpu/decode.v"
-`include "cpu/execute.v"
-`include "cpu/memory.v"
-`include "cpu/writeback.v"
+`include "../../project/rom.v"
+`include "../../project/ram.v"
+`include "../../project/cpu/fetch.v"
+`include "../../project/cpu/decode.v"
+`include "../../project/cpu/execute.v"
+`include "../../project/cpu/alu.v"
+`include "../../project/cpu/register_bank.v"
 
-module cpu(
-    input clock,
-    input reset,
-);
-    // ### Component wires ###
+module test;
+
+    // Test Inputs
+    reg clock;
+    reg pc_src = 0;
+    reg [31:0] branch_target = 0;
 
     // ROM
     wire [31:0] rom_data, rom_address;
@@ -35,16 +34,16 @@ module cpu(
         .address(ram_address),
         .data_in(ram_data_in),
         .write_enable(ram_write_enable),
-        .data_out(ram_data_out),
+        .data_out(ram_data_out)
     );
 
     rom rom(
         .address(rom_address),
-        .data(rom_data),
+        .data(rom_data)
     );
 
     register_bank RegisterBank(
-        .clk(clock),
+        .clk(clock), // Unused
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
@@ -52,17 +51,17 @@ module cpu(
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
         .value1(rb_value1),
-        .value2(rb_value2),
+        .value2(rb_value2)
     );
 
     // ### Pipeline wires ###
 
     // Fetch -> Decode
-    wire [31:0] if_de_pc;
+    wire [31:0] if_de_pc; // Unused
     wire [31:0] if_de_instr;
 
     // Decode -> Execute
-    wire [20:0] de_ex_imm;
+    wire [31:0] de_ex_imm;
     wire [2:0] de_ex_aluOp;
     wire de_ex_aluSrc;
     wire [4:0] de_ex_rd;
@@ -71,28 +70,19 @@ module cpu(
     wire [31:0] ex_mem_result;
     wire [4:0] ex_mem_rd;
 
-    // Memory -> Writeback
-    wire [31:0] mem_wr_data_out;
-    wire mem_wr_mem_done;
-    wire mem_we_rd;
-    wire [4:0] mem_wr_rd_out;
-
-    // Writeback -> Fetch
-    wire wr_if_pc_src;
-    wire [31:0] wr_if_branch_target;
-
     // ### Pipeline ###
 
     fetch fetch(
         .clk(clock),
         .rst(reset),
         
-        .pc_src(wr_if_pc_src), // May come from writeback, but ideally from memory stage
-        .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
+        .pc_src(pc_src), // May come from writeback, but ideally from memory stage
+        .branch_target(branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
+        .rom_address(rom_address),
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
-        .instr(if_de_instr),
+        .instr(if_de_instr)
     );
 
     decode decode(
@@ -107,7 +97,7 @@ module cpu(
         .rs2(rb_read_address2),
         
         .AluOp(de_ex_aluOp),
-        .AluSrc(de_ex_aluSrc),
+        .AluSrc(de_ex_aluSrc)
     );
 
     execute execute(
@@ -132,42 +122,38 @@ module cpu(
         .in_PCSrc(),
 
         .result(ex_mem_result),
-        .rd_out(ex_mem_rd),
+        .a(a),
+        .b(b),
+        .rd_out(ex_mem_rd)
     );
 
-    memory memory(
-        .clk(clock),
-        .rst(reset),
+    wire [31:0] a;
+    wire [31:0] b;
 
-        .addr(),
-        .data_in(ex_mem_result),
-        .load_store(),
-        .op(),
-        .mem_read_data(ram_data_out),
-        .rd(ex_mem_rd),
+    integer i;
 
-        .mem_addr(ram_address),
-        .mem_write_data(ram_data_in),
-        .mem_write_enable(ram_write_enable),
-        .data_out(mem_wr_data_out),
-        .mem_done(mem_wr_mem_done),
-        .rd_out(mem_wr_rd_out),
-    );
+    // Testbench procedure
+    initial begin
+        // Initialize inputs
+        clock = 0;
+        #10;
 
-    writeback writeback(
-        .clk(clock),
-        .rst(reset),
+        // Test case 1: Sequential fetch
+        $display("Test Case 1");
 
-        .mem_done(mem_wr_mem_done),
-        .rd(mem_wr_rd_out),
-        .data_mem(mem_wr_data_out),
-        .result_alu(),
-        .mem_to_reg_ctrl(),
-        // .pc_src(wr_if_pc_src),
+        for (i = 0; i < 5; i = i + 1)
+        begin
+            $display("Instr: %h, AluOp: %b, AluSrc: %b", if_de_instr, de_ex_aluOp, de_ex_aluSrc);
+            $display("1: Addr: %h, Value: %h, a: %h", rb_read_address1, rb_value1, a);
+            $display("2: Addr: %h, Value: %h, b: %h", rb_read_address2, rb_value2, b);
 
-        .rd_out(rb_write_address),
-        .rb_write_en(rb_write_enable),
-        .data_wb(rb_write_value),
-    );
+            clock = 1;
+            #10;
+            clock = 0;
+            #10;
+        end
+
+        $finish;
+    end
 
 endmodule
