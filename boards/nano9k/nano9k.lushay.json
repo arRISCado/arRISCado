@@ -9,6 +9,7 @@
         "../../testbenches/rom_tb.v", 
         "../../testbenches/fetch_tb.v", 
         "../../testbenches/fetch_decode_tb.v",
+        "../../testbenches/alu_tb.v",
         "../../testbenches/if_de_ex_tb.v",
         "../../testbenches/if_de_ex_wb_tb.v"
     ],
