@@ -16,13 +16,16 @@ mkdir -p "$binary_dir"
 for asm_file in "$asm_dir"/*.s; do
     if [ -f "$asm_file" ]; then
         asm_filename=$(basename "$asm_file")
-        binary_filename="${asm_filename%.asm}"
+        binary_filename="${asm_filename%.s}"
         
-        # Compilação usando NASM e GCC
-        nasm -f elf "$asm_file" -o "$binary_dir/$binary_filename.o"
-        gcc "$binary_dir/$binary_filename.o" -o "$binary_dir/$binary_filename"
-        
-        echo "Assembly $asm_filename compilado para $binary_filename"
+        # Converte o código de montagem em binário
+        riscv64-unknown-elf-as "$asm_dir/$asm_filename" -o "$binary_dir/$binary_filename"
+
+        if [ -f $binary_dir/$binary_filename ]; then
+            echo "Assembly $asm_filename compilado para $binary_filename"
+        else
+            echo "Não foi possível compilar Assembly $asm_filename"
+        fi
     fi
 done
 
