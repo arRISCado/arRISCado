@@ -7,7 +7,7 @@ module decode (
 
     // TODO: Clean unused outputs
     output reg [20:0] imm,
-    output [5:0] rd, rs1, rs2,
+    output [4:0] rd, rs1, rs2,
     output [5:0] shamt,
     output [2:0] func3,
     output [6:0] func7,
@@ -24,7 +24,6 @@ module decode (
     output reg Branch,           // True or False depending if the instruction is a Branch
     output reg MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
-    output reg PCSrc             // Determines if the PC will come from the PC+4 or from a Branch calculation
 );
 
 reg [31:0] _instruction;

@@ -36,11 +36,11 @@ module execute (
     output out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
+    output reg [4:0] rd_out,
     output [31:0] result
 );
 
-    reg [31:0] a;
-    reg [31:0] b;
+    reg [31:0] a, b;
 
     alu alu(AluSrc, a, b, result); 
 
@@ -50,10 +50,11 @@ module execute (
         begin
             a = 0;
             b = 0;
+            rd_out = 0;
         end
         else
         begin
-
+            rd_out = rd;
         end
     end
 
