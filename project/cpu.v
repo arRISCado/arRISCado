@@ -11,9 +11,22 @@ module cpu(
     input clock,
     input reset,
 );
-    // TODO: Reorganize
+    // ### Component wires ###
+
+    // ROM
+    wire [31:0] rom_data, rom_address;
+
+    // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
     wire ram_write_enable;
+    
+    // Register Bank
+
+    wire rb_write_enable;
+    wire [4:0] rb_write_address, rb_read_address1, rb_read_address2;
+    wire [31:0] rb_value1, rb_value2, rb_write_value;
+
+    // ### Components ###
 
     ram ram(
         .clk(clock), 
@@ -23,56 +36,11 @@ module cpu(
         .write_enable(ram_write_enable),
         .data_out(ram_data_out),
     );
+
     rom rom(
         .address(rom_address),
         .data(rom_data),
     );
-
-    wire pc_src;
-    wire [31:0] branch_target;
-    wire [31:0] rom_data;
-    wire [31:0] rom_address;
-    wire [31:0] pc;
-    wire [31:0] instr;
-
-    fetch fetch(
-        .clk(clock),
-        .rst(reset),
-        .pc_src(pc_src),
-        .branch_target(branch_target),
-        .rom_data(rom_data),
-
-        .pc(pc),
-        .instr(instr),
-    );
-
-    wire [20:0] imm;
-    wire [2:0] aluOp;
-    wire aluSrc;
-    wire pc_src;
-
-    decode decode(
-        .clk(clock),
-        .rst(reset),
-        .next_instruction(instr),
-        
-        .imm(imm),
-        .rd(rd),
-        .rs1(rb_read_address1),
-        .rs2(rb_read_address2),
-        
-        .AluOp(aluOp),
-        .AluSrc(aluSrc),
-        .PCSrc(pc_src),
-    );
-
-    wire rb_write_enable;
-    wire [7:0] rb_write_address;
-    wire [31:0] rb_write_value;
-    wire [5:0] rb_read_address1;
-    wire [5:0] rb_read_address2;
-    wire [31:0] rb_value1;
-    wire [31:0] rb_value2;
 
     register_bank RegisterBank(
         .clk(clock),
@@ -86,52 +54,103 @@ module cpu(
         .value2(rb_value2),
     );
 
-    wire [31:0] ex_result;
+    // ### Pipeline wires ###
+
+    // Fetch -> Decode
+    wire [31:0] if_de_pc; // Unused
+    wire [31:0] if_de_instr; // 
+
+    // Decode -> Execute
+    wire [20:0] de_ex_imm;
+    wire [2:0] de_ex_aluOp;
+    wire de_ex_aluSrc;
+    wire [4:0] de_ex_rd;
+
+    // Execute -> Memory
+    wire [31:0] ex_mem_result;
+    wire [4:0] ex_mem_rd;
+
+    // Memory -> Writeback
+    wire [31:0] mem_wr_data_out;
+    wire mem_wr_mem_done;
+    wire mem_we_rd;
+    wire [4:0] mem_wr_rd_out;
+
+    // Writeback -> Fetch
+    wire wr_if_pc_src;
+    wire [31:0] wr_if_branch_target;
+
+    // ### Pipeline ###
+
+    fetch fetch(
+        .clk(clock),
+        .rst(reset),
+        
+        .pc_src(wr_if_pc_src), // May come from writeback, but ideally from memory stage
+        .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
+        .rom_data(rom_data),
+
+        .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
+        .instr(if_de_instr),
+    );
+
+    decode decode(
+        .clk(clock),
+        .rst(reset),
+        
+        .next_instruction(if_de_instr),
+        
+        .imm(de_ex_imm),
+        .rd(de_ex_rd),
+        .rs1(rb_read_address1),
+        .rs2(rb_read_address2),
+        
+        .AluOp(de_ex_aluOp),
+        .AluSrc(de_ex_aluSrc),
+    );
 
     execute execute(
         .clk(clock),
         .rst(reset),
+        
         .rs1_value(rb_value1),
         .rs2_value(rb_value1),
-        .imm(imm),
+        .imm(de_ex_imm),
        
-        .result(ex_result),
-
         // Control signals
-        .AluSrc(t_AluSrc),
-        .AluOp(t_AluOp),
-        .in_MemWrite(t_MemWrite),
-        .in_MemRead(t_MemRead),
-        .in_RegWrite(t_RegWrite),
-        .in_RegDest(t_RegDest),
-        .in_AluControl(t_AluControl),
-        .in_Branch(t_Branch),
-        .in_MemToReg(t_MemToReg),
-        .in_RegDataSrc(t_RegDataSrc),
-        .in_PCSrc(t_PCSrc)
-    );
+        .AluSrc(de_ex_aluSrc),
+        .AluOp(de_ex_aluOp),
+        .in_MemWrite(),
+        .in_MemRead(),
+        .in_RegWrite(),
+        .in_RegDest(),
+        .in_AluControl(),
+        .in_Branch(),
+        .in_MemToReg(),
+        .in_RegDataSrc(),
+        .in_PCSrc(),
 
-    wire [31:0] mem_wr_data_out;
-    wire mem_wr_mem_done;
-    wire mem_we_rd;
+        .result(ex_mem_result),
+        .rd_out(ex_mem_rd),
+    );
 
     memory memory(
         .clk(clock),
         .rst(reset),
 
         .addr(),
-        .data_in(ex_result),
+        .data_in(ex_mem_result),
         .load_store(),
         .op(),
         .mem_read_data(ram_data_out),
-        .rd(mem_we_rd),
+        .rd(ex_mem_rd),
 
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
         .mem_write_enable(ram_write_enable),
         .data_out(mem_wr_data_out),
         .mem_done(mem_wr_mem_done),
-        .rd_out(),
+        .rd_out(mem_wr_rd_out),
     );
 
     writeback writeback(
@@ -139,15 +158,15 @@ module cpu(
         .rst(reset),
 
         .mem_done(mem_wr_mem_done),
-        .rd(mem_we_rd),
+        .rd(mem_wr_rd_out),
         .data_mem(mem_wr_data_out),
         .result_alu(),
         .mem_to_reg_ctrl(),
+        // .pc_src(wr_if_pc_src),
 
         .rd_out(rb_write_address),
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
     );
-
 
 endmodule
