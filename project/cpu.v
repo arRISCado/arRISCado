@@ -86,13 +86,13 @@ module cpu(
     wire ex_mem_PCSrc;               // Goes to next Fetch
 
     // Memory -> Writeback
-    wire [31:0] mem_wr_data_out;
-    wire mem_wr_mem_done;
+    wire [31:0] mem_wb_data_out;
+    wire mem_wb_mem_done;
 
-    wire mem_wr_RegWrite;            // Dies on WB
-    wire mem_wr_RegDataSrc;          // Dies on WB
-    wire [4:0] mem_wr_RegDest;       // Goes to RB
-    wire mem_wr_PCSrc;               // Goes to next Fetch
+    wire mem_wb_RegWrite;            // Dies on WB
+    wire mem_wb_RegDataSrc;          // Dies on WB
+    wire [4:0] mem_wb_RegDest;       // Goes to RB
+    wire mem_wb_PCSrc;               // Goes to next Fetch
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
@@ -175,23 +175,23 @@ module cpu(
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
         .mem_write_enable(ram_write_enable),
-        .data_out(mem_wr_data_out),
-        .mem_done(mem_wr_mem_done),
+        .data_out(mem_wb_data_out),
+        .mem_done(mem_wb_mem_done),
     );
 
     writeback writeback(
         .clk(clock),
         .rst(reset),
 
-        .mem_done(mem_wr_mem_done),
-        .data_mem(mem_wr_data_out),
+        .mem_done(mem_wb_mem_done),
+        .data_mem(mem_wb_data_out),
         .result_alu(),
         .mem_to_reg_ctrl(),
 
-        .RegWrite(mem_wr_RegWrite),
-        .RegDataSrc(mem_wr_RegDataSrc),
-        .in_RegDest(mem_wr_RegDest),
-        .in_PCSrc(mem_wr_PCSrc),
+        .RegWrite(mem_wb_RegWrite),
+        .RegDataSrc(mem_wb_RegDataSrc),
+        .in_RegDest(mem_wb_RegDest),
+        .in_PCSrc(mem_wb_PCSrc),
 
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
