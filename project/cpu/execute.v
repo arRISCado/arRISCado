@@ -14,7 +14,7 @@ module execute (
     // Sinais de controle
     input AluSrc,               // Determines if the value comes from the Register Bank or is an IMM
     input [2:0] AluOp,          // Operation type ALU will perform
-    input [3:0] AluControl,     // Exact operation ALU will perform
+    input [4:0] AluControl,     // Exact operation ALU will perform
     input in_MemWrite,          // True or False depending if the operation Writes in the Memory or not
     input in_MemRead,          // True or False depending if the operation Reads from the Memory or not
     input in_RegWrite,         // True or False depending if the operation writes in a Register or not
