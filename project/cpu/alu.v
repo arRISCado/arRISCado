@@ -8,18 +8,28 @@ module alu (
   output reg zero
 );
 
+  localparam BITWISE_AND = 4'b0000;
+  localparam BITWISE_OR  = 4'b0001;
+  localparam ADDITION    = 4'b0010;
+  localparam BITWISE_XOR = 4'b0011;
+  localparam SUBTRACTION = 4'b0100;
+  localparam BITWISE_NOT = 4'b0101;
+  localparam SHIFT_LEFT  = 4'b0110;
+  localparam SHIFT_RIGHT = 4'b0111;
+  localparam ARIT_SRIGHT = 4'b1000;
+
   always @(*)
   begin
     case (AluControl)
-      4'b0000: result = a & b; // Bitwise AND
-      4'b0001: result = a | b; // Bitwise OR
-      4'b0010: result = a + b; // Addition
-      4'b0011: result = a ^ b; // Bitwise XOR
-      4'b0100: result = a - b; // Subtraction
-      4'b0101: result = ~a; // Bitwise NOT
-      4'b0110: result = a << b; // Shift Left
-      4'b0111: result = a >> b; // Shift Right
-      4'b1000: result = a >>> b; // Arithmetic Shift Right // TODO: Must be signed
+      BITWISE_AND: result = a & b; // Bitwise AND
+      BITWISE_OR: result = a | b; // Bitwise OR
+      ADDITION: result = a + b; // Addition
+      BITWISE_XOR: result = a ^ b; // Bitwise XOR
+      SUBTRACTION: result = a - b; // Subtraction
+      BITWISE_NOT: result = ~a; // Bitwise NOT
+      SHIFT_LEFT: result = a << b; // Shift Left
+      SHIFT_RIGHT: result = a >> b; // Shift Right
+      ARIT_SRIGHT: result = a >>> b; // Arithmetic Shift Right // TODO: Must be signed
       default: result = 32'b0; // Default output
     endcase
 
