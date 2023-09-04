@@ -4,22 +4,22 @@
 // Arithmetic Logic Unit
 
 module alu (
-  input [3:0] AluControl,
+  input [4:0] AluControl,
   input [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
   output reg zero
 );
 
-  localparam BITWISE_AND = 4'b0000;
-  localparam BITWISE_OR  = 4'b0001;
-  localparam ADDITION    = 4'b0010;
-  localparam BITWISE_XOR = 4'b0011;
-  localparam SUBTRACTION = 4'b0100;
-  localparam BITWISE_NOT = 4'b0101;
-  localparam SHIFT_LEFT  = 4'b0110;
-  localparam SHIFT_RIGHT = 4'b0111;
-  localparam ARIT_SRIGHT = 4'b1000;
+  localparam BITWISE_AND = 5'b00000;
+  localparam BITWISE_OR  = 5'b00001;
+  localparam ADDITION    = 5'b00010;
+  localparam BITWISE_XOR = 5'b00011;
+  localparam SUBTRACTION = 5'b00100;
+  localparam BITWISE_NOT = 5'b00101;
+  localparam SHIFT_LEFT  = 5'b00110;
+  localparam SHIFT_RIGHT = 5'b00111;
+  localparam ARIT_SRIGHT = 5'b01000;
 
   always @(*)
   begin
