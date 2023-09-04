@@ -7,8 +7,8 @@ module writeback (
     input mem_to_reg_ctrl,      // Control signal to select memory result for writeback
 
     // Control Signals
-    input RegWrite,
-    input RegDataSrc,
+    input RegWrite,   // Not used yet
+    input RegDataSrc, // Not used yet
     input [4:0] in_RegDest,
     input in_PCSrc,
 
@@ -19,6 +19,8 @@ module writeback (
     output reg [4:0] out_RegDest,
     output reg out_PCSrc
 );
+
+
     // TODO: Pensar como carregar o dado de entrada
     reg _mem_done, _mem_to_reg_ctrl;
     reg [4:0] _rd;
@@ -36,8 +38,7 @@ module writeback (
             out_RegDest = 0;
             rb_write_en = 0;
         end
-        else
-        begin
+        else begin
             _mem_done = mem_done;
             _mem_to_reg_ctrl = mem_to_reg_ctrl;
             _data_mem = data_mem;
