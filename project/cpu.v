@@ -154,6 +154,7 @@ module cpu(
     );
 
     memory memory(
+        // inputs
         .clk(clock),
         .rst(reset),
 
@@ -161,8 +162,11 @@ module cpu(
         .data_in(ex_mem_result),
         .load_store(),
         .op(),
+
+        // from RAM signals
         .mem_read_data(ram_data_out),
 
+        // control inputs
         .MemRead(ex_mem_MemRead),
         .MemWrite(ex_mem_MemWrite),
         .MemToReg(ex_mem_MemToReg),
@@ -172,14 +176,25 @@ module cpu(
         .in_RegDataSrc(ex_mem_RegDataSrc),
         .in_PCSrc(ex_mem_PCSrc),
 
+        // outputs
+        .data_out(mem_wr_data_out),
+        .mem_done(mem_wr_mem_done),
+
+        // control outputs
+        .out_RegWrite(),
+        .out_RegDest(),
+        .out_RegDataSrc(),
+        .out_PCSrc(),
+
+        // to RAM signals
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
         .mem_write_enable(ram_write_enable),
-        .data_out(mem_wr_data_out),
-        .mem_done(mem_wr_mem_done),
     );
 
     writeback writeback(
+
+        // inputs
         .clk(clock),
         .rst(reset),
 
@@ -188,13 +203,19 @@ module cpu(
         .result_alu(),
         .mem_to_reg_ctrl(),
 
+        // control inputs
         .RegWrite(mem_wr_RegWrite),
         .RegDataSrc(mem_wr_RegDataSrc),
         .in_RegDest(mem_wr_RegDest),
         .in_PCSrc(mem_wr_PCSrc),
 
+        // outputs
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
+
+        // control outputs
+        .out_RegDest(),
+        .out_PCSrc(wr_if_PCSrc)
     );
 
 endmodule
