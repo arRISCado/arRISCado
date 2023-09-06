@@ -209,6 +209,7 @@ begin
                 end
             
             // Instruções para operações com Imediato (Tipo I)
+            // ADDI, SLTI, SLTIU, XORI, ORI(muito bom jogo), ANDI, SLLI, SRLI, SRAI
             CODE_I_TYPE :
                 begin
                     AluOp = 3'b010;
@@ -220,21 +221,56 @@ begin
                     Branch = 0;
                     imm = {_instruction[31:20], 20'b0};
 
-                    // ADDI
-                    if (func3 == 000)
-                    begin
-                        AluControl = 5'b00010;
-                    end
-
-                    // SLTI
-                    else if (func3 == 010)
-                    begin
-                    end
-
-                    // SLLI, SRLI, SRAI (Tipo I)
-                    else if ((func3 == 3'b001) || (func3 == 3'b101))
-                    begin
-                    end
+                    case (func3)
+                        // ADDI
+                        3'b000:
+                        begin
+                            AluControl = 5'b00010;
+                        end
+                        // SLTI
+                        3'b010:
+                        begin
+                            AluControl = 5'b01001;
+                        end
+                        // SLTIU
+                        3'b011:
+                        begin
+                            AluControl = 5'b01010;    
+                        end
+                        // XORI
+                        3'b100:
+                        begin
+                            AluControl = 5'b00011;    
+                        end
+                        // ORI
+                        3'b110:
+                        begin
+                            AluControl = 5'b00001;    
+                        end
+                        // ANDI
+                        3'b111:
+                        begin
+                            AluControl = 5'b00000;
+                        end
+                        // SLLI
+                        // dar um jeito no execute pra pegar o SHAMT
+                        3'b001:
+                        begin
+                            AluControl = 5'b00110;
+                        end
+                        // SRLI, SRAI
+                        3'b101:
+                        begin
+                            if (func7 == 7'b0000000) 
+                            begin
+                                AluControl = 5'b00111;
+                            end
+                            else if (func7 == 7'b0100000)
+                            begin
+                                AluControl = 5'b01000;
+                            end
+                        end
+                endcase
                     
                 end
         
@@ -275,6 +311,11 @@ begin
                         begin
                             AluControl = 5'b00001;
                         end
+                        // XOR
+                        3'b100:
+                        begin
+                            AluControl = 5'b00011;
+                        end
                         // SLL
                         3'b001:
                         begin
@@ -288,10 +329,21 @@ begin
                             begin
                                 AluControl = 5'b00111;
                             end
+                            // SRA
                             else if (func7 == 7'b0100000) 
                             begin
                                 AluControl = 5'b01000;
                             end
+                        end
+                        // SLT
+                        3'b010:
+                        begin
+                            AluControl = 5'b01001;
+                        end
+                        // SLTU
+                        3'b011:
+                        begin
+                            AluControl = 5'b01010;
                         end
                     endcase
                 end
@@ -351,42 +403,42 @@ begin
                 // mul: Place result in lower part of rd
                 if (func3 == 3'b000) 
                 begin
-                    AluControl = 5'b01001;
+                    AluControl = 5'b01011;
                 end
-                // mulh: Place result in lower part of rd
+                // mulh: Place result in higher part of rd
                 else if (func3 == 3'b001)
                 begin
-                    AluControl = 5'b01010;
+                    AluControl = 5'b01100;
                 end
                 // mulhsu: mulh with signed rs1 and unsigned rs2
                 else if (func3 == 3'b010)
                 begin
-                    AluControl = 5'b01011;    
+                    AluControl = 5'b01101;
                 end
                 // mulhu: mulh with unsigned rs1 and unsigned rs2
                 else if (func3 == 3'b011)
                 begin
-                    AluControl = 5'b01100;
+                    AluControl = 5'b01110;
                 end
                 // div: divide signed rs1 by signed rs2
                 else if (func3 == 3'b100)
                 begin
-                    AluControl = 5'b01101;    
+                    AluControl = 5'b01111;
                 end
                 // divu: unsigned div
                 else if (func3 == 3'b101)
                 begin
-                    AluControl = 5'b01110;    
+                    AluControl = 5'b10000;    
                 end
                 // rem: reminder(resto) of the division rs1 by rs2
                 else if (func3 == 3'b110)
                 begin
-                    AluControl = 5'b01111;
+                    AluControl = 5'b10001;
                 end
                 // remu: unsigned rem
                 else if (func3 == 3'b111)
                 begin
-                    AluControl = 5'B10000;
+                    AluControl = 5'b10010;
                 end
             end
 
