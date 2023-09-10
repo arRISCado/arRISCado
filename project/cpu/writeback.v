@@ -4,11 +4,11 @@ module writeback (
     input mem_done,             // Memory operation done signal from the memory stage
     input [31:0] data_mem,      // Data read from memory
     input [31:0] result_alu,    // Result of ALU operation
-    input mem_to_reg_ctrl,      // Control signal to select memory result for writeback
 
     // Control Signals
-    input RegWrite,   // Not used yet
-    input RegDataSrc, // Not used yet
+    input MemToReg,
+    input RegDataSrc, // sinal para definir se os dados vem da memoria ou da alu
+    input in_RegWrite,
     input [4:0] in_RegDest,
     input in_PCSrc,
 
@@ -16,13 +16,14 @@ module writeback (
     output reg [31:0] data_wb,   // Data to be written back
 
     // Control Signal
+    output out_RegWrite,
     output reg [4:0] out_RegDest,
     output reg out_PCSrc
 );
 
 
     // TODO: Pensar como carregar o dado de entrada
-    reg _mem_done, _mem_to_reg_ctrl;
+    reg _mem_done, _MemToReg;
     reg [4:0] _rd;
     reg [31:0] _data_mem, _result_alu;
 
@@ -50,6 +51,7 @@ module writeback (
             // Control Signal
             out_RegDest = in_RegDest;
             out_PCSrc = in_PCSrc;
+            out_RegWrite = in_RegWrite;
         end
     end
 
