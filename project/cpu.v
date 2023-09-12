@@ -207,6 +207,7 @@ module cpu(
         .MemToReg(mem_wb_MemToReg),
         .RegDataSrc(mem_wb_RegDataSrc),
 
+        .in_RegWrite(mem_wb_RegWrite),
         .in_RegDest(mem_wb_RegDest),
         .in_PCSrc(mem_wb_PCSrc),
 
