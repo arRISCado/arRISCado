@@ -1,17 +1,17 @@
 main:
-	andi a0, a0, 3240
+	andi a0, a0, 1745
 	addi zero, zero, 0
 	addi zero, zero, 0
-	xori a0, a0, 3240
-	addi zero, zero, 0
-	addi zero, zero, 0
-	xor a1, a1, a0
+	xori a0, a0, 1745
 	addi zero, zero, 0
 	addi zero, zero, 0
 	xor a1, a1, a0
-	xori a2, a0, 3241
-	andi a3, a0, 3241
-	xori a4, a4, 3855
+	addi zero, zero, 0
+	addi zero, zero, 0
+	xor a1, a1, a0
+	xori a2, a0, 1320
+	andi a3, a0, 1320
+	xori a4, a4, 1111
 	addi zero, zero, 0
 	addi zero, zero, 0
 	and a4, a4, a0
@@ -26,10 +26,10 @@ main:
 	
 
 # Expected Final State: 
-# a0: 3240
+# a0: 1745
 # a1: 0
-# a2: 1
-# a3: 3240
-# a4: 3080
-# a5: 3099
-# a6: 3259
+# a2: 1017
+# a3: 1024
+# a4: 1105
+# a5: 1107
+# a6: 1107
