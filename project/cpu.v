@@ -59,6 +59,10 @@ module cpu(
     // Fetch -> Decode
     wire [31:0] if_de_pc;
     wire [31:0] if_de_instr;
+    
+    // Fetch -> Register Bank
+    wire if_rb_RegWrite;            // Dies on Register Bank
+    wire if_rb_RegDest;             // Dies on Register Bank
 
     // Decode -> Execute
     wire [31:0] de_ex_imm;          // Dies on execute
@@ -98,7 +102,11 @@ module cpu(
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
 
-    wire wr_if_PCSrc;               // Dies on Fetch
+    wire wb_if_PCSrc;               // Dies on Fetch
+    wire wb_if_RegWrite;            // Goes on Register Bank
+    wire wb_if_RegDest;             // Goes on Register Bank
+
+
 
     // ### Pipeline ###
 
@@ -205,14 +213,12 @@ module cpu(
 
         // control inputs
         .MemToReg(mem_wb_MemToReg),
-        .RegDataSrc(mem_wb_RegDataSrc),
 
         .in_RegWrite(mem_wb_RegWrite),
         .in_RegDest(mem_wb_RegDest),
         .in_PCSrc(mem_wb_PCSrc),
 
         // outputs
-        .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
 
         // control outputs

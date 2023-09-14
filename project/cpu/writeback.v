@@ -7,12 +7,10 @@ module writeback (
 
     // Control Signals
     input MemToReg,
-    input RegDataSrc, // sinal para definir se os dados vem da memoria ou da alu
     input in_RegWrite,
     input [4:0] in_RegDest,
     input in_PCSrc,
 
-    output reg rb_write_en,
     output reg [31:0] data_wb,   // Data to be written back
 
     // Control Signal
@@ -32,21 +30,17 @@ module writeback (
         if (rst)
         begin
             _mem_done = 0;
-            _mem_to_reg_ctrl = 0;
+            _MemToReg = 0;
             _data_mem = 0;
             _result_alu = 0;
             _rd = 0;
             out_RegDest = 0;
-            rb_write_en = 0;
         end
         else begin
             _mem_done = mem_done;
-            _mem_to_reg_ctrl = mem_to_reg_ctrl;
+            _MemToReg = MemToReg;
             _data_mem = data_mem;
             _result_alu = result_alu;
-            _rd = in_RegDest;
-            out_RegDest = 0;
-            rb_write_en = 0;
 
             // Control Signal
             out_RegDest = in_RegDest;
@@ -58,9 +52,7 @@ module writeback (
     always @(*)
     begin
         // TODO: There is probably a case when there is nothing to be written to in_RegDest.
-        out_RegDest = _rd;
-        rb_write_en = 1;
-        if (_mem_done && _mem_to_reg_ctrl)
+        if (_mem_done && _MemToReg)
             data_wb = _data_mem;
         else
             data_wb = _result_alu;

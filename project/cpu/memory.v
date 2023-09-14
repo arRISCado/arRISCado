@@ -24,7 +24,7 @@ module memory (
     output reg out_RegWrite,
     output reg [4:0] out_RegDest,
     output reg out_RegDataSrc,
-    output reg out_PCSrc
+    output reg out_PCSrc,
 
     // to RAM signals
     output reg [31:0] mem_addr,       // Send address ro RAM
@@ -74,9 +74,10 @@ module memory (
         
         if (_load) // Load operation
         begin
-            mem_addr = _addr;
-            data_out = mem_read_data;
             mem_write_enable = 0;
+            mem_addr = _addr;
+            // Espera operação de memória terminar
+            data_out = mem_read_data;
             mem_done = 1;
             // when dealing with memory delay we need to receive a confirmation from RAM
         end
@@ -85,10 +86,13 @@ module memory (
         begin
             mem_write_enable = 1;
             mem_addr = _addr;
+            // Espera operação de memória terminar
             mem_write_data = _data_in;
             mem_done = 1;
-             // when dealing with memory delay we need to receive a confirmation from RAM
+            // when dealing with memory delay we need to receive a confirmation from RAM
         end
+
+        
     end
 
 endmodule
