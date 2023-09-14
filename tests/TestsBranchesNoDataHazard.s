@@ -33,7 +33,7 @@ main:
 .L6:
 	bltu a4, a3, .L0
 	bgeu a1, a2, .L0
-	bgeu a1, a3, .exit
+	bgeu a1, a3, .EXIT
 	addi a0, zero, -1
 .EXIT:
 	addi zero, zero, 0
