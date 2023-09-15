@@ -1,6 +1,8 @@
 module fetch (
     input clk,                    // Clock signal
     input rst,                    // Reset signal
+    input enable,
+    
     input [31:0] branch_target,   // Branch address to jump to if needed
     input [31:0] rom_data,
 
@@ -15,12 +17,14 @@ module fetch (
     reg [31:0] pc_next = 32'b0;
 
     always @(posedge clk or posedge rst) begin
-        if (rst)
-            pc_next = 0;
-        else if (PCSrc)
-            pc_next = branch_target; // Use non-blocking assignment here
-        else
-            pc_next = pc + 1; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+        if (enable) begin
+            if (rst)
+                pc_next = 0;
+            else if (PCSrc)
+                pc_next = branch_target; // Use non-blocking assignment here
+            else
+                pc_next = pc + 1; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+        end
 
         // Use the PC to fetch the instruction from instr_memory
         pc = pc_next;

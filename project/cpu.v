@@ -56,6 +56,18 @@ module cpu(
 
     // ### Pipeline wires ###
 
+    // Main control
+    wire stop_de;
+    wire stop_ex;
+    wire stop_mem;
+    wire stop_wb;
+
+    wire enable_if;
+    wire enable_de;
+    wire enable_ex;
+    wire enable_mem;
+
+
     // Fetch -> Decode
     wire [31:0] if_de_pc;
     wire [31:0] if_de_instr;
@@ -104,6 +116,7 @@ module cpu(
     fetch fetch(
         .clk(clock),
         .rst(reset),
+        .enable(enable),
         
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
@@ -117,6 +130,8 @@ module cpu(
     decode decode(
         .clk(clock),
         .rst(reset),
+        .enable(enable_if),
+        .stop_behind(stop_de),
         
         .next_instruction(if_de_instr),
         
@@ -132,6 +147,8 @@ module cpu(
     execute execute(
         .clk(clock),
         .rst(reset),
+        .enable(enable_ex),
+        .stop_behind(stop_ex),
         
         .rs1_value(rb_value1),
         .rs2_value(rb_value1),
@@ -156,6 +173,8 @@ module cpu(
     memory memory(
         .clk(clock),
         .rst(reset),
+        .enable(enable_mem),
+        .stop_behind(stop_mem),
 
         .addr(),
         .data_in(ex_mem_result),
@@ -182,6 +201,8 @@ module cpu(
     writeback writeback(
         .clk(clock),
         .rst(reset),
+        .enable(1),
+        .stop_behind(stop_wb),
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
@@ -196,5 +217,12 @@ module cpu(
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
     );
+
+    always @(clock) begin
+        enable_if = !(stop_de || stop_ex || stop_mem || stop_wb);
+        enable_de = !(stop_ex || stop_mem || stop_wb);
+        enable_ex = !(stop_mem || stop_wb);
+        enable_mem = !(stop_wb);
+    end
 
 endmodule
