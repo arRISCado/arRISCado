@@ -22,7 +22,7 @@ module peripheral_manager(
 );
 
     //abcxxx...xxx
-    //ab = peripheral (000 = none, 001 = per1, ..., 111 = per7)
+    //abc = peripheral (000 = none, 001 = per1, ..., 111 = per7)
     //xxx...xxx = addr
 
     //Peripherals
