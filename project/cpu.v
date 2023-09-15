@@ -1,5 +1,4 @@
-`ifndef CPU
-`define CPU
+`ifndef TESTBENCH
 
 `include "ram.v"
 `include "rom.v"
