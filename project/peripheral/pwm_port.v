@@ -6,12 +6,14 @@
 module pwm_port(
     input clk, //Main clk
     input mem_write, //If the data from memory changed
-    input [31:0] mem_data, //Data from memory
+    input mem_write2, //If the data from memory changed
+    input [31:0] mem_data, //Data from memory: cycles on
+    input [31:0] mem_data2, //Data from memory: cycles in one duty cycle
     output reg port_output //The port output
 );
     //Number of clk in one duty cycle
     //More clk in one duty cycle gives more resolution, but it worsens the perception of an analog signal
-    parameter [31:0] clk_per_cycle = 32'd1024;  
+    reg [31:0] clk_per_cycle = 32'd1024;  
 
     reg [31:0] clk_on = 32'd0; //Number of cycles to keep on
     reg [31:0] counter = 32'd0; //Number of clk that passed
@@ -29,6 +31,16 @@ module pwm_port(
             clk_on = mem_data;
         end
         
+        counter = 32'd0;
+    end
+
+    always @(posedge mem_write2) begin
+        clk_per_cycle = mem_data2;
+
+        if(clk_on > clk_per_cycle) begin
+            clk_on = clk_per_cycle;
+        end
+
         counter = 32'd0;
     end
 
