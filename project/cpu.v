@@ -33,7 +33,7 @@ module cpu(
 
     // Memories
 
-    //Address
+    //Address map
     //abcxxx...xxx
     //abc = destiny (000 = ram, 001 = peripheral1, ..., 111 = peripheral7)
     //xxx...xxx = addr

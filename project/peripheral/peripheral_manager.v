@@ -1,5 +1,17 @@
 `include "pwm_port.v"
 
+//Peripheral Manager
+//
+//Controls all peripherals of the processor
+//It can read or write to them through addresses
+//Not all addresses are read or write
+
+//Address prefix map
+//000 -> RAM (do nothing on this module)
+//001 -> PWM port 1
+//   001x...x0 -> Cycles on
+//   001x...x1 -> Cycles off
+
 module peripheral_manager(
     input clk, //Clock
     input [31:0] addr, //Address
@@ -13,6 +25,7 @@ module peripheral_manager(
     //ab = peripheral (000 = none, 001 = per1, ..., 111 = per7)
     //xxx...xxx = addr
 
+    //Peripherals
     wire write_pwm1_1 = 0;
     wire write_pwm1_2 = 0;
     pwm_port pwm_port1(
@@ -24,8 +37,7 @@ module peripheral_manager(
         .port_output(pwm1_out)
     );
 
-    
-
+    //Write/read peripheral
     always(posedge *) begin
         if(write_enable) begin
 
