@@ -81,9 +81,9 @@ module cpu(
     // Execute -> Memory
     wire [31:0] ex_mem_result;
 
-    wire ex_mem_MemRead;             // Dies on MEM: Existe operação de load
-    wire ex_mem_MemWrite;            // Dies on MEM: Existe operação de store
-    wire ex_mem_MemToReg;            // Goes to WB: Esse define que se um a saida de memoria vai direto para o registrador e se zero o resultado na verdade vem da ALU
+    wire ex_mem_MemRead;             // Dies on MEM: There's load operation
+    wire ex_mem_MemWrite;            // Dies on MEM: There's store operation
+    wire ex_mem_MemToReg;            // Goes to WB: 1 = result to register, 0: result is from ALU (execute stage)
     wire ex_mem_RegWrite;            // Goes to WB
     wire [4:0] ex_mem_RegDest;       // Goes to WB
     wire ex_mem_RegDataSrc;          // Goes to WB
