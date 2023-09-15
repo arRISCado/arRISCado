@@ -1,6 +1,6 @@
 # arRISCado
 
-Um sistema computacional RISCV
+Um sistema computacional RISC-V
 
 Participantes:
 - Ângelo Renato Pazin Malaguti   - 165429  - [@llturtle22ll](https://github.com/llTurtle22ll)
