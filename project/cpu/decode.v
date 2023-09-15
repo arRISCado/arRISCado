@@ -14,16 +14,16 @@ module decode (
     output [6:0] opcode,
    
     // output sinais de controle
-    output reg MemWrite,         // True or False depending if the operation Writes in the Memory or not
-    output reg MemRead,          // True or False depending if the operation Reads from the Memory or not
-    output reg RegWrite,         // True or False depending if the operation writes in a Register or not
-    output reg [4:0] RegDest,    // Determines which register to write the ALU result
-    output reg AluSrc,           // Determines if the value comes from the Register Bank or is an IMM
-    output reg [2:0] AluOp,      // Operation type ALU will perform
-    output reg [4:0] AluControl, // Exact operation ALU will perform
-    output reg Branch,           // True or False depending if the instruction is a Branch
-    output reg MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    output reg RegDataSrc       // Determines where the register data to be writen will come from: memory or ALU result
+    output reg MemWrite,        // True or False depending if the operation Writes in the Memory or not
+    output reg MemRead,         // True or False depending if the operation Reads from the Memory or not
+    output reg RegWrite,        // True or False depending if the operation writes in a Register or not
+    output reg [4:0] RegDest,   // Determines which register to write the ALU result
+    output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
+    output reg [2:0] AluOp,     // Operation type ALU will perform
+    output reg [4:0] AluControl,// Exact operation ALU will perform
+    output reg Branch,          // True or False depending if the instruction is a Branch
+    output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
+    output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
 );
 
 reg [31:0] _instruction;

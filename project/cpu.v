@@ -71,8 +71,7 @@ module cpu(
     wire de_ex_RegWrite;            // Goes to WB
     wire [4:0] de_ex_RegDest;       // Goes to WB
     wire de_ex_MemToReg;            // Goes to MEM
-    wire de_ex_RegDataSrc;          // Goes to WB
-    wire de_ex_PCSrc;               // Goes to next Fetch
+    wire de_ex_PCSrc;               // Goes to next Fetch // depende de quando o Branch é resolvido
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
@@ -95,8 +94,7 @@ module cpu(
     wire mem_wb_PCSrc;               // Goes to next Fetch
 
     // Writeback -> Fetch
-    wire [31:0] wr_if_branch_target;
-
+    wire [31:0] wr_if_branch_target;    
     wire wr_if_PCSrc;               // Dies on Fetch
 
     // ### Pipeline ###
@@ -125,8 +123,15 @@ module cpu(
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
-        .AluOp(de_ex_aluOp),
         .AluSrc(de_ex_aluSrc),
+        .AluOp(de_ex_aluOp),
+        .AluControl(de_ex_AluControl),
+        .Branch(de_ex_Branch),
+        .MemWrite(de_ex_MemWrite),
+        .MemRead(de_ex_MemRead),
+        .RegWrite(de_ex_RegWrite),
+        .RegDest(de_ex_RegDest),
+        .MemToReg(de_ex_MemToReg),
     );
 
     execute execute(
@@ -147,9 +152,17 @@ module cpu(
         .in_RegWrite(de_ex_RegWrite),
         .in_RegDest(de_ex_RegDest),
         .in_MemToReg(de_ex_MemToReg),
-        .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
 
+        // Control Signals Output
+        .out_MemWrite(ex_mem_MemWrite),
+        .out_MemRead(ex_mem_MemRead),
+        .out_RegWrite(ex_mem_RegWrite),
+        .out_RegDest(ex_mem_RegDest),
+        .out_MemToReg(ex_mem_MemToReg),
+        .out_PCSrc(ex_mem_PCSrc),
+
+        // Resultado da ALU
         .result(ex_mem_result),
     );
 
@@ -172,6 +185,12 @@ module cpu(
         .in_RegDataSrc(ex_mem_RegDataSrc),
         .in_PCSrc(ex_mem_PCSrc),
 
+        // Control Signals Output
+        .out_RegWrite(mem_wb_RegWrite),
+        .out_RegDest(mem_wb_RegDest),
+        .out_RegDataSrc(mem_wb_RegDataSrc),
+        .out_PCSrc(mem_wb_PCSrc),
+
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
         .mem_write_enable(ram_write_enable),
@@ -193,6 +212,11 @@ module cpu(
         .in_RegDest(mem_wb_RegDest),
         .in_PCSrc(mem_wb_PCSrc),
 
+        // Control Signals Output
+        .out_PCSrc(wr_if_PCSrc),
+
+
+        .out_RegDest(rb_write_address),
         .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value),
     );
