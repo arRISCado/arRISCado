@@ -22,7 +22,7 @@ module pwm_port(
     //clk_on = max(mem_data, clk_per_cycle)
     //clk_off = clk_per_cycle - clk_on
 
-    //Update data from mmemory
+    //Update data from memory
     always @(posedge mem_write) begin
         if(mem_data > clk_per_cycle) begin
             clk_on = clk_per_cycle;
