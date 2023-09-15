@@ -135,7 +135,6 @@ module cpu(
         .next_instruction(if_de_instr),
         
         .imm(de_ex_imm),
-        .rd(de_ex_rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
@@ -149,7 +148,7 @@ module cpu(
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
-        .PCSrc(de_ex_PCSrc),
+        .PCSrc(de_ex_PCSrc)
 
     );
 
@@ -251,7 +250,7 @@ module cpu(
         .out_PCSrc(wr_if_PCSrc)
         
         .out_RegWrite(rb_write_enable),
-        .out_RegDest(rb_write_address), // vai para o Register Bank
+        .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 
 endmodule

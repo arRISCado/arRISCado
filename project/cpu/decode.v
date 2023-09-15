@@ -49,12 +49,15 @@ assign shamt = _instruction[24:20];
 assign func3 = _instruction[14:12];
 assign func7 = _instruction[31:25];
 
-// Standart Value for PCSrc
-assign PCSrc = 0;
 
 always @(*) 
 begin
-    imm = _instruction[31:20]; // definindo o tipo de imediato mais comum
+
+    // Standart Value for PCSrc
+    PCSrc = 0;
+    
+     /// Most common Immediate
+    imm = {_instruction[31:20], 21'b0};
     
     // Eventualmente, com as instruções de 16 bits, vai ter que
     // separar a instrução de 32 bits em 2 intruções de 16 bits
@@ -101,7 +104,7 @@ begin
             MemWrite = 0;
             Branch = 1;
             AluControl = 4'b0110;
-            imm = {_instruction[31:12], 2'b0};
+            imm = {_instruction[31:12], 12'b0};
         end
 
         //JARL: Jump And Link Register (Tipo I)
