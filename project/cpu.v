@@ -7,10 +7,13 @@
 `include "cpu/execute.v"
 `include "cpu/memory.v"
 `include "cpu/writeback.v"
+`include "peripheral/peripheral_manager.v"
 
 module cpu(
     input clock,
     input reset,
+
+    output port_pwm1
 );
     // ### Component wires ###
 
@@ -28,6 +31,13 @@ module cpu(
 
     // ### Components ###
 
+    // Memories
+
+    //Address
+    //abcxxx...xxx
+    //abc = destiny (000 = ram, 001 = peripheral1, ..., 111 = peripheral7)
+    //xxx...xxx = addr
+
     ram ram(
         .clk(clock), 
         .reset(reset),
@@ -35,6 +45,14 @@ module cpu(
         .data_in(ram_data_in),
         .write_enable(ram_write_enable),
         .data_out(ram_data_out),
+    );
+
+    peripheral_manager peripheral_manager(
+        .clk(clock),
+        .addr(ram_address),
+        .data_in(data_in),
+        .write_enable(ram_write_enable),
+        .pwm1_out(port_pwm1)
     );
 
     rom rom(

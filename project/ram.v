@@ -6,7 +6,7 @@ module ram (
     input [31:0] address,
     input [31:0] data_in,
     input write_enable,
-    output [31:0] data_out
+    output reg [31:0] data_out
 );
 
     // Array of registers to represent memory cells
@@ -28,10 +28,13 @@ module ram (
 
     always @(posedge clk)
     begin
-        if (write_enable)
-            storage[address] <= data_in; // Write data to the selected memory location
-    end
+        if(addr[31:29] == 3'b000) begin
 
-    assign data_out = storage[address]; // Read data from the selected memory location
+            if (write_enable)
+                storage[address] = data_in; // Write data to the selected memory location
+
+            data_out = storage[address]; // Read data from the selected memory location
+        end
+    end
 
 endmodule

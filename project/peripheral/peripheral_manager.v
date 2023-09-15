@@ -1,11 +1,17 @@
-module peripheral_manager(
-    input clk,
-    input [31:0] addr,
-    input [31:0] data_in,
-    input mewWrite,
+`include "pwm_port.v"
 
-    output pwm1_out
+module peripheral_manager(
+    input clk, //Clock
+    input [31:0] addr, //Address
+    input [31:0] data_in, //Data to write
+    input write_enable, //Write if 1
+
+    output pwm1_out //Output of PWM port 1
 );
+
+    //abcxxx...xxx
+    //ab = peripheral (000 = none, 001 = per1, ..., 111 = per7)
+    //xxx...xxx = addr
 
     wire write_pwm1_1 = 0;
     wire write_pwm1_2 = 0;
@@ -18,12 +24,10 @@ module peripheral_manager(
         .port_output(pwm1_out)
     );
 
-    //abcxxx...xxx
-    //ab = peripheral (000 = none, 001 = per1, ..., 111 = per9)
-    //xxx...xxx = addr
+    
 
     always(posedge *) begin
-        if(mewWrite) begin
+        if(write_enable) begin
 
             if(addr[31:29] == 3'b001) begin //pwm_port1
                 if(addr[0] == 0) begin
