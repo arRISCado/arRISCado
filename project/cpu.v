@@ -59,6 +59,10 @@ module cpu(
     // Fetch -> Decode
     wire [31:0] if_de_pc;
     wire [31:0] if_de_instr;
+    
+    // Fetch -> Register Bank
+    wire if_rb_RegWrite;            // Dies on Register Bank
+    wire if_rb_RegDest;             // Dies on Register Bank
 
     // Decode -> Execute
     wire [31:0] de_ex_imm;          // Dies on execute
@@ -77,9 +81,9 @@ module cpu(
     // Execute -> Memory
     wire [31:0] ex_mem_result;
 
-    wire ex_mem_MemRead;             // Dies on MEM
-    wire ex_mem_MemWrite;            // Dies on MEM
-    wire ex_mem_MemToReg;            // Dies on MEM
+    wire ex_mem_MemRead;             // Dies on MEM: There's load operation
+    wire ex_mem_MemWrite;            // Dies on MEM: There's store operation
+    wire ex_mem_MemToReg;            // Goes to WB: 1 = result to register, 0: result is from ALU (execute stage)
     wire ex_mem_RegWrite;            // Goes to WB
     wire [4:0] ex_mem_RegDest;       // Goes to WB
     wire ex_mem_RegDataSrc;          // Goes to WB
@@ -91,13 +95,18 @@ module cpu(
 
     wire mem_wb_RegWrite;            // Dies on WB
     wire mem_wb_RegDataSrc;          // Dies on WB
+    wire mem_wb_MemToReg;            // Dies on WB
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
 
-    wire wr_if_PCSrc;               // Dies on Fetch
+    wire wb_if_PCSrc;               // Dies on Fetch
+    wire wb_if_RegWrite;            // Goes on Register Bank
+    wire wb_if_RegDest;             // Goes on Register Bank
+
+
 
     // ### Pipeline ###
 
@@ -153,48 +162,69 @@ module cpu(
         .result(ex_mem_result),
     );
 
+    // confirmar nome de addr no pedido 4
     memory memory(
+        // inputs
         .clk(clock),
         .rst(reset),
 
-        .addr(),
-        .data_in(ex_mem_result),
-        .load_store(),
-        .op(),
+        .addr(ex_mem_result), // deve ser atualizado
+        .data_in(rb_value2),  // vem do decode(rs2)
+
+        // from RAM signals
         .mem_read_data(ram_data_out),
 
-        .MemRead(ex_mem_MemRead),
-        .MemWrite(ex_mem_MemWrite),
-        .MemToReg(ex_mem_MemToReg),
+        // control inputs
+        .MemRead(ex_mem_MemRead), // sinal de load
+        .MemWrite(ex_mem_MemWrite), // sinal de store
 
+        .in_MemToReg(ex_mem_MemToReg), // todos os in_ não são alterados e serão passados para out
         .in_RegWrite(ex_mem_RegWrite),
         .in_RegDest(ex_mem_RegDest),
         .in_RegDataSrc(ex_mem_RegDataSrc),
         .in_PCSrc(ex_mem_PCSrc),
 
+        // outputs
+        .data_out(mem_wb_data_out),
+        .mem_done(mem_wb_mem_done),
+
+        // control outputs
+        .out_MemToReg(mem_wb_MemToReg),
+        .out_RegWrite(mem_wb_RegWrite),
+        .out_RegDest(mem_wb_RegDest),
+        .out_RegDataSrc(mem_wb_RegDataSrc),
+        .out_PCSrc(mem_wb_PCSrc),
+
+        // to RAM signals
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
         .mem_write_enable(ram_write_enable),
-        .data_out(mem_wb_data_out),
-        .mem_done(mem_wb_mem_done),
     );
 
     writeback writeback(
+
+        // inputs
         .clk(clock),
         .rst(reset),
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
-        .result_alu(),
-        .mem_to_reg_ctrl(),
+        .result_alu(ex_mem_result),
 
-        .RegWrite(mem_wb_RegWrite),
-        .RegDataSrc(mem_wb_RegDataSrc),
+        // control inputs
+        .MemToReg(mem_wb_MemToReg),
+
+        .in_RegWrite(mem_wb_RegWrite),
         .in_RegDest(mem_wb_RegDest),
         .in_PCSrc(mem_wb_PCSrc),
 
-        .rb_write_en(rb_write_enable),
+        // outputs
         .data_wb(rb_write_value),
+
+        // control outputs
+        .out_RegWrite(wr_if_RegWrite),
+        .out_RegDest(wr_if_RegDest), // vai para o fetch
+        .out_PCSrc(wr_if_PCSrc)
     );
 
 endmodule
