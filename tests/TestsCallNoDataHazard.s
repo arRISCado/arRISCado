@@ -1,3 +1,6 @@
+.global main
+.text
+
 my_function:
     addi sp, sp, -4 
     addi zero, zero, 0

@@ -1,3 +1,6 @@
+.global main
+.text
+
 main:
 	addi a0, zero, 3
 	addi a1, zero, -24

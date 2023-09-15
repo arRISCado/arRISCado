@@ -1,3 +1,6 @@
+.global main
+.text
+
 main:
 	jal a1, .L1
 	addi a0, zero, -1

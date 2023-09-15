@@ -1,3 +1,5 @@
+.global main
+.text
 
 main:
 	addi a1, zero, 5

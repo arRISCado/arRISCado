@@ -1,3 +1,6 @@
+.global main
+.text
+
 main:
 	addi sp,sp,-8
 	addi a1, zero, 20
