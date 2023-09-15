@@ -184,7 +184,7 @@ module cpu(
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
 
-        .result(ex_mem_result),
+        .result(ex_mem_result)
     );
 
     // confirmar nome de addr no pedido 4
@@ -249,7 +249,7 @@ module cpu(
         .data_wb(rb_write_value),
 
         // control outputs
-        .out_PCSrc(wr_if_PCSrc),
+        .out_PCSrc(wr_if_PCSrc)
         
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address), // vai para o Register Bank
