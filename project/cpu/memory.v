@@ -57,8 +57,8 @@ module memory (
             // Input signals from execute and control
             _addr = addr;
             _data_in = data_in;
-            _load = in_MemRead;
-            _store = in_MemWrite;
+            _load = MemRead;
+            _store = MemWrite;
 
             // Control signals to the next step
             out_RegWrite <= in_RegWrite;
