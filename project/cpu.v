@@ -119,6 +119,7 @@ module cpu(
         
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
+        .rom_address(rom_address),
 
         .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
 

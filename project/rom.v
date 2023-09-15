@@ -1,5 +1,5 @@
-`ifndef ROM_FILE
-`define ROM_FILE "../../project/init_rom.txt"
+` def ROM_FILE
+`define ROM_FILE  "../../project/init_rom.txt"
 `endif
 
 `ifndef ROM
