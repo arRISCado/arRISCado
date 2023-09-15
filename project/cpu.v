@@ -101,10 +101,8 @@ module cpu(
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
-
     wire wb_if_PCSrc;               // Dies on Fetch
-    wire wb_if_RegWrite;            // Goes on Register Bank
-    wire wb_if_RegDest;             // Goes on Register Bank
+
 
 
 
@@ -136,6 +134,16 @@ module cpu(
         
         .AluOp(de_ex_aluOp),
         .AluSrc(de_ex_aluSrc),
+        .AluControl(de_ex_AluControl),
+        .Branch(de_ex_Branch),
+        .MemWrite(de_ex_MemWrite),
+        .MemRead(de_ex_MemRead),
+        .RegWrite(de_ex_RegWrite),
+        .RegDest(de_ex_RegDest),
+        .MemToReg(de_ex_MemToReg),
+        .RegDataSrc(de_ex_RegDataSrc),
+        .PCSrc(de_ex_PCSrc),
+
     );
 
     execute execute(
@@ -146,7 +154,7 @@ module cpu(
         .rs2_value(rb_value1),
         .imm(de_ex_imm),
        
-        // Control signals
+        // control inputs
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
         .AluControl(de_ex_AluControl),
@@ -158,6 +166,15 @@ module cpu(
         .in_MemToReg(de_ex_MemToReg),
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
+
+        // Control Outputs
+        .out_MemWrite(ex_mem_MemWrite),
+        .out_MemRead(ex_mem_MemRead),
+        .out_RegWrite(ex_mem_RegWrite),
+        .out_RegDest(ex_mem_RegDest),
+        .out_MemToReg(ex_mem_MemToReg),
+        .out_RegDataSrc(ex_mem_RegDataSrc),
+        .out_PCSrc(ex_mem_PCSrc),
 
         .result(ex_mem_result),
     );
@@ -222,9 +239,10 @@ module cpu(
         .data_wb(rb_write_value),
 
         // control outputs
-        .out_RegWrite(wr_if_RegWrite),
-        .out_RegDest(wr_if_RegDest), // vai para o fetch
         .out_PCSrc(wr_if_PCSrc)
+        
+        .out_RegWrite(rb_write_enable),
+        .out_RegDest(rb_write_address), // vai para o Register Bank
     );
 
 endmodule
