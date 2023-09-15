@@ -1,3 +1,5 @@
+IO_LOC  "pwm1" 32;
+
 IO_LOC  "clk" 52;
 IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;
 

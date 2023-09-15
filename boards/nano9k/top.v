@@ -4,7 +4,8 @@
 module nano9k (
     input clk,
     input btn1,
+    output pwm1
 );
-    cpu cpu(clk, btn1);
+    cpu cpu(clk, btn1, pwm1);
     
 endmodule
