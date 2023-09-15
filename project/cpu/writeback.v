@@ -1,3 +1,6 @@
+`ifndef WRITE_BACK
+`define WRITE_BACK
+
 module writeback (
     input clk,                  // Clock signal
     input rst,                  // Reset signal
@@ -14,7 +17,7 @@ module writeback (
     output reg [31:0] data_wb,   // Data to be written back
 
     // Control Signal
-    output out_RegWrite,
+    output reg out_RegWrite,
     output reg [4:0] out_RegDest,
     output reg out_PCSrc
 );
@@ -59,3 +62,5 @@ module writeback (
     end
 
 endmodule
+
+`endif

@@ -1,3 +1,6 @@
+`ifndef MEMORY_STAGE
+`define MEMORY_STAGE
+
 module memory (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
@@ -29,7 +32,7 @@ module memory (
     // to RAM signals
     output reg [31:0] mem_addr,       // Send   address to RAM
     output reg [31:0] mem_write_data, // Send data to write in RAM
-    output reg mem_write_enable       // Send signal to enable writing in RAM
+    output reg mem_write_enable      // Send signal to enable writing in RAM
 );
 
     reg [31:0] _addr, _data_in;
@@ -96,3 +99,5 @@ module memory (
     end
 
 endmodule
+
+`endif

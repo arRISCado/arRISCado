@@ -2,6 +2,9 @@
 `define ROM_FILE "../../project/init_rom.txt"
 `endif
 
+`ifndef ROM
+`define ROM
+
 module rom (
   input [31:0] address,
   output wire [31:0] data
@@ -20,3 +23,5 @@ module rom (
   assign data = (address <= 32'd255) ? memory[address] : 32'bZ;
 
 endmodule
+
+`endif

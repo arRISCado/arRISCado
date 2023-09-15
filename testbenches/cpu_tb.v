@@ -1,7 +1,10 @@
 `define ROM_FILE "../../testbenches/cpu_tb_rom.txt"
-`include "../../project/cpu.v"
 
-module test;
+`include "cpu.v"
+
+
+// Comando aqui Elton
+module test();
     reg clk;
     reg rst;
     
@@ -9,6 +12,8 @@ module test;
 
     // Testbench procedure
     initial begin
+        $display("STARTING");
+
         //Reset
         rst = 1;
         clk = 0;
@@ -17,9 +22,11 @@ module test;
         #10
         clk = 0;
         rst = 0;
+        
+        $display("HERE");
+        $display("HERE %h", cpu.RegisterBank.register[1]);
 
-        $display("%h", cpu.RegisterBank.register[0]);
-
+        $finish;
     end
 
 endmodule

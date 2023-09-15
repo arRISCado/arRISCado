@@ -1,3 +1,6 @@
+`ifndef DECODE
+`define DECODE
+
 // Decode Stage
 module decode (
     input clk,                // Clock signal
@@ -299,3 +302,5 @@ begin
 end
     
 endmodule
+
+`endif

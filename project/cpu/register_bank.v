@@ -1,3 +1,6 @@
+`ifndef REGISTER_BANK
+`define REGISTER_BANK
+
 // Register Bank
 module register_bank(
     input clk,
@@ -39,3 +42,5 @@ module register_bank(
     end
 
 endmodule
+
+`endif

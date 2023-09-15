@@ -1,4 +1,5 @@
-`ifndef TESTBENCH
+`ifndef CPU
+`define CPU
 
 `include "ram.v"
 `include "rom.v"
@@ -14,7 +15,7 @@
 
 module cpu(
     input clock,
-    input reset,
+    input reset
 );
     // ### Component wires ###
 
@@ -38,12 +39,12 @@ module cpu(
         .address(ram_address),
         .data_in(ram_data_in),
         .write_enable(ram_write_enable),
-        .data_out(ram_data_out),
+        .data_out(ram_data_out)
     );
 
-    rom rom(
+    rom Rom(
         .address(rom_address),
-        .data(rom_data),
+        .data(rom_data)
     );
 
     register_bank RegisterBank(
@@ -55,7 +56,7 @@ module cpu(
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
         .value1(rb_value1),
-        .value2(rb_value2),
+        .value2(rb_value2)
     );
 
     // ### Pipeline wires ###
@@ -112,7 +113,7 @@ module cpu(
 
     // ### Pipeline ###
 
-    fetch fetch(
+    fetch Fetch(
         .clk(clock),
         .rst(reset),
         
@@ -122,10 +123,12 @@ module cpu(
         .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
-        .instr(if_de_instr),
+        .instr(if_de_instr)
     );
 
-    decode decode(
+    wire [4:0] de_ex_rd; //LIGAR
+
+    decode Decode(
         .clk(clock),
         .rst(reset),
         
@@ -150,7 +153,7 @@ module cpu(
 
     );
 
-    execute execute(
+    execute Execute(
         .clk(clock),
         .rst(reset),
         
@@ -184,7 +187,7 @@ module cpu(
     );
 
     // confirmar nome de addr no pedido 4
-    memory memory(
+    memory Memory(
         // inputs
         .clk(clock),
         .rst(reset),
@@ -219,10 +222,12 @@ module cpu(
         // to RAM signals
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
-        .mem_write_enable(ram_write_enable),
+        .mem_write_enable(ram_write_enable)
     );
 
-    writeback writeback(
+    wire [4:0] wr_if_RegDest; //LIGAR
+
+    writeback Writeback(
 
         // inputs
         .clk(clock),
@@ -250,3 +255,5 @@ module cpu(
     );
 
 endmodule
+
+`endif 
