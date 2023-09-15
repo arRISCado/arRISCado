@@ -29,9 +29,9 @@ module ram (
     always @(posedge clk)
     begin
         if (write_enable)
-            ram[address] <= data_in; // Write data to the selected memory location
+            storage[address] <= data_in; // Write data to the selected memory location
     end
 
-    assign data_out = ram[address]; // Read data from the selected memory location
+    assign data_out = storage[address]; // Read data from the selected memory location
 
 endmodule

@@ -13,32 +13,28 @@ module test;
 
     reg pc_src;
     reg [31:0] branch_target;
-    wire [31:0] rom_data;
-    wire [31:0] pc;
-    wire [31:0] instr;
+    wire [31:0] rom_data, pc, instr;
 
     fetch fetch(
         .clk(clk),
         .pc_src(pc_src),
         .branch_target(0),
-        .rom_data(rom_data),
         .pc(pc),
-        .instr(instr)
+        .instr(instr),
+        .rom_data(rom_data)
     );
 
     wire [20:0] imm;
     wire [6:0] opcode;
-    wire [1:0] aluOp;
+    wire [2:0] aluOp;
 
     decode decode(
-        .instruction(instr),
+        .clk(clk),
+        .next_instruction(instr),
         
         .imm(imm),
-        //.rd(),
         .opcode(opcode),
         .AluOp(aluOp)
-        // .rs1(rb_read_address1),
-        // .rs2(rb_read_address2)
     );
 
     // Testbench procedure
@@ -52,28 +48,28 @@ module test;
 
         // Test case 1: Sequential fetch
         $display("Test Case 1: Sequential fetch");
-        $display("Instr: %h, Opcode: %b", instr, opcode);
+        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
 
         clk = 1;
         #10;
         clk = 0;
         #10;
 
-        $display("Instr: %h, Opcode: %b", instr, opcode);
+        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
 
         clk = 1;
         #10;
         clk = 0;
         #10;
 
-        $display("Instr: %h, Opcode: %b", instr, opcode);
+        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
 
         clk = 1;
         #10;
         clk = 0;
         #10;
 
-        $display("Instr: %h, Opcode: %b", instr, opcode);
+        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
 
         $finish;
     end

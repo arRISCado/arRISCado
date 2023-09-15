@@ -3,16 +3,15 @@ module register_bank(
     input clk,
     input reset,
     input write_enable,
-    input [7:0] write_address,
+    input [4:0] write_address,
     input [31:0] write_value,
-    input [7:0] read_address1,
-    input [7:0] read_address2,
-    output [31:0] value1,
-    output [31:0] value2,
+    input [4:0] read_address1,
+    input [4:0] read_address2,
+    output reg [31:0] value1,
+    output reg [31:0] value2
 );
 
     reg [31:0] register [31:1];
-    // TODO: Add other registers (PC, SP etc)
 
     integer i;
     
@@ -24,18 +23,18 @@ module register_bank(
                 register[write_address] = write_value;
 
         // Update outputs
-        if (rst)
+        if (reset)
             for (i = 1; i < 32; i = i + 1)
                 register[i] = 0;
         else begin
             if (read_address1 == 32'b0)
-                value1 <= 32'b0;
+                value1 = 0;
             else
-                value1 <= register[read_address1];
+                value1 = register[read_address1];
             if (read_address2 == 0)
-                value1 <= 32'b0;
+                value2 = 0;
             else
-                value1 <= register[read_address2];
+                value2 = register[read_address2];
         end
     end
 
