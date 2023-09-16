@@ -1,6 +1,7 @@
-` def ROM_FILE
-`define ROM_FILE  "../../project/init_rom.txt"
-`endif
+//`ifdef ROM_FILE
+//`define ROM_FILE  "../../project/init_rom.txt"
+//`endif
+//ROM file must be define in the top of the project (board, test, etc)
 
 `ifndef ROM
 `define ROM

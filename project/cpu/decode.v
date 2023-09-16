@@ -10,7 +10,7 @@ module decode (
 
     // TODO: Clean unused outputs
     output reg [31:0] imm,
-    output [4:0] rd, rs1, rs2,
+    output [4:0] rs1, rs2,
     output [5:0] shamt,
     output [2:0] func3,
     output [6:0] func7,
@@ -20,7 +20,7 @@ module decode (
     output reg MemWrite,        // True or False depending if the operation Writes in the Memory or not
     output reg MemRead,         // True or False depending if the operation Reads from the Memory or not
     output reg RegWrite,        // True or False depending if the operation writes in a Register or not
-    output reg [4:0] RegDest,   // Determines which register to write the ALU result
+    output [4:0] RegDest,   // Determines which register to write the ALU result
     output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
     output reg [2:0] AluOp,     // Operation type ALU will perform
     output reg [3:0] AluControl,// Exact operation ALU will perform
@@ -42,7 +42,7 @@ end
 
 // Divide each possible part of an instruction
 assign opcode = _instruction[6:0];
-assign rd = _instruction[11:7];
+assign RegDest = _instruction[11:7];
 assign rs1 = _instruction[19:15];
 assign rs2 = _instruction[24:20];
 assign shamt = _instruction[24:20];
@@ -255,13 +255,13 @@ begin
         // // FENCE: Synch Thread
         // 7'b000111 :
         // begin
-				    // rd = instruction[11:7];
+				    // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     rs1 = instruction[19:15];
         //     succ = instruction[22:20];
         //     pred = instruction[26:23];
         //     fm = instruction[27:31];        
-				    // rd = instruction[11:7];
+				    // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     rs1 = instruction[19:15];
         //     succ = instruction[22:20];
@@ -272,13 +272,13 @@ begin
         // // FENCE.TSO : não faço ideia do que é isso
         // 7'b0001111 :
         // begin
-        //     // rd = instruction[11:7];
+        //     // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     // rs1 = instruction[19:15];
         //     // succ = instruction[22:20];
         //     // pred = instruction[26:23];
         //     // fm = instruction[27:31];        
-        //     // rd = instruction[11:7];
+        //     // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     // rs1 = instruction[19:15];
         //     // succ = instruction[22:20];

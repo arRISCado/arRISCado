@@ -1,9 +1,11 @@
+`ifndef EXECUTE
+`define EXECUTE
+
 // Execute Stage
 module execute (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
     
-    input [31:0] rd,
     input [31:0] rs1_value,
     input [31:0] rs2_value,
     input [31:0] imm,
@@ -69,8 +71,8 @@ module execute (
             out_MemToReg = in_MemToReg;
             out_RegDataSrc = in_RegDataSrc;
             out_PCSrc = in_PCSrc;
-            rd_out = rd;
-            _rd = rd;
+            rd_out = in_RegDest;
+            _rd = in_RegDest;
             _rs1_value = rs1_value;
             _rs2_value = rs2_value;
             _imm = imm;
@@ -153,3 +155,5 @@ module execute (
 end
     
 endmodule
+
+`endif
