@@ -1,3 +1,5 @@
+`ifndef TESTBENCH
+
 `include "ram.v"
 `include "rom.v"
 `include "cpu/register_bank.v"
@@ -7,6 +9,8 @@
 `include "cpu/execute.v"
 `include "cpu/memory.v"
 `include "cpu/writeback.v"
+
+`endif
 
 module cpu(
     input clock,
