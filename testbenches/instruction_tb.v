@@ -39,6 +39,7 @@ module test();
             #10;
         end
 
+        $display("#RESULT");
         for (integer i = 1; i < 32; i = i + 1)
         begin
             $display("%d %d", i, cpu.RegisterBank.register[i]);
