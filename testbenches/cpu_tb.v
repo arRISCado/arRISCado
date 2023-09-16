@@ -2,8 +2,6 @@
 
 `include "cpu.v"
 
-
-// Comando aqui Elton
 module test();
     reg clk;
     reg rst;
@@ -67,7 +65,7 @@ module test();
         //$display("WB");
     
 
-        $display("00000000000000000000000000000001 | %b", cpu.RegisterBank.register[1][31:0]);
+        $display("00000000000000000000000000000001 | %b", cpu.RegisterBank.register[1]);
 
         for (integer i = 0; i < 15; i = i + 1)
         begin
@@ -77,7 +75,7 @@ module test();
             #10;
         end
 
-        $display("00000000000000000000000000000001 | %b", cpu.RegisterBank.register[1][31:0]);
+        $display("00000000000000000000000000000001 | %b", cpu.RegisterBank.register[1]);
 
         $finish;
     end

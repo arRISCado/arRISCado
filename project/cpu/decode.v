@@ -299,6 +299,13 @@ begin
         default :
         begin
             // isso tem que virar sinal de controle
+            AluSrc  = 0;
+            MemToReg = 0;
+            RegWrite = 0;
+            MemRead = 0;
+            MemWrite = 0;
+            Branch = 0;
+            $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
         end
         
     endcase
