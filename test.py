@@ -3,6 +3,8 @@ import glob
 import subprocess
 import argparse
 
+# Arguments
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
@@ -41,6 +43,8 @@ else:
 
 print_diff = args.p
 
+# Definitions
+
 rom_path = "testbenches\\instruction_tb_rom.txt"
 
 command = "call "+oss_cad_path+"\\environment.bat"
@@ -50,9 +54,9 @@ command += "&& "
 command += "vvp test"
 
 
-for test_file in tests:
-    test_name = os.path.basename(test_file)[:-4]
-    out_path = os.path.join("tests", test_name+".o")
+for test_file in tests: #Run all tests
+    test_name = os.path.basename(test_file)[:-4] #Name of the test
+    out_path = os.path.join("tests", test_name+".o") #Path of the out file
 
     if not os.path.exists(out_path):
         print("Test", test_name, "does not have output file, skipping")
@@ -60,6 +64,7 @@ for test_file in tests:
 
     print(test_name)
 
+    #Send code to ROM files
     with open(test_file, "r") as file:
         lines = file.readlines()
 
@@ -69,9 +74,11 @@ for test_file in tests:
     with open(rom_path, "w") as file:
         file.writelines(code)
     
+    #Get code result
     result = subprocess.run(command, shell=True, capture_output = True, cwd="project")
     result_lines = result.stdout.decode('ascii').split("\n")
     
+    #Get registers values from result
     reg_index = 1
     in_result = False
     result_values = ["0"]*32
@@ -87,7 +94,8 @@ for test_file in tests:
         if line == "#RESULT\r":
             in_result = True
 
-
+    
+    #Get expected result from out file
     expected_result = []
 
     with open(out_path, "r") as file:
@@ -96,6 +104,7 @@ for test_file in tests:
             value = line.split(" ")[0]
             expected_result.append(value)
     
+    #Print diff
     if print_diff:
         for i in range(32):
             print(f"{i}:", expected_result[i], result_values[i], end="")
@@ -105,5 +114,6 @@ for test_file in tests:
             else:
                 print()
 
+    #Assert values
     for i in range(32):
         assert expected_result[i] == result_values[i]
