@@ -56,7 +56,7 @@ command += "vvp test"
 
 for test_file in tests: #Run all tests
     test_name = os.path.basename(test_file)[:-4] #Name of the test
-    out_path = os.path.join("tests", test_name+".out") #Path of the out file
+    out_path = os.path.join("tests\\out", test_name+".out") #Path of the out file
 
     if not os.path.exists(out_path):
         print("Test", test_name, "does not have output file, skipping")
