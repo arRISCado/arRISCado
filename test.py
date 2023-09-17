@@ -21,8 +21,15 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "-p",
+    "-d",
     help="Print registers diff",
+    action="store_true",
+    default=False,
+)
+
+parser.add_argument(
+    "-p",
+    help="Print test output",
     action="store_true",
     default=False,
 )
@@ -41,7 +48,8 @@ else:
 
     tests = glob.glob(hex_pattern)
 
-print_diff = args.p
+print_diff = args.d
+print_output = args.p
 
 # Definitions
 
@@ -53,6 +61,7 @@ command += "iverilog -o test ../testbenches/instruction_tb.v cpu.v"
 command += "&& "
 command += "vvp test"
 
+all_correct = True
 
 for test_file in tests: #Run all tests
     test_name = os.path.basename(test_file)[:-4] #Name of the test
@@ -62,7 +71,7 @@ for test_file in tests: #Run all tests
         print("Test", test_name, "does not have output file, skipping")
         continue
 
-    print(test_name)
+    print(test_name, end=" ")
 
     #Send code to ROM files
     with open(test_file, "r") as file:
@@ -103,17 +112,32 @@ for test_file in tests: #Run all tests
         for line in lines:
             value = line.split(" ")[0]
             expected_result.append(value)
-    
-    #Print diff
-    if print_diff:
-        for i in range(32):
-            print(f"{i}:", expected_result[i], result_values[i], end="")
 
-            if expected_result[i] != result_values[i]:
-                print(" ERROR")
-            else:
-                print()
+    correct = True
 
-    #Assert values
+    #Check for errors
     for i in range(32):
-        assert expected_result[i] == result_values[i]
+        if expected_result[i] == result_values[i]:
+            correct = False
+            all_correct = False
+    
+    if correct:
+        print(".")
+    else:
+        print("ERROR")
+        #Print diff
+        if print_diff:
+            for i in range(32):
+                if expected_result[i] != result_values[i]:
+                    print(f"{i}:", expected_result[i], result_values[i])
+    
+    if print_output:
+        print("-------------------------------")
+        print("stdout")
+        print(result.stdout.decode('ascii'))
+        print("-------------------------------")
+        print("stderr")
+        print(result.stderr.decode('ascii'))
+        print("-------------------------------")
+
+assert all_correct == True
