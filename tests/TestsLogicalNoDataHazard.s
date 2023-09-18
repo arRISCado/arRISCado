@@ -1,3 +1,6 @@
+.global main
+.text
+
 main:
 	andi a0, a0, 1745
 	addi zero, zero, 0
@@ -21,8 +24,6 @@ main:
 	addi zero, zero, 0
 	addi zero, zero, 0
 	or a6, a5, a3
-	
-	
 	
 
 # Expected Final State: 
