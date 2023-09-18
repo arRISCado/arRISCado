@@ -3,22 +3,29 @@
 
 // Register Bank
 module register_bank(
-    input clk,
-    input reset,
-    input write_enable,
-    input [4:0] write_address,
-    input [31:0] write_value,
-    input [4:0] read_address1,
-    input [4:0] read_address2,
-    output reg [31:0] value1,
-    output reg [31:0] value2
+  input clk,
+  input reset,
+  input write_enable,
+  input [4:0] write_address,
+  input [31:0] write_value,
+  input [4:0] read_address1,
+  input [4:0] read_address2,
+  output reg [31:0] value1,
+  output reg [31:0] value2
 );
 
-    reg [31:0] register [31:1];
+  reg [31:0] register [31:1];
 
-    integer i;
-    
-    always @(posedge clk or posedge reset)
+  integer i;
+  
+  always @(posedge clk or posedge reset)
+  begin
+    if (reset)
+    begin
+      for (i = 1; i < 32; i = i + 1)
+        register[i] = 0;
+    end
+    else
     begin
         // Update outputs
         if (reset) 
@@ -44,6 +51,7 @@ module register_bank(
         else
             value2 = register[read_address2];
     end
+  end
 
 endmodule
 `endif
