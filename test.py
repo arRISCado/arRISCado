@@ -2,6 +2,7 @@ import os
 import glob
 import subprocess
 import argparse
+import platform
 
 # Arguments
 
@@ -36,44 +37,75 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-if args.oss_cad_path is not None:
-    oss_cad_path = args.oss_cad_path
-else:
-    oss_cad_path = "D:\\Programas\\oss-cad-suite"
+if platform.system() == "Windows":
+    if args.oss_cad_path is not None:
+        oss_cad_path = args.oss_cad_path
+    else:
+        oss_cad_path = "D:\\Programas\\oss-cad-suite"
 
-if args.run_only is not None:
-    tests = ["tests\\binaries\\"+args.run_only+".hex"]
-else:
-    hex_pattern = os.path.join("tests", "binaries", "*.hex")
+    if args.run_only is not None:
+        tests = ["tests\\binaries\\"+args.run_only+".hex"]
+    else:
+        hex_pattern = os.path.join("tests", "binaries", "*.hex")
 
-    tests = glob.glob(hex_pattern)
+        tests = glob.glob(hex_pattern)
 
-print_diff = args.d
-print_output = args.p
+    print_diff = args.d
+    print_output = args.p
 
 # Definitions
+    rom_path = "testbenches\\instruction_tb_rom.txt"
 
-rom_path = "testbenches\\instruction_tb_rom.txt"
+    command = "call "+oss_cad_path+"\\environment.bat"
+    command += "&& "
+    command += "iverilog -o test ../testbenches/instruction_tb.v cpu.v"
+    command += "&& "
+    command += "vvp test"
 
-command = "call "+oss_cad_path+"\\environment.bat"
-command += "&& "
-command += "iverilog -o test ../testbenches/instruction_tb.v cpu.v"
-command += "&& "
-command += "vvp test"
+
+elif platform.system() == "Linux":
+    if args.oss_cad_path is not None:
+        oss_cad_path = args.oss_cad_path
+    else:
+        oss_cad_path = "$HOME/mc851/eda/oss-cad-suite/"
+
+    if args.run_only is not None:
+        tests = ["tests/binaries/"+args.run_only+".hex"]
+    else:
+        hex_pattern = os.path.join("tests", "binaries", "*.hex")
+
+        tests = glob.glob(hex_pattern)
+    print_diff = args.d
+    print_output = args.p
+
+# Definitions
+    rom_path = "testbenches/instruction_tb_rom.txt"
+
+    command = "source "+oss_cad_path+"environment "
+    command += "&& "
+    command += "iverilog -o test ./testbenches/instruction_tb.v cpu.v "
+    command += "&& "
+    command += "vvp test"
+    print(command)
 
 all_correct = True
 
 for test_file in tests: #Run all tests
     test_name = os.path.basename(test_file)[:-4] #Name of the test
-    out_path = os.path.join("tests\\out", test_name+".out") #Path of the out file
-
+    if platform.system() == "Linux":
+        out_path = os.path.join("tests/out", test_name+".out") #Path of the out file
+    elif platform.system() == "Windows":
+        out_path = os.path.join("tests\\out", test_name+".out") #Path of the out file
+    
+    print(out_path)
     if not os.path.exists(out_path):
         print("Test", test_name, "does not have output file, skipping")
         continue
 
-    print(test_name, end=" ")
+    #print(test_name, end=" ")
 
     #Send code to ROM files
+    print(test_file)
     with open(test_file, "r") as file:
         lines = file.readlines()
 

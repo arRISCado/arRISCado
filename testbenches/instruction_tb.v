@@ -1,6 +1,7 @@
 `define ROM_FILE "../testbenches/instruction_tb_rom.txt"
 
-`include "cpu.v"
+`include "../../project/cpu.v"
+
 
 module test();
     reg clk;
