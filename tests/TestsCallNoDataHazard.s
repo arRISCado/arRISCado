@@ -1,6 +1,8 @@
-.global main
-.text
-
+	.option nopic
+	.text
+	.align	2
+	.globl	main
+	.type	main, @function
 my_function:
     addi sp, sp, -4 
     addi zero, zero, 0
@@ -35,8 +37,6 @@ main:
     addi a2, zero, 10
     addi zero, zero, 0
 	addi zero, zero, 0 
-    ecall
-      
     
 # Expected final state:
 # t0: 0

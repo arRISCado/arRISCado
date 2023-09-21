@@ -4,22 +4,21 @@
 	.globl	main
 	.type	main, @function
 main:
-    addi t0, zero, -15
-    addi t1, zero, 4
+    addi t0, zero, -2023
+    addi t1, zero, 21
     div t2, t0, t1 
     divu t3, t0, t1  
     div t4, t0, t1 
-    add t4, t4, t2 
-    div t5, t0, t1   
-    sub t5, t5, t3  
-    li t6, 10   
-    ecall       
+    rem t5, t0, t1
+    remu t6, t0, t1
+    addi a0, zero, 10
 
 # Expected final state:
-# t0: -15
-# t1: 4
-# t2: -3 
-# t3: 3
-# t4: -6
-# t5: 0
-# t6: 10
+# t0: -2023
+# t1: 21
+# t2: -96
+# t3: 204522155
+# t4: -96
+# t5: 14
+# t6: 18
+# a0: 10
