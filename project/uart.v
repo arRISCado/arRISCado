@@ -74,6 +74,14 @@ end
 reg [31:0] memory[255:0];
 localparam currentInst = 0;
 
+initial begin
+    repeat (256) begin
+        memory[currentInst] <= 32'b00000000000100000000000000010011;
+        currentInst = currentInst + 1;
+    end
+    currentInst = 0;
+end
+
 reg [2:0] romWriteState = 0;
 reg [31:0] instructionBits = 0;
 
@@ -81,12 +89,15 @@ localparam ROM_WRITE_1 = 0;
 localparam ROM_WRITE_2 = 1;
 localparam ROM_WRITE_3 = 2;
 localparam ROM_WRITE_4 = 3;
+integer fullbits = 32'b11111111111111111111111111111111;
 
 always @(posedge clk) begin
     if (byteReady) begin
         // Should be changed to use byte transmitted for something
         // Currently changes LEDs for testing purposes
-        led <= ~dataIn[5:0];
+        led[5:2] <= ~dataIn[5:2];
+        led[1] <= ~byteReady;
+        led[0] <= ~cpu_enable;
         case(romWriteState)
             ROM_WRITE_1: begin
                 instructionBits[7:0] <= data_in[7:0];
@@ -102,11 +113,13 @@ always @(posedge clk) begin
             end
             ROM_WRITE_4: begin
                 instructionBits[31:24] <= data_in[7:0];
-                if(instructionBit == 32'b11111111111111111111111111111111) begin
+                //cpu_enable = 1;
+                if(instructionBit[31:0] == fullbits) begin
                     cpu_enable = 1;
                 end
                 else begin
                     memory[currentInst] <= instructionBits;
+                    currentInst = currentInst + 1;
                 end
                 romWriteState <= ROM_WRITE_1;
             end
