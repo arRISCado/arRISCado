@@ -1,10 +1,10 @@
 import serial  # pip install pyserial
 
-port = ""  # Insert port connected to board here
+port = "COM6"  # Insert port connected to board here
 
 serialPort = serial.Serial(port=port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 
-f = open("./tests/binaries/", "rt")  # Insert .hex file to be sent
+f = open("./tests/binaries/test.bin", "rt")  # Insert .hex file to be sent
 code = f.read()
 
 bindata = []

@@ -8,8 +8,10 @@ module uart
 (
     input clk,
     input uart_rx,
-    output reg [5:0] led
+    output reg [5:0] led,
+    output reg cpu_enable = 0
 );
+
 
 localparam HALF_DELAY_WAIT = (DELAY_FRAMES / 2);
 
@@ -68,11 +70,47 @@ always @(posedge clk) begin
     endcase
 end
 
+
+reg [31:0] memory[255:0];
+localparam currentInst = 0;
+
+reg [2:0] romWriteState = 0;
+reg [31:0] instructionBits = 0;
+
+localparam ROM_WRITE_1 = 0;
+localparam ROM_WRITE_2 = 1;
+localparam ROM_WRITE_3 = 2;
+localparam ROM_WRITE_4 = 3;
+
 always @(posedge clk) begin
     if (byteReady) begin
         // Should be changed to use byte transmitted for something
         // Currently changes LEDs for testing purposes
         led <= ~dataIn[5:0];
+        case(romWriteState)
+            ROM_WRITE_1: begin
+                instructionBits[7:0] <= data_in[7:0];
+                romWriteState <= ROM_WRITE_2;
+            end
+            ROM_WRITE_2: begin
+                instructionBits[15:8] <= data_in[7:0];
+                romWriteState <= ROM_WRITE_3;
+            end
+            ROM_WRITE_3: begin
+                instructionBits[23:16] <= data_in[7:0];
+                romWriteState <= ROM_WRITE_4;
+            end
+            ROM_WRITE_4: begin
+                instructionBits[31:24] <= data_in[7:0];
+                if(instructionBit == 32'b11111111111111111111111111111111) begin
+                    cpu_enable = 1;
+                end
+                else begin
+                    memory[currentInst] <= instructionBits;
+                end
+                romWriteState <= ROM_WRITE_1;
+            end
+        endcase
     end
 end
 

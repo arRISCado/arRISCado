@@ -11,7 +11,9 @@
 module cpu(
     input clock,
     input reset,
+    input enable,
 );
+    assign clock_real = clock & enable;
     // ### Component wires ###
 
     // ROM
@@ -29,7 +31,7 @@ module cpu(
     // ### Components ###
 
     ram ram(
-        .clk(clock), 
+        .clk(clock_real), 
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
@@ -37,13 +39,13 @@ module cpu(
         .data_out(ram_data_out),
     );
 
-    rom rom(
+    rom Rom(
         .address(rom_address),
         .data(rom_data),
     );
 
     register_bank RegisterBank(
-        .clk(clock),
+        .clk(clock_real),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
@@ -102,7 +104,7 @@ module cpu(
     // ### Pipeline ###
 
     fetch fetch(
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
         
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
@@ -115,7 +117,7 @@ module cpu(
     );
 
     decode decode(
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
         
         .next_instruction(if_de_instr),
@@ -130,7 +132,7 @@ module cpu(
     );
 
     execute execute(
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
         
         .rs1_value(rb_value1),
@@ -154,7 +156,7 @@ module cpu(
     );
 
     memory memory(
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
 
         .addr(),
@@ -180,7 +182,7 @@ module cpu(
     );
 
     writeback writeback(
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
 
         .mem_done(mem_wr_mem_done),

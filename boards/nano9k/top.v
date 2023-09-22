@@ -8,7 +8,11 @@ module nano9k (
     input uart_rx,
     output reg [5:0] led
 );
-    cpu cpu(clk, btn1);
-    uart uart(clk, uart_rx, led);
+    wire cpu_enable;
     
+    cpu Cpu(clk, btn1, cpu_enable);
+    uart Uart(clk, uart_rx, led, cpu_enable);
+    
+    assign Cpu.Rom.memory = Uart.memory;
+
 endmodule
