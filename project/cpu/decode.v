@@ -27,7 +27,7 @@ module decode (
     output reg Branch,          // True or False depending if the instruction is a Branch
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
-    output reg PCSrc            // Determines where the PC will come from
+    output reg PCSrc = 0        // Determines where the PC will come from
 );
 
 reg [31:0] _instruction;
@@ -48,7 +48,6 @@ assign rs2 = _instruction[24:20];
 assign shamt = _instruction[24:20];
 assign func3 = _instruction[14:12];
 assign func7 = _instruction[31:25];
-
 
 always @(*) 
 begin

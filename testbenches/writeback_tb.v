@@ -1,4 +1,6 @@
-module writeback_tb;
+`include "../../testbenches/utils/imports.v"
+
+module test;
 
     reg clock = 0;
     reg reset = 0;

@@ -21,8 +21,6 @@ module writeback (
     output reg [4:0] out_RegDest,
     output reg out_PCSrc
 );
-
-
     // TODO: Pensar como carregar o dado de entrada
     reg _mem_done, _MemToReg;
     reg [4:0] _rd;

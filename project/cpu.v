@@ -71,6 +71,7 @@ module cpu(
 
     // Decode -> Execute
     wire [31:0] de_ex_imm;          // Dies on execute
+    wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [3:0] de_ex_AluControl;    // Dies on execute

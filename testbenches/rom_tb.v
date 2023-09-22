@@ -1,4 +1,4 @@
-`include "../../project/rom.v"
+`include "../../testbenches/utils/imports.v"
 
 module test;
     // Outputs
