@@ -1,6 +1,8 @@
-.global main
-.text
-
+	.option nopic
+	.text
+	.align	2
+	.globl	main
+	.type	main, @function
 main:
 	addi sp,sp,-8
 	addi a1, zero, 20
