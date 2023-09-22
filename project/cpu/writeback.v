@@ -21,12 +21,13 @@ module writeback (
     output reg [4:0] out_RegDest,
     output reg out_PCSrc
 );
-
-
     // TODO: Pensar como carregar o dado de entrada
     reg _mem_done, _MemToReg;
     reg [4:0] _rd;
     reg [31:0] _data_mem, _result_alu;
+
+    reg [4:0] _RegDest;
+    reg _PCSrc, _RegWrite;
 
     always @(posedge clk or posedge rst) 
     begin
@@ -39,16 +40,17 @@ module writeback (
             _rd = 0;
             out_RegDest = 0;
         end
-        else begin
+        else 
+        begin
             _mem_done = mem_done;
             _MemToReg = MemToReg;
             _data_mem = data_mem;
             _result_alu = result_alu;
 
             // Control Signal
-            out_RegDest = in_RegDest;
-            out_PCSrc = in_PCSrc;
-            out_RegWrite = in_RegWrite;
+            _RegDest = in_RegDest;
+            _PCSrc = in_PCSrc;
+            _RegWrite = in_RegWrite;
         end
     end
 
@@ -59,8 +61,11 @@ module writeback (
             data_wb = _data_mem;
         else
             data_wb = _result_alu;
-    end
 
+        out_RegDest = _RegDest;
+        out_PCSrc = _PCSrc;
+        out_RegWrite = _RegWrite;
+    end
 endmodule
 
 `endif

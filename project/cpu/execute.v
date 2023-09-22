@@ -32,19 +32,17 @@ module execute (
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
-    output reg [4:0] rd_out,
     output [31:0] result,
     output reg [31:0] a,
     output reg [31:0] b
 );
 
-    reg [31:0] _rd;
-    reg [31:0] _rs1_value;
-    reg [31:0] _rs2_value;
-    reg [31:0] _imm;
-    reg [31:0] _PC;
-    reg _AluSrc;
+    reg [31:0] _rs1_value, _rs2_value, _imm, _PC;
     reg [2:0] _AluOp;
+    reg _AluSrc;
+
+    reg [4:0] _RegDest;
+    reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
     alu alu(AluControl, a, b, result);
 
@@ -54,8 +52,6 @@ module execute (
         begin
             a = 0;
             b = 0;
-            rd_out = 0;
-            _rd = 0;
             _rs1_value = 0;
             _rs2_value = 0;
             _imm = 0;
@@ -64,20 +60,19 @@ module execute (
         end
         else
         begin
-            out_MemWrite = in_MemWrite;
-            out_MemRead = in_MemRead;
-            out_RegWrite = in_RegWrite;
-            out_RegDest = in_RegDest;
-            out_MemToReg = in_MemToReg;
-            out_RegDataSrc = in_RegDataSrc;
-            out_PCSrc = in_PCSrc;
-            rd_out = in_RegDest;
-            _rd = in_RegDest;
             _rs1_value = rs1_value;
             _rs2_value = rs2_value;
             _imm = imm;
             _PC = PC;
             _AluSrc = AluSrc;
+            
+            _MemWrite = in_MemWrite;
+            _MemRead = in_MemRead;
+            _RegWrite = in_RegWrite;
+            _RegDest = in_RegDest;
+            _MemToReg = in_MemToReg;
+            _RegDataSrc = in_RegDataSrc;
+            _PCSrc = in_PCSrc;
         end
     end
 
@@ -118,8 +113,8 @@ module execute (
         // Tipo U LUI
         3'b100:
         begin
-            a = _rd;
-            b = _imm;
+            a = _imm;
+            b = 12;
             // é Literalmente isso o LUI, coloca isso no rd direto
         end
 
@@ -152,6 +147,13 @@ module execute (
         end
     endcase
 
+    out_MemWrite = _MemWrite;
+    out_MemRead = _MemRead;
+    out_RegWrite = _RegWrite;
+    out_RegDest = _RegDest;
+    out_MemToReg = _MemToReg;
+    out_RegDataSrc = _RegDataSrc;
+    out_PCSrc = _PCSrc;
 end
     
 endmodule

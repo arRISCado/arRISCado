@@ -1,3 +1,5 @@
+`ifndef TESTBENCH
+
 `include "ram.v"
 `include "rom.v"
 `include "cpu/register_bank.v"
@@ -7,6 +9,8 @@
 `include "cpu/execute.v"
 `include "cpu/memory.v"
 `include "cpu/writeback.v"
+
+`endif
 
 `ifndef CPU
 `define CPU
@@ -71,6 +75,7 @@ module cpu(
 
     // Decode -> Execute
     wire [31:0] de_ex_imm;          // Dies on execute
+    wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [3:0] de_ex_AluControl;    // Dies on execute
@@ -103,6 +108,7 @@ module cpu(
     wire mem_wb_MemToReg;            // Dies on WB
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
+    wire [31:0] mem_wb_AluResult;
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
@@ -156,7 +162,7 @@ module cpu(
         .rst(reset),
         
         .rs1_value(rb_value1),
-        .rs2_value(rb_value1),
+        .rs2_value(rb_value2),
         .imm(de_ex_imm),
        
         // control inputs
@@ -214,6 +220,7 @@ module cpu(
         .out_RegDest(mem_wb_RegDest),
         .out_RegDataSrc(mem_wb_RegDataSrc),
         .out_PCSrc(mem_wb_PCSrc),
+        .out_AluResult(mem_wb_AluResult),
 
         // to RAM signals
         .mem_addr(ram_address),
@@ -230,7 +237,7 @@ module cpu(
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
-        .result_alu(ex_mem_result),
+        .result_alu(mem_wb_AluResult),
 
         // control inputs
         .MemToReg(mem_wb_MemToReg),
