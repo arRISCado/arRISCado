@@ -1,10 +1,3 @@
-//`ifdef ROM_FILE
-//`define ROM_FILE  "../../project/init_rom.txt"
-//`endif
-//ROM file must be define in the top of the project (board, test, etc)
-
-`ifndef ROM
-`define ROM
 
 module rom (
   input [31:0] address,
@@ -24,5 +17,3 @@ module rom (
   assign data = (address <= 32'd255) ? memory[address] : 32'bZ;
 
 endmodule
-
-`endif
