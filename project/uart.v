@@ -79,6 +79,7 @@ initial begin
         memory[currentInst] <= 32'b00000000000100000000000000010011;
         currentInst = currentInst + 1;
     end
+    led[5:0] <= 6'b000000;
     currentInst = 0;
 end
 
@@ -95,9 +96,7 @@ always @(posedge clk) begin
     if (byteReady) begin
         // Should be changed to use byte transmitted for something
         // Currently changes LEDs for testing purposes
-        led[5:2] <= ~dataIn[5:2];
-        led[1] <= ~byteReady;
-        led[0] <= ~cpu_enable;
+        //led[5:2] <= ~dataIn[5:2];
         case(romWriteState)
             ROM_WRITE_1: begin
                 instructionBits[7:0] <= data_in[7:0];
@@ -113,8 +112,8 @@ always @(posedge clk) begin
             end
             ROM_WRITE_4: begin
                 instructionBits[31:24] <= data_in[7:0];
-                //cpu_enable = 1;
-                if(instructionBit[31:0] == fullbits) begin
+                led[5:0] <= instructionBits[31:26];
+                if(instructionBits[31:0] == fullbits) begin  // Not working
                     cpu_enable = 1;
                 end
                 else begin
