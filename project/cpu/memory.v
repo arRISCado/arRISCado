@@ -36,7 +36,8 @@ module memory (
 );
 
     reg [31:0] _addr, _data_in;
-    reg _load, _store;
+    reg _load, _store, _MemToReg, _RegWrite, _RegDataSrc, _PCSrc;
+    reg [4:0] _RegDest;
     
     always @(posedge clk or posedge rst)
     begin
@@ -56,7 +57,8 @@ module memory (
             mem_write_data = 0;
             mem_write_enable = 0;
         end
-        else begin
+        else 
+        begin
             // Input signals from execute and control
             _addr = addr;
             _data_in = data_in;
@@ -64,10 +66,11 @@ module memory (
             _store = MemWrite;
 
             // Control signals to the next step
-            out_RegWrite = in_RegWrite;
-            out_RegDest = in_RegDest;
-            out_RegDataSrc = in_RegDataSrc;
-            out_PCSrc = in_PCSrc;
+            _MemToReg = in_MemToReg;
+            _RegWrite = in_RegWrite;
+            _RegDest = in_RegDest;
+            _RegDataSrc = in_RegDataSrc;
+            _PCSrc = in_PCSrc;
         end
     end
 
@@ -94,8 +97,12 @@ module memory (
             mem_done = 1;
             // when dealing with memory delay we need to receive a confirmation from RAM
         end
-
         
+        out_MemToReg = out_MemToReg;
+        out_RegWrite = out_RegWrite;
+        out_RegDest = out_RegDest;
+        out_RegDataSrc = out_RegDataSrc;
+        out_PCSrc = out_PCSrc;
     end
 
 endmodule

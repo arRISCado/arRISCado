@@ -18,18 +18,19 @@ module register_bank(
 
     integer i;
     
-    always @(posedge clk)
+    always @(posedge clk or posedge reset)
     begin
-        // Write to memory
-        if (write_enable)
-            if (write_address)
-                register[write_address] = write_value;
-
         // Update outputs
-        if (reset)
+        if (reset) 
             for (i = 1; i < 32; i = i + 1)
                 register[i] = 0;
-        else begin
+        else 
+        begin
+            // Write to memory
+            if (write_enable)
+                if (write_address)
+                    register[write_address] = write_value;
+
             if (read_address1 == 32'b0)
                 value1 = 0;
             else
