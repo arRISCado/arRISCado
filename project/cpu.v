@@ -13,8 +13,10 @@
 
 module cpu(
     input clock,
-    input reset
+    input reset,
+    input enable,
 );
+    assign clock_real = clock & enable;
     // ### Component wires ###
 
     // ROM
@@ -32,7 +34,7 @@ module cpu(
     // ### Components ###
 
     ram ram(
-        .clk(clock), 
+        .clk(clock_real), 
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
@@ -46,7 +48,7 @@ module cpu(
     );
 
     register_bank RegisterBank(
-        .clk(clock),
+        .clk(clock_real),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
@@ -111,8 +113,8 @@ module cpu(
 
     // ### Pipeline ###
 
-    fetch Fetch(
-        .clk(clock),
+    fetch fetch(
+        .clk(clock_real),
         .rst(reset),
         
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
@@ -125,10 +127,8 @@ module cpu(
         .instr(if_de_instr)
     );
 
-    wire [4:0] de_ex_rd; //LIGAR
-
-    decode Decode(
-        .clk(clock),
+    decode decode(
+        .clk(clock_real),
         .rst(reset),
         
         .next_instruction(if_de_instr),
@@ -151,8 +151,8 @@ module cpu(
 
     );
 
-    execute Execute(
-        .clk(clock),
+    execute execute(
+        .clk(clock_real),
         .rst(reset),
         
         .rs1_value(rb_value1),
@@ -184,10 +184,8 @@ module cpu(
         .result(ex_mem_result)
     );
 
-    // confirmar nome de addr no pedido 4
-    memory Memory(
-        // inputs
-        .clk(clock),
+    memory memory(
+        .clk(clock_real),
         .rst(reset),
 
         .addr(ex_mem_result), // deve ser atualizado
@@ -226,9 +224,8 @@ module cpu(
     wire [4:0] wr_if_RegDest; //LIGAR
 
     writeback Writeback(
-
         // inputs
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
 
         .mem_done(mem_wb_mem_done),
