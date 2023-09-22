@@ -158,7 +158,7 @@ module cpu(
         .rst(reset),
         
         .rs1_value(rb_value1),
-        .rs2_value(rb_value1),
+        .rs2_value(rb_value2),
         .imm(de_ex_imm),
        
         // control inputs
