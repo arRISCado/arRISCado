@@ -4,6 +4,8 @@ import subprocess
 import argparse
 import platform
 
+def bash_command(cmd):
+    subprocess.Popen(['/bin/bash', '-c', cmd])
 # Arguments
 
 parser = argparse.ArgumentParser()
@@ -83,7 +85,7 @@ elif platform.system() == "Linux":
 
     command = "source "+oss_cad_path+"environment "
     command += "&& "
-    command += "iverilog -o test ./testbenches/instruction_tb.v cpu.v "
+    command += "iverilog -o test ../testbenches/instruction_tb.v cpu.v "
     command += "&& "
     command += "vvp test"
     print(command)
@@ -116,7 +118,11 @@ for test_file in tests: #Run all tests
         file.writelines(code)
     
     #Get code result
-    result = subprocess.run(command, shell=True, capture_output = True, cwd="project")
+    if platform.system() == "Windows":
+        result = subprocess.run(command, shell=True, capture_output = True, cwd="project")
+    elif platform.system() == "Linux":
+        result = subprocess.run(command, shell=True, capture_output = True, cwd="project", executable='/bin/bash')
+        print(result)
     result_lines = result.stdout.decode('ascii').split("\n")
 
     if print_output:
