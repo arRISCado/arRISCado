@@ -24,13 +24,13 @@ module test;
     // $display("%h", cpu.fetch.pc);
     // $monitor("%h %b %h %h", cpu.fetch.pc, cpu.RegisterBank.write_enable, cpu.RegisterBank.write_value, cpu.RegisterBank.write_address);
     // $monitor("%h %h %h %h %h", cpu.fetch.pc, cpu.decode.RegDest, cpu.execute.out_RegDest, cpu.memory.out_RegDest, cpu.writeback.out_RegDest);
-    $monitor("%h %h %h %h", cpu.fetch.pc, cpu.execute._RegDest, cpu.execute.rs1_value, cpu.execute.imm);
+    $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Execute._RegDest, cpu.Execute.rs1_value, cpu.Execute.imm);
 
     #600;
 
     for (i = 1; i <= 5; i++)
       $display("%h: %h", i, cpu.RegisterBank.register[i]);
-    $display("%d", cpu.fetch.pc);
+    $display("%d", cpu.Fetch.pc);
 
     $finish;
   end
