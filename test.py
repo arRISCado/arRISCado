@@ -135,7 +135,7 @@ for test_file in tests: #Run all tests
     result_values = ["0"]*32
     for line in result_lines:
         if in_result:
-            value = line.split("          ")[-1].split("\r")[0]
+            value = line.split(" ")[-1].split("\r")[0]
             result_values[reg_index] = value
             reg_index += 1
 
