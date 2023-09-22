@@ -64,10 +64,10 @@ module memory (
             _store = MemWrite;
 
             // Control signals to the next step
-            out_RegWrite <= in_RegWrite;
-            out_RegDest <= in_RegDest;
-            out_RegDataSrc <= in_RegDataSrc;
-            out_PCSrc <= in_PCSrc;
+            out_RegWrite = in_RegWrite;
+            out_RegDest = in_RegDest;
+            out_RegDataSrc = in_RegDataSrc;
+            out_PCSrc = in_PCSrc;
         end
     end
 
