@@ -1,20 +1,38 @@
-`ifndef TESTBENCH
-`define TESTBENCH 1
-`endif
-
-`include "../../project/ram.v"
-`include "../../project/rom.v"
-`include "../../project/cpu/register_bank.v"
-`include "../../project/cpu/alu.v"
-`include "../../project/cpu/fetch.v"
-`include "../../project/cpu/decode.v"
-`include "../../project/cpu/execute.v"
-`include "../../project/cpu/memory.v"
-`include "../../project/cpu/writeback.v"
-`include "../../project/cpu.v"
+`define ROM_FILE "../../testbenches/cpu_tb.txt"
+`include "../../testbenches/utils/imports.v"
 
 module test;
+  reg clock = 0;
+  reg reset = 0;
   
-  cpu cpu();
+  cpu cpu(clock, reset);
+
+  // Clock generation
+  always
+    #10 clock = ~clock;
+
+  integer i;
+
+  initial
+  begin
+    reset = 1;
+    #5;
+    reset = 0;
+
+    // for (i = 1; i <= 5; i++)
+      // $display("%h: %h", i, cpu.RegisterBank.register[i]);
+    // $display("%h", cpu.fetch.pc);
+    // $monitor("%h %b %h %h", cpu.fetch.pc, cpu.RegisterBank.write_enable, cpu.RegisterBank.write_value, cpu.RegisterBank.write_address);
+    // $monitor("%h %h %h %h %h", cpu.fetch.pc, cpu.decode.RegDest, cpu.execute.out_RegDest, cpu.memory.out_RegDest, cpu.writeback.out_RegDest);
+    $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Execute._RegDest, cpu.Execute.rs1_value, cpu.Execute.imm);
+
+    #600;
+
+    for (i = 1; i <= 5; i++)
+      $display("%h: %h", i, cpu.RegisterBank.register[i]);
+    $display("%d", cpu.Fetch.pc);
+
+    $finish;
+  end
 
 endmodule

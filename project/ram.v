@@ -1,5 +1,8 @@
 // FROM https://learn.lushaylabs.com/tang-nano-9k-sharing-resources/
 
+`ifndef RAM
+`define RAM
+
 module ram (
     input clk,
     input reset,
@@ -35,3 +38,5 @@ module ram (
     assign data_out = storage[address]; // Read data from the selected memory location
 
 endmodule
+
+`endif

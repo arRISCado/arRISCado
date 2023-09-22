@@ -12,10 +12,15 @@
 
 `endif
 
+`ifndef CPU
+`define CPU
+
 module cpu(
     input clock,
     input reset,
+    input enable
 );
+    assign clock_real = clock & enable;
     // ### Component wires ###
 
     // ROM
@@ -32,22 +37,22 @@ module cpu(
 
     // ### Components ###
 
-    ram ram(
-        .clk(clock), 
+    ram Ram(
+        .clk(clock_real), 
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
         .write_enable(ram_write_enable),
-        .data_out(ram_data_out),
+        .data_out(ram_data_out)
     );
 
-    rom rom(
+    rom Rom(
         .address(rom_address),
-        .data(rom_data),
+        .data(rom_data)
     );
 
     register_bank RegisterBank(
-        .clk(clock),
+        .clk(clock_real),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
@@ -55,7 +60,7 @@ module cpu(
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
         .value1(rb_value1),
-        .value2(rb_value2),
+        .value2(rb_value2)
     );
 
     // ### Pipeline wires ###
@@ -70,6 +75,7 @@ module cpu(
 
     // Decode -> Execute
     wire [31:0] de_ex_imm;          // Dies on execute
+    wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [3:0] de_ex_AluControl;    // Dies on execute
@@ -102,6 +108,7 @@ module cpu(
     wire mem_wb_MemToReg;            // Dies on WB
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
+    wire [31:0] mem_wb_AluResult;
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
@@ -112,27 +119,27 @@ module cpu(
 
     // ### Pipeline ###
 
-    fetch fetch(
-        .clk(clock),
+    fetch Fetch(
+        .clk(clock_real),
         .rst(reset),
         
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
+        .rom_address(rom_address),
 
         .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
-        .instr(if_de_instr),
+        .instr(if_de_instr)
     );
 
-    decode decode(
-        .clk(clock),
+    decode Decode(
+        .clk(clock_real),
         .rst(reset),
         
         .next_instruction(if_de_instr),
         
         .imm(de_ex_imm),
-        .rd(de_ex_rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
@@ -146,16 +153,16 @@ module cpu(
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
-        .PCSrc(de_ex_PCSrc),
+        .PCSrc(de_ex_PCSrc)
 
     );
 
-    execute execute(
-        .clk(clock),
+    execute Execute(
+        .clk(clock_real),
         .rst(reset),
         
         .rs1_value(rb_value1),
-        .rs2_value(rb_value1),
+        .rs2_value(rb_value2),
         .imm(de_ex_imm),
        
         // control inputs
@@ -180,13 +187,11 @@ module cpu(
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
 
-        .result(ex_mem_result),
+        .result(ex_mem_result)
     );
 
-    // confirmar nome de addr no pedido 4
-    memory memory(
-        // inputs
-        .clk(clock),
+    memory Memory(
+        .clk(clock_real),
         .rst(reset),
 
         .addr(ex_mem_result), // deve ser atualizado
@@ -215,22 +220,24 @@ module cpu(
         .out_RegDest(mem_wb_RegDest),
         .out_RegDataSrc(mem_wb_RegDataSrc),
         .out_PCSrc(mem_wb_PCSrc),
+        .out_AluResult(mem_wb_AluResult),
 
         // to RAM signals
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
-        .mem_write_enable(ram_write_enable),
+        .mem_write_enable(ram_write_enable)
     );
 
-    writeback writeback(
+    wire [4:0] wr_if_RegDest; //LIGAR
 
+    writeback Writeback(
         // inputs
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
-        .result_alu(ex_mem_result),
+        .result_alu(mem_wb_AluResult),
 
         // control inputs
         .MemToReg(mem_wb_MemToReg),
@@ -246,7 +253,9 @@ module cpu(
         .out_PCSrc(wr_if_PCSrc),
         
         .out_RegWrite(rb_write_enable),
-        .out_RegDest(rb_write_address), // vai para o Register Bank
+        .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 
 endmodule
+
+`endif 

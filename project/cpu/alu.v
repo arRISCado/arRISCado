@@ -1,3 +1,6 @@
+`ifndef ALU
+`define ALU
+
 // Arithmetic Logic Unit
 
 module alu (
@@ -37,3 +40,5 @@ module alu (
   end
 
 endmodule
+
+`endif
