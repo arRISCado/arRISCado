@@ -31,6 +31,7 @@ module memory (
 
     // to RAM signals
     output reg [31:0] mem_addr,       // Send   address to RAM
+    output reg [31:0] out_AluResult,       // Propagate ALU result
     output reg [31:0] mem_write_data, // Send data to write in RAM
     output reg mem_write_enable      // Send signal to enable writing in RAM
 );
@@ -56,6 +57,7 @@ module memory (
             mem_addr = 0;
             mem_write_data = 0;
             mem_write_enable = 0;
+            out_AluResult = 0;
         end
         else 
         begin
@@ -98,11 +100,12 @@ module memory (
             // when dealing with memory delay we need to receive a confirmation from RAM
         end
         
-        out_MemToReg = out_MemToReg;
-        out_RegWrite = out_RegWrite;
-        out_RegDest = out_RegDest;
-        out_RegDataSrc = out_RegDataSrc;
-        out_PCSrc = out_PCSrc;
+        out_MemToReg = _MemToReg;
+        out_RegWrite = _RegWrite;
+        out_RegDest = _RegDest;
+        out_RegDataSrc = _RegDataSrc;
+        out_PCSrc = _PCSrc;
+        out_AluResult = _addr;
     end
 
 endmodule

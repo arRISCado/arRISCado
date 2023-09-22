@@ -32,13 +32,12 @@ module execute (
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
-    output reg [4:0] rd_out,
     output [31:0] result,
     output reg [31:0] a,
     output reg [31:0] b
 );
 
-    reg [31:0] _rd, _rs1_value, _rs2_value, _imm, _PC;
+    reg [31:0] _rs1_value, _rs2_value, _imm, _PC;
     reg [2:0] _AluOp;
     reg _AluSrc;
 
@@ -53,8 +52,6 @@ module execute (
         begin
             a = 0;
             b = 0;
-            rd_out = 0;
-            _rd = 0;
             _rs1_value = 0;
             _rs2_value = 0;
             _imm = 0;
@@ -63,8 +60,6 @@ module execute (
         end
         else
         begin
-            rd_out = rd;
-            _rd = rd;
             _rs1_value = rs1_value;
             _rs2_value = rs2_value;
             _imm = imm;
@@ -118,8 +113,8 @@ module execute (
         // Tipo U LUI
         3'b100:
         begin
-            a = _rd;
-            b = _imm;
+            a = _imm;
+            b = 12;
             // é Literalmente isso o LUI, coloca isso no rd direto
         end
 
