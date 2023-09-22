@@ -14,7 +14,7 @@
 module cpu(
     input clock,
     input reset,
-    input enable,
+    input enable
 );
     assign clock_real = clock & enable;
     // ### Component wires ###
@@ -33,7 +33,7 @@ module cpu(
 
     // ### Components ###
 
-    ram ram(
+    ram Ram(
         .clk(clock_real), 
         .reset(reset),
         .address(ram_address),
@@ -113,7 +113,7 @@ module cpu(
 
     // ### Pipeline ###
 
-    fetch fetch(
+    fetch Fetch(
         .clk(clock_real),
         .rst(reset),
         
@@ -127,7 +127,7 @@ module cpu(
         .instr(if_de_instr)
     );
 
-    decode decode(
+    decode Decode(
         .clk(clock_real),
         .rst(reset),
         
@@ -151,7 +151,7 @@ module cpu(
 
     );
 
-    execute execute(
+    execute Execute(
         .clk(clock_real),
         .rst(reset),
         
@@ -184,7 +184,7 @@ module cpu(
         .result(ex_mem_result)
     );
 
-    memory memory(
+    memory Memory(
         .clk(clock_real),
         .rst(reset),
 
@@ -243,7 +243,7 @@ module cpu(
         .data_wb(rb_write_value),
 
         // control outputs
-        .out_PCSrc(wr_if_PCSrc)
+        .out_PCSrc(wr_if_PCSrc),
         
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank

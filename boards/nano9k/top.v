@@ -1,6 +1,6 @@
 `ifndef TESTBENCH
 
-`ifdef ROM_FILE
+`ifndef ROM_FILE
 `define ROM_FILE  "../../project/init_rom.txt"
 `endif
 

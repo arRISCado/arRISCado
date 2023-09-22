@@ -6,7 +6,7 @@ module test();
     reg clk;
     reg rst;
     
-    cpu cpu(clk, rst);
+    cpu cpu(clk, rst, 1'b1);
 
     // Testbench procedure
     initial begin
