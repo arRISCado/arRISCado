@@ -22,19 +22,25 @@ mkdir -p "$binary_dir"
 for asm_file in "$codes_dir"/*.c; do
     if [ -f "$asm_file" ]; then
         asm_filename=$(basename "$asm_file")
-        binary_filename="${asm_filename%.s}"
+        binary_filename="${asm_filename%.c}"
 
         # Compila o código
-        riscv64-unknown-elf-gcc -S -march=rv32imac -mabi=ilp32 "$codes_dir/$asm_filename" -o "$asm_dir/$binary_filename.s"
+        riscv64-unknown-elf-gcc -S -march=rv32imac -mabi=ilp32 "$codes_dir/$asm_filename" \
+            -o "$asm_dir/$binary_filename.s"
         
+        # Remove .atribute do codigo assemble
+        python3 fix-asm.py $binary_filename.s
+
         # Converte o código de montagem em binário
-        # riscv64-unknown-elf-as -o $binary_filename.o "$asm_dir/$binary_filename.s"
-        # riscv64-unknown-elf-ld -T linker.ld -o $binary_filename.elf $binary_filename.o
-        # riscv64-unknown-elf-objcopy -O binary $binary_filename.elf "$binary_dir/$binary_filename"
-        # xxd -p "$binary_dir/$binary_filename" > "$hex_dir/$binary_filename.hex"
+        riscv64-unknown-elf-as -o $binary_filename.o "$asm_dir/$binary_filename.s"
+        riscv64-unknown-elf-ld -T linker.ld -o $binary_filename.elf $binary_filename.o
+        riscv64-unknown-elf-objcopy -O binary --remove-section .comment \
+            --remove-section .riscv.attributes --reverse-bytes=4 \
+            $binary_filename.elf "$binary_dir/$binary_filename"
+        xxd -p "$binary_dir/$binary_filename" > "$hex_dir/$binary_filename.hex"
 
         # Removendo arquivos temporários
-        # rm $binary_filename.o $binary_filename.elf 
+        rm $binary_filename.o $binary_filename.elf 
 
         if [ -f $binary_dir/$binary_filename ]; then
             echo "Assembly $asm_filename compilado para $binary_filename"
