@@ -5,7 +5,7 @@ module test;
   reg clock = 0;
   reg reset = 0;
   
-  cpu cpu(clock, reset);
+  cpu cpu(clock, reset, 1);
 
   // Clock generation
   always
