@@ -118,6 +118,16 @@ for test_file in tests: #Run all tests
     #Get code result
     result = subprocess.run(command, shell=True, capture_output = True, cwd="project")
     result_lines = result.stdout.decode('ascii').split("\n")
+
+    if print_output:
+        print("-------------------------------")
+        print("stdout\n")
+        #print(repr(result.stdout.decode('ascii')))
+        print(result.stdout.decode('ascii').replace("\r", ""))
+        print("-------------------------------")
+        print("stderr")
+        print(result.stderr.decode('ascii'))
+        print("-------------------------------")
     
     #Get registers values from result
     reg_index = 1
@@ -135,6 +145,8 @@ for test_file in tests: #Run all tests
         if line == "#RESULT\r":
             in_result = True
 
+    if reg_index == 1:
+        raise RuntimeError("No result in test.")
     
     #Get expected result from out file
     expected_result = []
@@ -162,14 +174,6 @@ for test_file in tests: #Run all tests
             for i in range(32):
                 if expected_result[i] != result_values[i]:
                     print(f"{i}:", expected_result[i], result_values[i])
-    
-    if print_output:
-        print("-------------------------------")
-        print("stdout")
-        print(result.stdout.decode('ascii'))
-        print("-------------------------------")
-        print("stderr")
-        print(result.stderr.decode('ascii'))
-        print("-------------------------------")
+
 
 assert all_correct == True
