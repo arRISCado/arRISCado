@@ -31,13 +31,14 @@ module execute (
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
+    output reg [31:0] _rs2_value,
 
     output [31:0] result,
     output reg [31:0] a,
     output reg [31:0] b
 );
 
-    reg [31:0] _rs1_value, _rs2_value, _imm, _PC;
+    reg [31:0] _rs1_value, _imm, _PC;
     reg [2:0] _AluOp;
     reg _AluSrc;
 
