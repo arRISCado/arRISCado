@@ -11,31 +11,33 @@ module ram (
     input write_enable,
     output [31:0] data_out
 );
-
-    // Array of registers to represent memory cells
-    reg [255:0] storage [31:0];
+    reg _write_enable = 0;
+    reg [31:0] _address = 0;
+    // Array of 32 bit registers to represent memory cells
+    reg [31:0] storage [255:0];
 
     integer i;
-    initial begin
-        for (i = 0; i < 256; i = i + 1) begin
+    initial
+        for (i = 0; i < 256; i = i + 1)
             storage[i] = 0;
-        end
-    end
 
-    always @(reset)
-    begin
-        for (i = 0; i < 256; i = i + 1) begin
+    always @(posedge reset)
+        for (i = 0; i < 256; i = i + 1)
             storage[i] = 0;
-        end
-    end
 
     always @(posedge clk)
     begin
-        if (write_enable)
-            storage[address] <= data_in; // Write data to the selected memory location
+        _write_enable = write_enable;
+        _address = address;
     end
 
-    assign data_out = storage[address]; // Read data from the selected memory location
+    always @(*)
+    begin
+        if (_write_enable)
+            storage[_address] = data_in;
+    end
+
+    assign data_out = storage[_address]; // Read data from the selected memory location
 
 endmodule
 

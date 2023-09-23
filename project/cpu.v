@@ -42,7 +42,7 @@ module cpu(
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
-        .write_enable(ram_write_enable),
+        .write_enable(ex_mem_MemWrite),
         .data_out(ram_data_out)
     );
 
@@ -187,15 +187,18 @@ module cpu(
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
 
+        ._rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result)
     );
+
+    wire [31:0] ex_mem_rs2_value;
 
     memory Memory(
         .clk(clock_real),
         .rst(reset),
 
         .addr(ex_mem_result), // deve ser atualizado
-        .data_in(rb_value2),  // vem do decode(rs2)
+        .data_in(ex_mem_rs2_value), 
 
         // from RAM signals
         .mem_read_data(ram_data_out),

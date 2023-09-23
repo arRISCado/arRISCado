@@ -23,12 +23,15 @@ module test;
       // $display("%h: %h", i, cpu.RegisterBank.register[i]);
     // $display("%h", cpu.fetch.pc);
     // $monitor("%h %b %h %h", cpu.fetch.pc, cpu.RegisterBank.write_enable, cpu.RegisterBank.write_value, cpu.RegisterBank.write_address);
-    // $monitor("%h %h %h %h %h", cpu.fetch.pc, cpu.decode.RegDest, cpu.execute.out_RegDest, cpu.memory.out_RegDest, cpu.writeback.out_RegDest);
-    $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Execute._RegDest, cpu.Execute.rs1_value, cpu.Execute.imm);
+    // $monitor("%h", cpu.Ram.storage[0]);
+    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Ram.write_enable, cpu.Ram.address, cpu.Ram.data_in);
+    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory.mem_write_enable, cpu.Memory.mem_addr, cpu.Memory.mem_write_data);
+    $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_addr, cpu.Memory.mem_read_data);
 
-    #600;
+    #300;
 
-    for (i = 1; i <= 5; i++)
+    $display("### Registers ###");
+    for (i = 1; i <= 6; i++)
       $display("%h: %h", i, cpu.RegisterBank.register[i]);
     $display("%d", cpu.Fetch.pc);
 
