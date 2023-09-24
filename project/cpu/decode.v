@@ -24,7 +24,6 @@ module decode (
     output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
     output reg [2:0] AluOp,     // Operation type ALU will perform
     output reg [3:0] AluControl,// Exact operation ALU will perform
-    output reg Branch,          // True or False depending if the instruction is a Branch
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
     output reg PCSrc = 0        // Determines where the PC will come from
@@ -74,7 +73,7 @@ begin
                 RegWrite = 1;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 0;
+                PCSrc = 0;
                 AluControl = 4'b0110;
                 imm = {_instruction[31:12], 12'b0};
             end
@@ -87,7 +86,7 @@ begin
                 RegWrite = 0;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 1;
+                PCSrc = 1;
                 AluControl = 4'b0110;
                 imm = {_instruction[31:12], 12'b0};
             end
@@ -101,7 +100,7 @@ begin
             RegWrite = 0;
             MemRead = 0;
             MemWrite = 0;
-            Branch = 1;
+            PCSrc = 1;
             AluControl = 4'b0110;
             imm = {_instruction[31:12], 12'b0};
         end
@@ -119,7 +118,7 @@ begin
             endcase
         end
 
-        // Instruções de Branch: dependedem de func3 (Tipo B)
+        // Instruções de Branch: dependem de func3 (Tipo B)
         7'b1100011 :
         begin
             AluOp = 3'b001;
@@ -128,7 +127,7 @@ begin
             RegWrite = 0;
             MemRead = 0;
             MemWrite = 0;
-            Branch = 1;
+            PCSrc = 1;
             AluControl = 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
             imm = {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
 
@@ -146,7 +145,7 @@ begin
                 RegWrite = 1;
                 MemRead = 1;
                 MemWrite = 0;
-                Branch = 0;
+                PCSrc = 0;
                 AluControl = 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
                 imm = _instruction[31:20];
 
@@ -167,7 +166,7 @@ begin
                 RegWrite = 0;
                 MemRead = 0;
                 MemWrite = 1;
-                Branch = 0;
+                PCSrc = 0;
                 AluControl = 4'b0010; // SW performa uma soma na ALU pra calculcar endereço
                 imm = {_instruction[11:7], _instruction[31:25]};
                 
@@ -185,7 +184,7 @@ begin
                 RegWrite = 1;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 0;
+                PCSrc = 0;
                 imm = _instruction[31:20];
 
                 // ADDI
@@ -215,7 +214,7 @@ begin
                 RegWrite = 1;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 0;
+                PCSrc = 0;
             
                 case(func3)
                     3'b000 :
@@ -303,8 +302,8 @@ begin
             RegWrite = 0;
             MemRead = 0;
             MemWrite = 0;
-            Branch = 0;
-            $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
+            PCSrc = 0;
+            $display("Instrução %h inválida!", _instruction);
         end
         
     endcase

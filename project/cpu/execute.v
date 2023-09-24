@@ -16,7 +16,6 @@ module execute (
     input [2:0] AluOp,          // Operation type ALU will perform
     input [3:0] AluControl,     // Exact operation ALU will perform
     input in_MemWrite,          // True or False depending if the operation Writes in the Memory or not
-    input Branch,              // True or False depending if the instruction is a Branch
     input in_MemRead,          // True or False depending if the operation Reads from the Memory or not
     input in_RegWrite,         // True or False depending if the operation writes in a Register or not
     input [4:0] in_RegDest,    // Determines which register to write the ALU result

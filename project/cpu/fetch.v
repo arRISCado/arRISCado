@@ -21,7 +21,7 @@ module fetch (
         if (rst)
             pc_next = 0;
         else if (PCSrc)
-            pc_next = branch_target; // Use non-blocking assignment here
+            pc_next = pc_next + branch_target - 7; // Use non-blocking assignment here
         else
             pc_next = pc + 1; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
 

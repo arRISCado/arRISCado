@@ -11,15 +11,16 @@ module writeback (
     // Control Signals
     input MemToReg,
     input in_RegWrite,
-    input [4:0] in_RegDest,
     input in_PCSrc,
+    input [4:0] in_RegDest,
 
     output reg [31:0] data_wb,   // Data to be written back
 
     // Control Signal
     output reg out_RegWrite,
     output reg [4:0] out_RegDest,
-    output reg out_PCSrc
+    output reg out_PCSrc,
+    output reg [31:0] out_BranchTarget
 );
     // TODO: Pensar como carregar o dado de entrada
     reg _mem_done, _MemToReg;
@@ -65,6 +66,7 @@ module writeback (
         out_RegDest = _RegDest;
         out_PCSrc = _PCSrc;
         out_RegWrite = _RegWrite;
+        out_BranchTarget = {{27{_RegDest[4]}}, _RegDest};
     end
 endmodule
 

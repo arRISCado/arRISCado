@@ -79,7 +79,6 @@ module cpu(
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [3:0] de_ex_AluControl;    // Dies on execute
-    wire de_ex_Branch;              // Dies on Execute
     wire de_ex_MemWrite;            // Goes to MEM stage
     wire de_ex_MemRead;             // Goes to MEM stage
     wire de_ex_RegWrite;            // Goes to WB
@@ -112,10 +111,7 @@ module cpu(
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
-    wire wb_if_PCSrc;               // Dies on Fetch
-
-
-
+    wire wb_if_PCSrc;
 
     // ### Pipeline ###
 
@@ -127,7 +123,7 @@ module cpu(
         .rom_data(rom_data),
         .rom_address(rom_address),
 
-        .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
+        .PCSrc(wb_if_PCSrc), // May come from writeback, but ideally from memory stage
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
         .instr(if_de_instr)
@@ -146,7 +142,6 @@ module cpu(
         .AluOp(de_ex_aluOp),
         .AluSrc(de_ex_aluSrc),
         .AluControl(de_ex_AluControl),
-        .Branch(de_ex_Branch),
         .MemWrite(de_ex_MemWrite),
         .MemRead(de_ex_MemRead),
         .RegWrite(de_ex_RegWrite),
@@ -154,7 +149,6 @@ module cpu(
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
         .PCSrc(de_ex_PCSrc)
-
     );
 
     execute Execute(
@@ -169,7 +163,6 @@ module cpu(
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
         .AluControl(de_ex_AluControl),
-        .Branch(de_ex_Branch),
         .in_MemWrite(de_ex_MemWrite),
         .in_MemRead(de_ex_MemRead),
         .in_RegWrite(de_ex_RegWrite),
@@ -253,8 +246,8 @@ module cpu(
         .data_wb(rb_write_value),
 
         // control outputs
-        .out_PCSrc(wr_if_PCSrc),
-        
+        .out_PCSrc(wb_if_PCSrc),
+        .out_BranchTarget(wr_if_branch_target),
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
