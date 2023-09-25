@@ -1,6 +1,6 @@
 import serial  # pip install pyserial
 
-port = "COM6"  # Insert port connected to board here
+port = ""  # Insert port connected to board here
 
 serialPort = serial.Serial(port=port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 
@@ -14,7 +14,7 @@ bindata = []
 x = 0
 y = 2
 l = len(code)
-serialPort.write(hex(l/2))
+bindata.append(int(l/8))  # Amount of instructions
 while y <= l:
     if code[x] != '\r' and code[x] != '\n':
         bindata.append(int(code[x:y], 16))
