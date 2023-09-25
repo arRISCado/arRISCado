@@ -22,7 +22,7 @@ module register_bank(
   begin
     if (reset)
       for (i = 1; i < 32; i = i + 1)
-      register[i] = 0;
+        register[i] = 0;
     else
       // Write to memory
       if (write_enable)

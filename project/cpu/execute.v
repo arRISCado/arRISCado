@@ -22,6 +22,8 @@ module execute (
     input in_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
+    input [2:0] BranchOp,       // Determines what type of branch is being done
+
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -44,7 +46,17 @@ module execute (
     reg [4:0] _RegDest;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
-    alu alu(AluControl, a, b, result);
+    wire zero;
+    wire borrow;
+
+    alu alu(AluControl, a, b, result, zero, borrow);
+
+    localparam BEQ = 3'b000;
+    localparam BNE = 3'b001;
+    localparam BLT = 3'b100;
+    localparam BGE = 3'b101;
+    localparam BLTU = 3'b110;
+    localparam BGEU = 3'b111;
 
     always @(posedge clk or posedge rst)
     begin
@@ -78,6 +90,8 @@ module execute (
 
     always @(*)
     begin
+        out_PCSrc = _PCSrc;
+
         case(AluOp)
         // Tipo Load ou Store
         3'b000 :
@@ -89,6 +103,36 @@ module execute (
         // Tipo B
         3'b001 :
         begin
+            case (BranchOp)
+                BEQ:
+                begin
+                    out_PCSrc = zero && _PCSrc;
+                end
+                BNE:
+                begin
+                    out_PCSrc = zero ^ _PCSrc;
+                end
+                BLT:
+                begin
+                    out_PCSrc = result[31] && _PCSrc;
+                end
+                BGE:
+                begin
+                    out_PCSrc = !(result[31]) && _PCSrc;
+                end
+                BLTU:
+                begin
+                    out_PCSrc = borrow && _PCSrc;
+                end
+                BGEU:
+                begin
+                    out_PCSrc = !(borrow) && _PCSrc;
+                end
+                default: 
+                begin
+                    $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
+                end
+            endcase
             a = _rs1_value;
             b = _rs2_value;
             //como que passa o RD pra escrever no banco de REGs dps?
@@ -153,7 +197,6 @@ module execute (
     out_RegDest = _RegDest;
     out_MemToReg = _MemToReg;
     out_RegDataSrc = _RegDataSrc;
-    out_PCSrc = _PCSrc;
 end
     
 endmodule
