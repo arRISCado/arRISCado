@@ -20,11 +20,10 @@ module register_bank(
   
   always @(posedge clk or posedge reset)
   begin
-  if (reset)
-    for (i = 1; i < 32; i = i + 1)
-    register[i] = 0;
-  else
-  begin
+    if (reset)
+      for (i = 1; i < 32; i = i + 1)
+      register[i] = 0;
+    else
       // Write to memory
       if (write_enable)
         if (write_address)
@@ -42,7 +41,6 @@ module register_bank(
     else
       value2 = register[read_address2];
   end
-end
 
 endmodule
 `endif
