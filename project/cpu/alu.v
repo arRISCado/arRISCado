@@ -8,7 +8,8 @@ module alu (
   input signed [31:0] a,
   input signed [31:0] b,
   output reg [31:0] result,
-  output reg zero
+  output reg zero,
+  output reg borrow
 );
 
   reg [31:0] u_a;
@@ -20,6 +21,7 @@ module alu (
   localparam ADDITION       = 5'b00010;
   localparam BITWISE_XOR    = 5'b00011;
   localparam SUBTRACTION    = 5'b00100;
+  localparam SUB_USN        = 5'b10011;
   localparam BITWISE_NOT    = 5'b00101;
   localparam SHIFT_LEFT     = 5'b00110;
   localparam SHIFT_RIGHT    = 5'b00111;
@@ -33,7 +35,7 @@ module alu (
   localparam DIV_SGN        = 5'b01111;
   localparam MUL_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
-  localparam REM_USGN        = 5'b10010;
+  localparam REM_USGN       = 5'b10010;
 
   // localparam  = 5'b;
   // localparam  = 5'b;
@@ -77,6 +79,7 @@ module alu (
       MUL_USGN: result = u_a / u_b;
       REM_SGN: result = a % b;
       REM_USGN: result = u_a % u_b;
+      SUB_USN: {result, borrow} = u_a - u_b;
       default: result = 32'b0; // Default output
     endcase
 

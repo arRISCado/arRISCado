@@ -26,6 +26,7 @@ module decode (
     output reg [4:0] AluControl,// Exact operation ALU will perform
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
+    output reg [2:0] BranchOp,    // Determines what type of branch is being done
     output reg PCSrc = 0        // Determines where the PC will come from
 );
 
@@ -112,6 +113,7 @@ begin
                 end
             
             // AUIPC: Add U-Immediate with PC (Tipo U)
+            // Modificar isso pq tá tudo errado
             CODE_AUIPC : 
                 begin
                     AluOp = 3'b101;
@@ -162,12 +164,10 @@ begin
                 MemRead = 0;
                 MemWrite = 0;
                 Branch = 1;
-                AluControl = 5'b00110; // Branch performa uma subtração na ALU pra fazer a comparação
+                AluControl = 5'b00100; // Branch performa uma subtração na ALU pra fazer a comparação
                 imm = {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
 
-                // Esse sinal irá indicar pra ALU qual o tipo de Branch
-                // (Não sei oq fazer pra diferenciar os tipos de Branch ainda, então o padrão vai ser BGE por hora)
-                // if (func3 == 010) 
+                BranchOp = func3;
             end
 
             // Instruções dos tipos de Loads: dependem do func3

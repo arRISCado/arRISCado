@@ -78,7 +78,8 @@ module cpu(
     wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
-    wire [3:0] de_ex_AluControl;    // Dies on execute
+    wire [4:0] de_ex_AluControl;    // Dies on execute
+    wire [2:0] de_ex_BranchOp;       // Dies on Execute
     wire de_ex_MemWrite;            // Goes to MEM stage
     wire de_ex_MemRead;             // Goes to MEM stage
     wire de_ex_RegWrite;            // Goes to WB
@@ -148,7 +149,9 @@ module cpu(
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
-        .PCSrc(de_ex_PCSrc)
+        .PCSrc(de_ex_PCSrc),
+        .BranchOp(de_ex_BranchOp)
+
     );
 
     execute Execute(
@@ -163,6 +166,7 @@ module cpu(
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
         .AluControl(de_ex_AluControl),
+        .BranchOp(de_ex_BranchOp),
         .in_MemWrite(de_ex_MemWrite),
         .in_MemRead(de_ex_MemRead),
         .in_RegWrite(de_ex_RegWrite),
