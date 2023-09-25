@@ -112,7 +112,8 @@ begin
                 end
             
             // AUIPC: Add U-Immediate with PC (Tipo U)
-            CODE_AUIPC : begin
+            CODE_AUIPC : 
+                begin
                     AluOp = 3'b101;
                     AluSrc = 1;
                     MemToReg = 1;
@@ -455,7 +456,8 @@ begin
             $display("Instrução %h inválida!", _instruction);
         end
         
-    endcase
+        endcase
+    end
 end
     
 endmodule
