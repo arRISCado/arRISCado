@@ -19,7 +19,6 @@ reg [7:0] dataIn = 0;
 reg [2:0] rxState = 0;
 reg [12:0] rxCounter = 0;
 reg [2:0] rxBitNumber = 0;
-reg byteReady = 0;
 
 localparam RX_STATE_IDLE = 0;
 localparam RX_STATE_START_BIT = 1;
@@ -34,7 +33,6 @@ always @(posedge clk) begin
                 rxState <= RX_STATE_START_BIT;
                 rxCounter <= 1;
                 rxBitNumber <= 0;
-                byteReady <= 0;
             end
         end 
         RX_STATE_START_BIT: begin
@@ -64,7 +62,32 @@ always @(posedge clk) begin
             if ((rxCounter + 1) == DELAY_FRAMES) begin
                 rxState <= RX_STATE_IDLE;
                 rxCounter <= 0;
-                byteReady <= 1;
+                case(romWriteState)
+                    RECEIVE_SIZE: begin
+                        fullsize[7:0] <= dataIn[7:0];
+                        romWriteState <= ROM_WRITE_1;
+                    end
+                    ROM_WRITE_1: begin
+                        instructionBits[7:0] <= dataIn[7:0];
+                        romWriteState <= ROM_WRITE_2;
+                    end
+                    ROM_WRITE_2: begin
+                        instructionBits[15:8] <= dataIn[7:0];
+                        romWriteState <= ROM_WRITE_3;
+                    end
+                    ROM_WRITE_3: begin
+                        instructionBits[23:16] <= dataIn[7:0];
+                        romWriteState <= ROM_WRITE_4;
+                    end
+                    ROM_WRITE_4: begin
+                        instructionBits[31:24] <= dataIn[7:0];
+                        memory[currentInst] <= instructionBits;
+                        currentInst = currentInst + 1;
+                        if(currentInst == fullsize)
+                            cpu_enable = 1;
+                        romWriteState <= ROM_WRITE_1;
+                    end
+                endcase
             end
         end
     endcase
@@ -72,46 +95,25 @@ end
 
 
 reg [31:0] memory[255:0];
-localparam currentInst = 0;
+reg [7:0] currentInst = 0;
+reg [7:0] fullsize = 0;
 
-reg [2:0] romWriteState = 0;
+initial begin
+    repeat (256) begin
+        memory[currentInst] <= 32'b00000000000100000000000000010011;
+        currentInst = currentInst + 1;
+    end
+    led[5:0] <= 6'b000000;
+    currentInst[7:0] <= 8'b00000000;
+end
+
+reg [2:0] romWriteState = 4;
 reg [31:0] instructionBits = 0;
 
 localparam ROM_WRITE_1 = 0;
 localparam ROM_WRITE_2 = 1;
 localparam ROM_WRITE_3 = 2;
 localparam ROM_WRITE_4 = 3;
-
-always @(posedge clk) begin
-    if (byteReady) begin
-        // Should be changed to use byte transmitted for something
-        // Currently changes LEDs for testing purposes
-        led <= ~dataIn[5:0];
-        case(romWriteState)
-            ROM_WRITE_1: begin
-                instructionBits[7:0] <= data_in[7:0];
-                romWriteState <= ROM_WRITE_2;
-            end
-            ROM_WRITE_2: begin
-                instructionBits[15:8] <= data_in[7:0];
-                romWriteState <= ROM_WRITE_3;
-            end
-            ROM_WRITE_3: begin
-                instructionBits[23:16] <= data_in[7:0];
-                romWriteState <= ROM_WRITE_4;
-            end
-            ROM_WRITE_4: begin
-                instructionBits[31:24] <= data_in[7:0];
-                if(instructionBit == 32'b11111111111111111111111111111111) begin
-                    cpu_enable = 1;
-                end
-                else begin
-                    memory[currentInst] <= instructionBits;
-                end
-                romWriteState <= ROM_WRITE_1;
-            end
-        endcase
-    end
-end
+localparam RECEIVE_SIZE = 4;
 
 endmodule
