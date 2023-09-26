@@ -8,13 +8,12 @@ module alu (
   input signed [31:0] a,
   input signed [31:0] b,
   output reg [31:0] result,
-  output reg zero,
+  output zero,
   output reg borrow
 );
 
-  reg [31:0] u_a;
-  reg [31:0] u_b;
-
+  wire [31:0] u_a;
+  wire [31:0] u_b;
 
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
@@ -41,12 +40,11 @@ module alu (
   // localparam  = 5'b;
   // localparam  = 5'b;
   // localparam  = 5'b;
+  assign u_a = a;
+  assign u_b = b;
 
   always @(*)
   begin
-    u_a = a;
-    u_b = b;
-
     case (AluControl)
       BITWISE_AND: result = a & b; // Bitwise AND
       BITWISE_OR: result = a | b; // Bitwise OR
@@ -83,8 +81,8 @@ module alu (
       default: result = 32'b0; // Default output
     endcase
 
-    zero = (result == 32'b0);
   end
+  assign zero = (result == 32'b0);
 
 endmodule
 

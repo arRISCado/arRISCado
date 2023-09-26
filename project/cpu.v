@@ -87,6 +87,7 @@ module cpu(
     wire de_ex_MemToReg;            // Goes to MEM
     wire de_ex_RegDataSrc;          // Goes to WB
     wire de_ex_PCSrc;               // Goes to next Fetch
+    wire [11:0] de_ex_BranchOffset;
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
@@ -98,6 +99,7 @@ module cpu(
     wire [4:0] ex_mem_RegDest;       // Goes to WB
     wire ex_mem_RegDataSrc;          // Goes to WB
     wire ex_mem_PCSrc;               // Goes to next Fetch
+    wire [11:0] ex_mem_BranchOffset;
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
@@ -109,9 +111,10 @@ module cpu(
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
     wire [31:0] mem_wb_AluResult;
+    wire [11:0] mem_wb_BranchOffset;
 
     // Writeback -> Fetch
-    wire [31:0] wr_if_branch_target;
+    wire [31:0] wb_if_BranchOffset;
     wire wb_if_PCSrc;
 
     // ### Pipeline ###
@@ -120,7 +123,7 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
+        .BranchOffset(wb_if_BranchOffset), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
@@ -150,8 +153,8 @@ module cpu(
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
         .PCSrc(de_ex_PCSrc),
-        .BranchOp(de_ex_BranchOp)
-
+        .BranchOp(de_ex_BranchOp),
+        .BranchOffset(de_ex_BranchOffset)
     );
 
     execute Execute(
@@ -166,7 +169,7 @@ module cpu(
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
         .AluControl(de_ex_AluControl),
-        .BranchOp(de_ex_BranchOp),
+        .in_BranchOp(de_ex_BranchOp),
         .in_MemWrite(de_ex_MemWrite),
         .in_MemRead(de_ex_MemRead),
         .in_RegWrite(de_ex_RegWrite),
@@ -174,6 +177,7 @@ module cpu(
         .in_MemToReg(de_ex_MemToReg),
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
+        .in_BranchOffset(de_ex_BranchOffset),
 
         // Control Outputs
         .out_MemWrite(ex_mem_MemWrite),
@@ -183,6 +187,7 @@ module cpu(
         .out_MemToReg(ex_mem_MemToReg),
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
+        .out_BranchOffset(ex_mem_BranchOffset),
 
         ._rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result)
@@ -209,6 +214,7 @@ module cpu(
         .in_RegDest(ex_mem_RegDest),
         .in_RegDataSrc(ex_mem_RegDataSrc),
         .in_PCSrc(ex_mem_PCSrc),
+        .in_BranchOffset(ex_mem_BranchOffset),
 
         // outputs
         .data_out(mem_wb_data_out),
@@ -221,6 +227,7 @@ module cpu(
         .out_RegDataSrc(mem_wb_RegDataSrc),
         .out_PCSrc(mem_wb_PCSrc),
         .out_AluResult(mem_wb_AluResult),
+        .out_BranchOffset(mem_wb_BranchOffset),
 
         // to RAM signals
         .mem_addr(ram_address),
@@ -245,13 +252,14 @@ module cpu(
         .in_RegWrite(mem_wb_RegWrite),
         .in_RegDest(mem_wb_RegDest),
         .in_PCSrc(mem_wb_PCSrc),
+        .in_BranchOffset(mem_wb_BranchOffset),
 
         // outputs
         .data_wb(rb_write_value),
 
         // control outputs
         .out_PCSrc(wb_if_PCSrc),
-        .out_BranchTarget(wr_if_branch_target),
+        .out_BranchOffset(wb_if_BranchOffset),
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
