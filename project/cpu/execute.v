@@ -22,8 +22,8 @@ module execute (
     input in_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
-    input [2:0] BranchOp,       // Determines what type of branch is being done
-
+    input [2:0] in_BranchOp,       // Determines what type of branch is being done
+    input [11:0] in_BranchOffset,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -33,6 +33,7 @@ module execute (
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     output reg [31:0] _rs2_value,
+    output reg [11:0] out_BranchOffset,
 
     output [31:0] result,
     output reg [31:0] a,
@@ -40,16 +41,17 @@ module execute (
 );
 
     reg [31:0] _rs1_value, _imm, _PC;
-    reg [2:0] _AluOp;
+    reg [2:0] _AluOp, _BranchOp;
     reg _AluSrc;
 
-    reg [4:0] _RegDest;
+    reg [4:0] _RegDest, _AluControl;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
+    reg [11:0] _BranchOffset;
 
     wire zero;
     wire borrow;
 
-    alu alu(AluControl, a, b, result, zero, borrow);
+    alu alu(_AluControl, a, b, result, zero, borrow);
 
     localparam BEQ = 3'b000;
     localparam BNE = 3'b001;
@@ -77,6 +79,8 @@ module execute (
             _imm = imm;
             _PC = PC;
             _AluSrc = AluSrc;
+            _AluControl = AluControl;
+            _AluOp = AluOp;
             
             _MemWrite = in_MemWrite;
             _MemRead = in_MemRead;
@@ -85,14 +89,16 @@ module execute (
             _MemToReg = in_MemToReg;
             _RegDataSrc = in_RegDataSrc;
             _PCSrc = in_PCSrc;
+            _BranchOp = in_BranchOp;
+            _BranchOffset = in_BranchOffset;
         end
     end
 
     always @(*)
     begin
-        out_PCSrc = _PCSrc;
+        out_PCSrc <= _PCSrc;
 
-        case(AluOp)
+        case(_AluOp)
         // Tipo Load ou Store
         3'b000 :
         begin
@@ -103,14 +109,16 @@ module execute (
         // Tipo B
         3'b001 :
         begin
-            case (BranchOp)
+            a = _rs1_value;
+            b = _rs2_value;
+            case (_BranchOp)
                 BEQ:
                 begin
                     out_PCSrc = zero && _PCSrc;
                 end
                 BNE:
                 begin
-                    out_PCSrc = zero ^ _PCSrc;
+                    out_PCSrc = !(zero) && _PCSrc;
                 end
                 BLT:
                 begin
@@ -133,9 +141,6 @@ module execute (
                     $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
                 end
             endcase
-            a = _rs1_value;
-            b = _rs2_value;
-            //como que passa o RD pra escrever no banco de REGs dps?
         end
 
         // Tipo R OU I
@@ -197,6 +202,7 @@ module execute (
     out_RegDest = _RegDest;
     out_MemToReg = _MemToReg;
     out_RegDataSrc = _RegDataSrc;
+    out_BranchOffset = _BranchOffset;
 end
     
 endmodule

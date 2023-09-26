@@ -26,7 +26,8 @@ module decode (
     output reg [4:0] AluControl,// Exact operation ALU will perform
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
-    output reg [2:0] BranchOp,    // Determines what type of branch is being done
+    output [2:0] BranchOp,    // Determines what type of branch is being done
+    output [11:0] BranchOffset,
     output reg PCSrc = 0        // Determines where the PC will come from
 );
 
@@ -78,6 +79,8 @@ assign rs2 = _instruction[24:20];
 assign shamt = _instruction[24:20];
 assign func3 = _instruction[14:12];
 assign func7 = _instruction[31:25];
+assign BranchOp = func3;
+assign BranchOffset = {_instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
 
 always @(*) 
 begin
@@ -95,7 +98,7 @@ begin
     // definem se é 32, 16 ou 64 bits.
 
     // Intruções dos tipos RV32IMA
-    if(opcode[1:0] == 11) 
+    if(opcode[1:0] == 'b11) 
     begin
         case (opcode[6:2])
             // LUI: Load Upper Immediate (Tipo U)
@@ -107,7 +110,6 @@ begin
                     RegWrite = 1;
                     MemRead = 0;
                     MemWrite = 0;
-                    Branch = 0;
                     AluControl = 5'b00110;
                     imm = {_instruction[31:12], 12'b0};
                 end
@@ -122,7 +124,6 @@ begin
                     RegWrite = 0;
                     MemRead = 0;
                     MemWrite = 0;
-                    Branch = 1;
                     AluControl = 5'b00110;
                     imm = {_instruction[31:12], 12'b0};
                 end
@@ -136,7 +137,6 @@ begin
                 RegWrite = 0;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 1;
                 AluControl = 5'b00110;
                 imm = {_instruction[31:12], 12'b0};
             end
@@ -163,11 +163,9 @@ begin
                 RegWrite = 0;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 1;
+                PCSrc = 1;
                 AluControl = 5'b00100; // Branch performa uma subtração na ALU pra fazer a comparação
                 imm = {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
-
-                BranchOp = func3;
             end
 
             // Instruções dos tipos de Loads: dependem do func3
@@ -179,7 +177,6 @@ begin
                     RegWrite = 1;
                     MemRead = 1;
                     MemWrite = 0;
-                    Branch = 0;
                     AluControl = 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
                     imm = {_instruction[31:20], 20'b0};
 
@@ -200,7 +197,6 @@ begin
                     RegWrite = 0;
                     MemRead = 0;
                     MemWrite = 1;
-                    Branch = 0;
                     AluControl = 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
                     imm = {_instruction[11:7], _instruction[31:25], 20'b0};
                     
@@ -219,7 +215,6 @@ begin
                     RegWrite = 1;
                     MemRead = 0;
                     MemWrite = 0;
-                    Branch = 0;
                     imm = {_instruction[31:20], 20'b0};
 
                     case (func3)
@@ -284,7 +279,6 @@ begin
                     RegWrite = 1;
                     MemRead = 0;
                     MemWrite = 0;
-                    Branch = 0;
                 
                     case(func3)
                         3'b000 :
@@ -399,7 +393,6 @@ begin
                 RegWrite = 1;
                 MemRead = 0;
                 MemWrite = 0;
-                Branch = 0;
 
                 // mul: Place result in lower part of rd
                 if (func3 == 3'b000) 

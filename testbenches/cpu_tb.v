@@ -5,7 +5,7 @@ module test;
   reg clock = 0;
   reg reset = 0;
   
-  cpu cpu(clock, reset);
+  cpu cpu(clock, reset, 1'b1);
 
   // Clock generation
   always
@@ -21,14 +21,15 @@ module test;
 
     // for (i = 1; i <= 5; i++)
       // $display("%h: %h", i, cpu.RegisterBank.register[i]);
-    // $display("%h", cpu.fetch.pc);
+    // $monitor("%h", cpu.Fetch.pc);
     // $monitor("%h %b %h %h", cpu.fetch.pc, cpu.RegisterBank.write_enable, cpu.RegisterBank.write_value, cpu.RegisterBank.write_address);
-    // $monitor("%h", cpu.Ram.storage[0]);
     // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Ram.write_enable, cpu.Ram.address, cpu.Ram.data_in);
     // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory.mem_write_enable, cpu.Memory.mem_addr, cpu.Memory.mem_write_data);
-    $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_addr, cpu.Memory.mem_read_data);
+    $monitor("%h %d %d", cpu.Fetch.pc, cpu.Fetch.pc, cpu.Fetch.BranchOffset);
 
-    #300;
+    // $monitor("%d", cpu.Fetch.pc);
+
+    #600;
 
     $display("### Registers ###");
     for (i = 1; i <= 6; i++)
