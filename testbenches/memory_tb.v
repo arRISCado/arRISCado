@@ -1,4 +1,6 @@
-module memory_tb;
+`include "../../testbenches/utils/imports.v"
+
+module test;
 
     // Define constants
 

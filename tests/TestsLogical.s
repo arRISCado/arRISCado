@@ -1,6 +1,8 @@
-.global main
-.text
-
+	.option nopic
+	.text
+	.align	2
+	.globl	main
+	.type	main, @function
 main:
 	andi a0, a0, 1745
 	xori a0, a0, 1745

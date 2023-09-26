@@ -1,4 +1,4 @@
-`include "../../project/cpu/alu.v"
+`include "../../testbenches/utils/imports.v"
 
 module test;
     // Outputs

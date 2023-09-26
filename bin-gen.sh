@@ -24,7 +24,9 @@ for asm_file in "$asm_dir"/*.s; do
         # Converte o código de montagem em binário
         riscv64-unknown-elf-as -o $binary_filename.o "$asm_dir/$asm_filename"
         riscv64-unknown-elf-ld -T linker.ld -o $binary_filename.elf $binary_filename.o
-        riscv64-unknown-elf-objcopy -O binary $binary_filename.elf "$binary_dir/$binary_filename"
+        riscv64-unknown-elf-objcopy -O binary \
+            --remove-section .riscv.attributes --reverse-bytes=4 \
+            $binary_filename.elf "$binary_dir/$binary_filename"
         xxd -p "$binary_dir/$binary_filename" > "$hex_dir/$binary_filename.hex"
 
         # Removendo arquivos temporários

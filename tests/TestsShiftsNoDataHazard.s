@@ -1,6 +1,8 @@
-.global main
-.text
-
+	.option nopic
+	.text
+	.align	2
+	.globl	main
+	.type	main, @function
 main:
 	addi a0, a0, 57
 	addi zero, zero, 0
