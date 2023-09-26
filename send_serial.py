@@ -1,10 +1,18 @@
 import serial  # pip install pyserial
+import sys
 
-port = ""  # Insert port connected to board here
+if len(sys.argv) != 3:
+    print("Script usage: python3 send_serial.py <Board port> <test file>")
+    print("Example: python3 send_serial.py COM4 TestsArith.hex")
+    exit()
+
+#To check your port use python3 -m serial.tools.list_ports -v
+port = sys.argv[1]
+test_path = "./tests/binaries/" + sys.argv[2]
 
 serialPort = serial.Serial(port=port, baudrate=115200, bytesize=8, timeout=2, stopbits=serial.STOPBITS_ONE)
 
-f = open("./tests/binaries/TestsArith.hex", "rt")  # Insert .hex file to be sent
+f = open(test_path, "rt")
 code = f.read()
 code = code.replace('\n', '')
 code = code.replace('\r', '')
