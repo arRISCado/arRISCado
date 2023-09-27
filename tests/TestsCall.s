@@ -1,3 +1,8 @@
+	.option nopic
+	.text
+	.align	2
+	.globl	main
+	.type	main, @function
 my_function:
     addi sp, sp, -4    
     sw ra, 0(sp)
@@ -19,9 +24,7 @@ my_function:
 
 main:
     jal ra, my_function
-    addi a2, zero, 10    
-    ecall
-      
+    addi a2, zero, 10 
     
 # Expected final state:
 # t0: 0

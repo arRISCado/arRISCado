@@ -1,6 +1,4 @@
-`include "../../project/rom.v"
-`include "../../project/cpu/fetch.v"
-`include "../../project/cpu/decode.v"
+`include "../../testbenches/utils/imports.v"
 
 module test;
 

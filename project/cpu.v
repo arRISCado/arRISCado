@@ -1,3 +1,5 @@
+`ifndef TESTBENCH
+
 `include "ram.v"
 `include "rom.v"
 `include "cpu/register_bank.v"
@@ -9,12 +11,18 @@
 `include "cpu/writeback.v"
 `include "peripheral/peripheral_manager.v"
 
+`endif
+
+`ifndef CPU
+`define CPU
+
 module cpu(
     input clock,
     input reset,
-
+    input enable,
     output port_pwm1
 );
+    assign clock_real = clock & enable;
     // ### Component wires ###
 
     // ROM
@@ -31,6 +39,7 @@ module cpu(
 
     // ### Components ###
 
+
     // Memories
 
     //Address map
@@ -38,13 +47,13 @@ module cpu(
     //abc = destiny (000 = ram, 001 = peripheral1, ..., 111 = peripheral7)
     //xxx...xxx = addr
 
-    ram ram(
-        .clk(clock), 
+    ram Ram(
+        .clk(clock_real), 
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
-        .write_enable(ram_write_enable),
-        .data_out(ram_data_out),
+        .write_enable(ex_mem_MemWrite),
+        .data_out(ram_data_out)
     );
 
     peripheral_manager peripheral_manager(
@@ -55,13 +64,14 @@ module cpu(
         .pwm1_out(port_pwm1)
     );
 
-    rom rom(
+
+    rom Rom(
         .address(rom_address),
-        .data(rom_data),
+        .data(rom_data)
     );
 
     register_bank RegisterBank(
-        .clk(clock),
+        .clk(clock_real),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
@@ -69,7 +79,7 @@ module cpu(
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
         .value1(rb_value1),
-        .value2(rb_value2),
+        .value2(rb_value2)
     );
 
     // ### Pipeline wires ###
@@ -84,6 +94,7 @@ module cpu(
 
     // Decode -> Execute
     wire [31:0] de_ex_imm;          // Dies on execute
+    wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [3:0] de_ex_AluControl;    // Dies on execute
@@ -116,55 +127,64 @@ module cpu(
     wire mem_wb_MemToReg;            // Dies on WB
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
+    wire [31:0] mem_wb_AluResult;
 
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
-
     wire wb_if_PCSrc;               // Dies on Fetch
-    wire wb_if_RegWrite;            // Goes on Register Bank
-    wire wb_if_RegDest;             // Goes on Register Bank
+
 
 
 
     // ### Pipeline ###
 
-    fetch fetch(
-        .clk(clock),
+    fetch Fetch(
+        .clk(clock_real),
         .rst(reset),
         
         .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
+        .rom_address(rom_address),
 
         .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
-        .instr(if_de_instr),
+        .instr(if_de_instr)
     );
 
-    decode decode(
-        .clk(clock),
+    decode Decode(
+        .clk(clock_real),
         .rst(reset),
         
         .next_instruction(if_de_instr),
         
         .imm(de_ex_imm),
-        .rd(de_ex_rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
         .AluOp(de_ex_aluOp),
         .AluSrc(de_ex_aluSrc),
+        .AluControl(de_ex_AluControl),
+        .Branch(de_ex_Branch),
+        .MemWrite(de_ex_MemWrite),
+        .MemRead(de_ex_MemRead),
+        .RegWrite(de_ex_RegWrite),
+        .RegDest(de_ex_RegDest),
+        .MemToReg(de_ex_MemToReg),
+        .RegDataSrc(de_ex_RegDataSrc),
+        .PCSrc(de_ex_PCSrc)
+
     );
 
-    execute execute(
-        .clk(clock),
+    execute Execute(
+        .clk(clock_real),
         .rst(reset),
         
         .rs1_value(rb_value1),
-        .rs2_value(rb_value1),
+        .rs2_value(rb_value2),
         .imm(de_ex_imm),
        
-        // Control signals
+        // control inputs
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
         .AluControl(de_ex_AluControl),
@@ -177,17 +197,27 @@ module cpu(
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
 
-        .result(ex_mem_result),
+        // Control Outputs
+        .out_MemWrite(ex_mem_MemWrite),
+        .out_MemRead(ex_mem_MemRead),
+        .out_RegWrite(ex_mem_RegWrite),
+        .out_RegDest(ex_mem_RegDest),
+        .out_MemToReg(ex_mem_MemToReg),
+        .out_RegDataSrc(ex_mem_RegDataSrc),
+        .out_PCSrc(ex_mem_PCSrc),
+
+        ._rs2_value(ex_mem_rs2_value),
+        .result(ex_mem_result)
     );
 
-    // confirmar nome de addr no pedido 4
-    memory memory(
-        // inputs
-        .clk(clock),
+    wire [31:0] ex_mem_rs2_value;
+
+    memory Memory(
+        .clk(clock_real),
         .rst(reset),
 
         .addr(ex_mem_result), // deve ser atualizado
-        .data_in(rb_value2),  // vem do decode(rs2)
+        .data_in(ex_mem_rs2_value), 
 
         // from RAM signals
         .mem_read_data(ram_data_out),
@@ -212,22 +242,24 @@ module cpu(
         .out_RegDest(mem_wb_RegDest),
         .out_RegDataSrc(mem_wb_RegDataSrc),
         .out_PCSrc(mem_wb_PCSrc),
+        .out_AluResult(mem_wb_AluResult),
 
         // to RAM signals
         .mem_addr(ram_address),
         .mem_write_data(ram_data_in),
-        .mem_write_enable(ram_write_enable),
+        .mem_write_enable(ram_write_enable)
     );
 
-    writeback writeback(
+    wire [4:0] wr_if_RegDest; //LIGAR
 
+    writeback Writeback(
         // inputs
-        .clk(clock),
+        .clk(clock_real),
         .rst(reset),
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
-        .result_alu(ex_mem_result),
+        .result_alu(mem_wb_AluResult),
 
         // control inputs
         .MemToReg(mem_wb_MemToReg),
@@ -240,9 +272,12 @@ module cpu(
         .data_wb(rb_write_value),
 
         // control outputs
-        .out_RegWrite(wr_if_RegWrite),
-        .out_RegDest(wr_if_RegDest), // vai para o fetch
-        .out_PCSrc(wr_if_PCSrc)
+        .out_PCSrc(wr_if_PCSrc),
+        
+        .out_RegWrite(rb_write_enable),
+        .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 
 endmodule
+
+`endif 

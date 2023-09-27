@@ -1,3 +1,6 @@
+`ifndef DECODE
+`define DECODE
+
 // Decode Stage
 module decode (
     input clk,                // Clock signal
@@ -7,23 +10,24 @@ module decode (
 
     // TODO: Clean unused outputs
     output reg [31:0] imm,
-    output [4:0] rd, rs1, rs2,
+    output [4:0] rs1, rs2,
     output [5:0] shamt,
     output [2:0] func3,
     output [6:0] func7,
     output [6:0] opcode,
    
     // output sinais de controle
-    output reg MemWrite,         // True or False depending if the operation Writes in the Memory or not
-    output reg MemRead,          // True or False depending if the operation Reads from the Memory or not
-    output reg RegWrite,         // True or False depending if the operation writes in a Register or not
-    output reg [4:0] RegDest,    // Determines which register to write the ALU result
-    output reg AluSrc,           // Determines if the value comes from the Register Bank or is an IMM
-    output reg [2:0] AluOp,      // Operation type ALU will perform
-    output reg [3:0] AluControl, // Exact operation ALU will perform
-    output reg Branch,           // True or False depending if the instruction is a Branch
-    output reg MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    output reg RegDataSrc       // Determines where the register data to be writen will come from: memory or ALU result
+    output reg MemWrite,        // True or False depending if the operation Writes in the Memory or not
+    output reg MemRead,         // True or False depending if the operation Reads from the Memory or not
+    output reg RegWrite,        // True or False depending if the operation writes in a Register or not
+    output [4:0] RegDest,   // Determines which register to write the ALU result
+    output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
+    output reg [2:0] AluOp,     // Operation type ALU will perform
+    output reg [3:0] AluControl,// Exact operation ALU will perform
+    output reg Branch,          // True or False depending if the instruction is a Branch
+    output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
+    output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
+    output reg PCSrc = 0        // Determines where the PC will come from
 );
 
 reg [31:0] _instruction;
@@ -38,7 +42,7 @@ end
 
 // Divide each possible part of an instruction
 assign opcode = _instruction[6:0];
-assign rd = _instruction[11:7];
+assign RegDest = _instruction[11:7];
 assign rs1 = _instruction[19:15];
 assign rs2 = _instruction[24:20];
 assign shamt = _instruction[24:20];
@@ -47,7 +51,12 @@ assign func7 = _instruction[31:25];
 
 always @(*) 
 begin
-    imm = _instruction[31:20]; // definindo o tipo de imediato mais comum
+
+    // Standart Value for PCSrc
+    PCSrc = 0;
+    
+     /// Most common Immediate
+    imm = {_instruction[31:20], 21'b0};
     
     // Eventualmente, com as instruções de 16 bits, vai ter que
     // separar a instrução de 32 bits em 2 intruções de 16 bits
@@ -94,7 +103,7 @@ begin
             MemWrite = 0;
             Branch = 1;
             AluControl = 4'b0110;
-            imm = {_instruction[31:12], 2'b0};
+            imm = {_instruction[31:12], 12'b0};
         end
 
         //JARL: Jump And Link Register (Tipo I)
@@ -245,13 +254,13 @@ begin
         // // FENCE: Synch Thread
         // 7'b000111 :
         // begin
-				    // rd = instruction[11:7];
+				    // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     rs1 = instruction[19:15];
         //     succ = instruction[22:20];
         //     pred = instruction[26:23];
         //     fm = instruction[27:31];        
-				    // rd = instruction[11:7];
+				    // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     rs1 = instruction[19:15];
         //     succ = instruction[22:20];
@@ -262,13 +271,13 @@ begin
         // // FENCE.TSO : não faço ideia do que é isso
         // 7'b0001111 :
         // begin
-        //     // rd = instruction[11:7];
+        //     // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     // rs1 = instruction[19:15];
         //     // succ = instruction[22:20];
         //     // pred = instruction[26:23];
         //     // fm = instruction[27:31];        
-        //     // rd = instruction[11:7];
+        //     // RegDest = instruction[11:7];
         //     func3= instruction[14:12];
         //     // rs1 = instruction[19:15];
         //     // succ = instruction[22:20];
@@ -289,9 +298,18 @@ begin
         default :
         begin
             // isso tem que virar sinal de controle
+            AluSrc  = 0;
+            MemToReg = 0;
+            RegWrite = 0;
+            MemRead = 0;
+            MemWrite = 0;
+            Branch = 0;
+            $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
         end
         
     endcase
 end
     
 endmodule
+
+`endif

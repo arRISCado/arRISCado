@@ -1,3 +1,8 @@
+	.option nopic
+	.text
+	.align	2
+	.globl	main
+	.type	main, @function
 main:
 	andi a0, a0, 1745
 	xori a0, a0, 1745
@@ -9,9 +14,7 @@ main:
 	and a4, a4, a0
 	ori a5, a4, 19
 	or a6, a5, a3
-	
-	
-	
+
 
 # Expected Final State: 
 # a0: 1745

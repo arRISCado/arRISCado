@@ -1,3 +1,6 @@
+`ifndef MEMORY_STAGE
+`define MEMORY_STAGE
+
 module memory (
     input clk,             // Clock signal
     input [31:0] addr,     // Address input
@@ -44,12 +47,14 @@ module memory (
 
     // to RAM signals
     output reg [31:0] mem_addr,       // Send   address to RAM
+    output reg [31:0] out_AluResult,       // Propagate ALU result
     output reg [31:0] mem_write_data, // Send data to write in RAM
-    output reg mem_write_enable,      // Send signal to enable writing in RAM
+    output reg mem_write_enable      // Send signal to enable writing in RAM
 );
 
     reg [31:0] _addr, _data_in;
-    reg _load, _store;
+    reg _load, _store, _MemToReg, _RegWrite, _RegDataSrc, _PCSrc;
+    reg [4:0] _RegDest;
     
     always @(posedge clk or posedge rst)
     begin
@@ -68,8 +73,10 @@ module memory (
             mem_addr = 0;
             mem_write_data = 0;
             mem_write_enable = 0;
+            out_AluResult = 0;
         end
-        else begin
+        else 
+        begin
             // Input signals from execute and control
             _addr = addr;
             _data_in = data_in;
@@ -77,10 +84,11 @@ module memory (
             _store = MemWrite;
 
             // Control signals to the next step
-            out_RegWrite <= in_RegWrite;
-            out_RegDest <= in_RegDest;
-            out_RegDataSrc <= in_RegDataSrc;
-            out_PCSrc <= in_PCSrc;
+            _MemToReg = in_MemToReg;
+            _RegWrite = in_RegWrite;
+            _RegDest = in_RegDest;
+            _RegDataSrc = in_RegDataSrc;
+            _PCSrc = in_PCSrc;
         end
     end
 
@@ -107,8 +115,15 @@ module memory (
             mem_done = 1;
             // when dealing with memory delay we need to receive a confirmation from RAM
         end
-
         
+        out_MemToReg = _MemToReg;
+        out_RegWrite = _RegWrite;
+        out_RegDest = _RegDest;
+        out_RegDataSrc = _RegDataSrc;
+        out_PCSrc = _PCSrc;
+        out_AluResult = _addr;
     end
 
 endmodule
+
+`endif
