@@ -42,71 +42,75 @@ module execute (
     reg [2:0] _AluOp;
     reg _AluSrc;
 
+    reg [3:0] _AluControl;
     reg [4:0] _RegDest;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
-    alu alu(AluControl, a, b, result);
+    alu alu(_AluControl, a, b, result);
 
     always @(posedge clk or posedge rst)
     begin
         if (rst)
         begin
-            a = 0;
-            b = 0;
-            _rs1_value = 0;
-            _rs2_value = 0;
-            _imm = 0;
-            _PC = 0;
-            _AluSrc = 0;
+            _rs1_value <= 0;
+            _rs2_value <= 0;
+            _imm <= 0;
+            _PC <= 0;
+            _AluSrc <= 0;
         end
         else
         begin
-            _rs1_value = rs1_value;
-            _rs2_value = rs2_value;
-            _imm = imm;
-            _PC = PC;
-            _AluSrc = AluSrc;
+            _rs1_value <= rs1_value;
+            _rs2_value <= rs2_value;
+            _imm <= imm;
+            _PC <= PC;
+            _AluSrc <= AluSrc;
+            _AluOp <= AluOp;
+            _AluControl <= AluControl;
             
-            _MemWrite = in_MemWrite;
-            _MemRead = in_MemRead;
-            _RegWrite = in_RegWrite;
-            _RegDest = in_RegDest;
-            _MemToReg = in_MemToReg;
-            _RegDataSrc = in_RegDataSrc;
-            _PCSrc = in_PCSrc;
+            _MemWrite <= in_MemWrite;
+            _MemRead <= in_MemRead;
+            _RegWrite <= in_RegWrite;
+            _RegDest <= in_RegDest;
+            _MemToReg <= in_MemToReg;
+            _RegDataSrc <= in_RegDataSrc;
+            _PCSrc <= in_PCSrc;
         end
     end
 
     always @(*)
     begin
-        case(AluOp)
+        a <= 0;
+        b <= 0;
+
+        case(_AluOp)
         // Tipo Load ou Store
         3'b000 :
         begin
-            a = _rs1_value;
-            b = _imm;
+            a <= _rs1_value;
+            b <= _imm;
         end
 
         // Tipo B
         3'b001 :
         begin
-            a = _rs1_value;
-            b = _rs2_value;
+            a <= _rs1_value;
+            b <= _rs2_value;
             //como que passa o RD pra escrever no banco de REGs dps?
         end
 
         // Tipo R OU I
         3'b010 :
         begin
-            a = _rs1_value;
+            a <= _rs1_value;
             case(_AluSrc)
             1'b1 :
             begin
-                b = _imm;
+                b <= _imm;
             end
             1'b0 :
             begin
-                b = _rs2_value;
+                b <= _rs2_value;
             end
             endcase
         end
@@ -114,47 +118,47 @@ module execute (
         // Tipo U LUI
         3'b100:
         begin
-            a = _imm;
-            b = 12;
+            a <= _imm;
+            b <= 12;
             // é Literalmente isso o LUI, coloca isso no rd direto
         end
 
         // Tipo U AUIPC
         3'b101:
         begin
-            a = _PC;
-            b = _imm;
+            a <= _PC;
+            b <= _imm;
             // é Literalmente isso o AIUPC, coloca isso no PC direto
         end
 
         // Tipo J
         3'b011:
         begin
-            a = _PC;
-            b = _imm;
+            a <= _PC;
+            b <= _imm;
             //isso pula pra um endereço X, então acho q o mais certo é usar o PC pra fazer os cálculos
         end
 
         // TODO: JALR
         3'b111:
         begin
-            a = _PC;
-            b = _imm;
+            a <= _PC;
+            b <= _imm;
             // TODO: Set rd target
             // rd recebe Pc + 4
-            // PC = rs1_value + imm; //dá pra fazer isso aqui?
+            // PC <= rs1_value + imm; //dá pra fazer isso aqui?
             // TODO: Isso tem que virar um sinal de controle
-            // Sets PC = Reg[rs1] + immediate COMO????
+            // Sets PC <= Reg[rs1] + immediate COMO????
         end
     endcase
 
-    out_MemWrite = _MemWrite;
-    out_MemRead = _MemRead;
-    out_RegWrite = _RegWrite;
-    out_RegDest = _RegDest;
-    out_MemToReg = _MemToReg;
-    out_RegDataSrc = _RegDataSrc;
-    out_PCSrc = _PCSrc;
+    out_MemWrite <= _MemWrite;
+    out_MemRead <= _MemRead;
+    out_RegWrite <= _RegWrite;
+    out_RegDest <= _RegDest;
+    out_MemToReg <= _MemToReg;
+    out_RegDataSrc <= _RegDataSrc;
+    out_PCSrc <= _PCSrc;
 end
     
 endmodule
