@@ -10,12 +10,12 @@ module register_bank(
   input [31:0] write_value,
   input [4:0] read_address1,
   input [4:0] read_address2,
-  //output reg [5:0] led,
+  output reg [5:0] led,
   output reg [31:0] value1,
   output reg [31:0] value2
 );
-//initial
-//  led[5:0] = 0;
+initial
+  led[5:0] = 0;
 
 
   reg [31:0] register [31:1];
@@ -31,11 +31,11 @@ module register_bank(
   end
 
   always @(posedge clk) begin
-    //led[5] = 1;
     if (write_enable) begin
-      //led[4:0] <= 5'b11111;
+      led[5:0] <= 6'b111111;
       if (write_address) begin
         register[write_address] <= write_value;
+        led[5:0] <= write_value;
       end
     end
   end

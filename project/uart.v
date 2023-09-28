@@ -7,7 +7,7 @@ module uart
 (
     input clk,
     input uart_rx,
-    output reg [5:0] led,
+    //output reg [5:0] led,
     output reg cpu_enable = 0,
     input wire [31:0] address,
     output wire [31:0] data
@@ -50,7 +50,6 @@ always @(posedge clk) begin
         data <= instructionMemory[address];
     else
         data <= 32'b10011;
-    led[5:0] <= ~instructionMemory[0][5:0];
     case (rxState)
         RX_STATE_IDLE: begin
             if (uart_rx == 0) begin
@@ -99,25 +98,25 @@ always @(posedge clk) begin
                         romWriteState <= ROM_WRITE_1;
                     end
                     ROM_WRITE_1: begin
-                        //memory[currentInst][3] <= dataIn[7:0];
+                        //memory[currentInst][31:24] <= dataIn[7:0];
                         //led[0] = ~led[0];
                         inst1 <= dataIn;
                         romWriteState <= ROM_WRITE_2;
                     end
                     ROM_WRITE_2: begin
-                        //memory[currentInst][2] <= dataIn[7:0];
+                        //memory[currentInst][23:16] <= dataIn[7:0];
                         //led[1] = ~led[1];
                         inst2 <= dataIn;
                         romWriteState <= ROM_WRITE_3;
                     end
                     ROM_WRITE_3: begin
-                        //memory[currentInst][1] <= dataIn[7:0];
+                        //memory[currentInst][15:8] <= dataIn[7:0];
                         //led[2] = ~led[2];
                         inst3 <= dataIn;
                         romWriteState <= ROM_WRITE_4;
                     end
                     ROM_WRITE_4: begin
-                        //memory[currentInst][0] <= dataIn[7:0];
+                        //memory[currentInst][7:0] <= dataIn[7:0];
                         //led[3] = ~led[3];
                         inst4 = dataIn;
                         instructionMemory[currentInst] = {inst1, inst2, inst3, inst4};
@@ -137,7 +136,7 @@ end
 
 initial begin
     $readmemh(`UART_FILE, instructionMemory, 0, 255);
-    led[5:0] <= 6'b111111;
+    //led[5:0] <= 6'b111111;
 end
 
 

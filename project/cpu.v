@@ -18,13 +18,11 @@
 module cpu(
     input clock,
     input reset,
-    //input [5:0] led,
+    input [5:0] led,
     input enable,
-    //input wire [31:0] rom_data,
-    //output wire [31:0] rom_address
+    input wire [31:0] rom_data,
+    output wire [31:0] rom_address
 );
-    //always @(negedge clock_real)
-    //    led[5:0] = ~rom_data[31:26];
 
     wire clock_real;
     assign clock_real = clock & enable;
@@ -68,7 +66,7 @@ module cpu(
         .write_value(rb_write_value),
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
-        //.led(led),
+        .led(led),
         .value1(rb_value1),
         .value2(rb_value2)
     );

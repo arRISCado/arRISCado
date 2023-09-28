@@ -23,19 +23,19 @@ module nano9k (
         .clock(~btn2), 
         //.clock(clk),
         .reset(~btn1),
-        //.led(led),
+        .led(led),
         .enable(cpu_enable),
-        //.rom_address(instruction_address),
-        //.rom_data(instruction_data)
+        .rom_address(instruction_address),
+        .rom_data(instruction_data)
     );
 
     uart Uart(
         .clk(clk), 
         .uart_rx(uart_rx), 
-        .led(led), 
+        //.led(led), 
         .cpu_enable(cpu_enable),
-        //.address(instruction_address),
-        //.data(instruction_data)
+        .address(instruction_address),
+        .data(instruction_data)
     );
 
 endmodule
