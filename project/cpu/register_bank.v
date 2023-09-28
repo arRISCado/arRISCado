@@ -30,16 +30,10 @@ initial
     value2 <= 0;
   end
 
-  always @(posedge clk) begin
-    if (write_enable) begin
-      led[5:0] <= 6'b111111;
-      if (write_address) begin
+  always @(posedge clk)
+    if (write_enable)
+      if (write_address)
         register[write_address] <= write_value;
-        led[5:0] <= write_value;
-      end
-    end
-  end
-
 
   always @(negedge clk)
   begin
