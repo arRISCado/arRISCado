@@ -1,5 +1,6 @@
 import serial  # pip install pyserial
 import sys
+import time
 
 if len(sys.argv) != 3:
     print("Script usage: python3 send_serial.py <Board port> <test file>")
@@ -31,4 +32,8 @@ while y <= l:
     else:
         x += 1
         y += 1
-serialPort.write(bindata)
+
+for data in bindata:
+    serialPort.write([data])
+    print("Sent: ", hex(data))
+    time.sleep(2)

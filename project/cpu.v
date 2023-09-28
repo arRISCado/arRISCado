@@ -18,10 +18,13 @@
 module cpu(
     input clock,
     input reset,
-    input [5:0] led,
-    input enable
+    //input [5:0] led,
+    input enable,
+    //input wire [31:0] rom_data,
+    //output wire [31:0] rom_address
 );
-    assign led = mem_wb_data_out[5:0];
+    //always @(negedge clock_real)
+    //    led[5:0] = ~rom_data[31:26];
 
     wire clock_real;
     assign clock_real = clock & enable;
@@ -48,15 +51,15 @@ module cpu(
         .address(ram_address),
         .data_in(ram_data_in),
         .write_enable(ram_write_enable),
-        // .led(led),
+        //.led(led),
         .data_out(ram_data_out)
     );
-
+    
     rom Rom(
         .address(rom_address),
         .data(rom_data)
     );
-
+    
     register_bank RegisterBank(
         .clk(clock_real),
         .reset(reset),
@@ -65,6 +68,7 @@ module cpu(
         .write_value(rb_write_value),
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
+        //.led(led),
         .value1(rb_value1),
         .value2(rb_value2)
     );
