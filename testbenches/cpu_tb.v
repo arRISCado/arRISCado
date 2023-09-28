@@ -1,13 +1,16 @@
-`define ROM_FILE "../../testbenches/cpu_tb.txt"
+// `define ROM_FILE "../../testbenches/cpu_tb.txt"
+`define ROM_FILE "../../project/init_rom.txt"
 `include "../../testbenches/utils/imports.v"
 
 module test;
   reg clock = 0;
   reg reset = 0;
-  
+  wire [5:0] led;
+
   cpu cpu(
     .clock(clock), 
     .reset(reset), 
+    .led(led),
     .enable(1'b1)
   );
 
@@ -23,12 +26,19 @@ module test;
     #5;
     reset = 0;
     
-    #200;
+    // Register Bank
+    // $monitor("%d %h %h", cpu.Fetch.pc, cpu.Execute.a, cpu.Execute.b);
 
-    // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
-    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Writeback.data_mem, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
+    // Write Signals
+    $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Ram.write_enable, cpu.Ram.address, cpu.Ram.data_in);
 
-    #400;
+    // Read Signals
+    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Writeback._MemToReg, cpu.Writeback.data_mem, cpu.Ram.data_in);
+
+    // $monitor("%h %b %b", cpu.Fetch.pc, cpu.Ram.address[5:0], cpu.Ram.data_out[5:0]);
+    // $monitor("%d %h %h", cpu.Fetch.pc, cpu.Execute.a, cpu.Execute.b);
+
+    #600;
 
     $display("RAM");
     for (i = 0; i < 5; i++)

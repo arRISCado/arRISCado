@@ -21,7 +21,7 @@ module cpu(
     input [5:0] led,
     input enable
 );
-    assign led = mem_wb_data_out[5:0];
+    assign led = {ram_data_out[5:0]};
 
     wire clock_real;
     assign clock_real = clock & enable;
@@ -118,7 +118,7 @@ module cpu(
     wire [31:0] mem_wb_AluResult;
 
     // Writeback -> Fetch
-    wire [31:0] wr_if_branch_target;
+    wire [31:0] wb_if_branch_target;
     wire wb_if_PCSrc;               // Dies on Fetch
 
     // ### Pipeline ###
@@ -127,11 +127,11 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .branch_target(wr_if_branch_target), // May come from writeback, but ideally from memory stage
+        .branch_target(wb_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
-        .PCSrc(wr_if_pc_src), // May come from writeback, but ideally from memory stage
+        .PCSrc(wb_if_PCSrc), // May come from writeback, but ideally from memory stage
 
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
         .instr(if_de_instr)
@@ -180,6 +180,7 @@ module cpu(
         .in_MemToReg(de_ex_MemToReg),
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
+        // TODO: Missing PC
 
         // Control Outputs
         .out_MemWrite(ex_mem_MemWrite),
@@ -232,7 +233,7 @@ module cpu(
         .mem_write_enable(ram_write_enable)
     );
 
-    wire [4:0] wr_if_RegDest; //LIGAR
+    wire [4:0] wb_if_RegDest; //LIGAR
 
     writeback Writeback(
         // inputs
@@ -254,7 +255,7 @@ module cpu(
         .data_wb(rb_write_value),
 
         // control outputs
-        .out_PCSrc(wr_if_PCSrc),
+        .out_PCSrc(wb_if_PCSrc),
         
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank

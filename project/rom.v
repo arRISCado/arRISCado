@@ -13,6 +13,6 @@ module rom (
     $readmemh(`ROM_FILE, memory, 0, 255);
   end
   
-  assign data = (address <= 32'd255) ? memory[address] : 32'b0;
+  assign data = (address <= 255) ? memory[address] : 32'b0;
 
 endmodule

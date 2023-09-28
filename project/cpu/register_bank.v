@@ -13,35 +13,32 @@ module register_bank(
   output reg [31:0] value1,
   output reg [31:0] value2
 );
-
   reg [31:0] register [31:1];
 
   integer i;
   
-  always @(posedge reset)
-  begin
+  // always @(posedge reset)
+  // begin
+  //   for (i = 1; i < 32; i = i + 1)
+  //     register[i] <= 0;
+  // end
+
+  initial
     for (i = 1; i < 32; i = i + 1)
       register[i] <= 0;
-    value1 <= 0;
-    value2 <= 0;
-  end
 
   always @(posedge clk)
+  begin
     if (write_enable)
       if (write_address)
         register[write_address] <= write_value;
 
-  always @(negedge clk)
-  begin
-    if (read_address1 == 32'b0)
-      value1 <= 0;
-    else
-      value1 <= register[read_address1];
-    if (read_address2 == 0)
-      value2 <= 0;
-    else
-      value2 <= register[read_address2];
+    value1 <= (read_address1 == 0) ? 0 : register[read_address1];
+    value2 <= (read_address2 == 0) ? 0 : register[read_address2];
   end
+
+  // assign value1 = (read_address1 == 0) ? 0 : register[read_address1];
+  // assign value2 = (read_address2 == 0) ? 0 : register[read_address2];
 
 endmodule
 `endif
