@@ -1,7 +1,7 @@
 `ifndef TESTBENCH
 
 `include "ram.v"
-`include "rom.v"
+//`include "rom.v"
 `include "cpu/register_bank.v"
 `include "cpu/alu.v"
 `include "cpu/fetch.v"
@@ -32,7 +32,7 @@ module cpu(
     // ### Component wires ###
 
     // ROM
-    wire [31:0] rom_data, rom_address;
+    //wire [31:0] rom_data, rom_address;
 
     // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
@@ -54,11 +54,11 @@ module cpu(
         //.led(led),
         .data_out(ram_data_out)
     );
-    
+    /*
     rom Rom(
         .address(rom_address),
         .data(rom_data)
-    );
+    );*/
     
     register_bank RegisterBank(
         .clk(clock_real),

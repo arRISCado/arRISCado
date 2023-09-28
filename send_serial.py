@@ -36,4 +36,4 @@ while y <= l:
 for data in bindata:
     serialPort.write([data])
     print("Sent: ", hex(data))
-    time.sleep(2)
+    time.sleep(1)

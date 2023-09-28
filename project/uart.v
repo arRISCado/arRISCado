@@ -13,7 +13,12 @@ module uart
     output wire [31:0] data
 );
 
-reg [31:0] memory[255:0];
+reg [7:0] inst1;
+reg [7:0] inst2;
+reg [7:0] inst3;
+reg [7:0] inst4;
+
+reg [31:0] instructionMemory[255:0];
 reg [7:0] currentInst = 0;
 reg [2:0] dataInCount = 0;
 reg [7:0] fullsize = 0;
@@ -42,10 +47,10 @@ reg [2:0] romWriteState = RECEIVE_SIZE;
 
 always @(posedge clk) begin
     if (address <= 32'd255)
-        data <= memory[address];
+        data <= instructionMemory[address];
     else
         data <= 32'b10011;
-    led[5:0] <= ~memory[0][5:0];
+    led[5:0] <= ~instructionMemory[0][5:0];
     case (rxState)
         RX_STATE_IDLE: begin
             if (uart_rx == 0) begin
@@ -94,19 +99,28 @@ always @(posedge clk) begin
                         romWriteState <= ROM_WRITE_1;
                     end
                     ROM_WRITE_1: begin
-                        memory[currentInst][31:24] <= dataIn[7:0];
+                        //memory[currentInst][3] <= dataIn[7:0];
+                        //led[0] = ~led[0];
+                        inst1 <= dataIn;
                         romWriteState <= ROM_WRITE_2;
                     end
                     ROM_WRITE_2: begin
-                        memory[currentInst][23:16] <= dataIn[7:0];
+                        //memory[currentInst][2] <= dataIn[7:0];
+                        //led[1] = ~led[1];
+                        inst2 <= dataIn;
                         romWriteState <= ROM_WRITE_3;
                     end
                     ROM_WRITE_3: begin
-                        memory[currentInst][15:8] <= dataIn[7:0];
+                        //memory[currentInst][1] <= dataIn[7:0];
+                        //led[2] = ~led[2];
+                        inst3 <= dataIn;
                         romWriteState <= ROM_WRITE_4;
                     end
                     ROM_WRITE_4: begin
-                        memory[currentInst][7:0] <= dataIn[7:0];
+                        //memory[currentInst][0] <= dataIn[7:0];
+                        //led[3] = ~led[3];
+                        inst4 = dataIn;
+                        instructionMemory[currentInst] = {inst1, inst2, inst3, inst4};
                         currentInst = currentInst + 1;
                         if(currentInst == fullsize) begin
                             cpu_enable = 1;
@@ -122,7 +136,7 @@ always @(posedge clk) begin
 end
 
 initial begin
-    $readmemh(`UART_FILE, memory, 0, 255);
+    $readmemh(`UART_FILE, instructionMemory, 0, 255);
     led[5:0] <= 6'b111111;
 end
 

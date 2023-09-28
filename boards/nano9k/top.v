@@ -34,8 +34,8 @@ module nano9k (
         .uart_rx(uart_rx), 
         .led(led), 
         .cpu_enable(cpu_enable),
-        .address(instruction_address),
-        .data(instruction_data)
+        //.address(instruction_address),
+        //.data(instruction_data)
     );
 
 endmodule
