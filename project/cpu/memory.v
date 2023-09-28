@@ -74,26 +74,27 @@ module memory (
             _RegDest <= in_RegDest;
             _RegDataSrc <= in_RegDataSrc;
             _PCSrc <= in_PCSrc;
-            mem_done <= 0;
-            mem_write_enable <= 0;
+
+            if (_load)
+            begin
+                mem_write_enable <= 0;
+                mem_done <= 1;
+            end
+            else if (MemWrite)
+            begin
+                mem_write_enable <= 1;
+                mem_done <= 1;
+            end
+            else
+            begin
+                mem_write_enable <= 0;
+                mem_done <= 0;
+            end
         end
     end
 
     always @(*)
-    begin
-        
-        if (_load)
-        begin
-            mem_write_enable <= 0;
-            mem_done <= 1;
-        end
-        
-        if (_store)
-        begin
-            mem_write_enable <= 1;
-            mem_done <= 1;
-        end
-        
+    begin   
         out_MemToReg <= _MemToReg;
         out_RegWrite <= _RegWrite;
         out_RegDest <= _RegDest;

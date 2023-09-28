@@ -31,13 +31,13 @@ module execute (
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
-    output reg [31:0] _rs2_value,
+    // output reg [31:0] _rs2_value,
+    output [31:0] _rs2_value,
 
     output [31:0] result,
     output reg [31:0] a,
-    output reg [31:0] b
+    output [31:0] b
 );
-
     reg [31:0] _rs1_value, _imm, _PC;
     reg [2:0] _AluOp;
     reg _AluSrc;
@@ -48,119 +48,117 @@ module execute (
 
     alu alu(_AluControl, a, b, result);
 
+    assign _rs2_value = rs2_value;
+
     always @(posedge clk or posedge rst)
     begin
         if (rst)
         begin
             _rs1_value <= 0;
-            _rs2_value <= 0;
+            // _rs2_value <= 0;
             _imm <= 0;
             _PC <= 0;
             _AluSrc <= 0;
+            _AluOp <= 0;
+            _AluControl <= 0;
         end
         else
         begin
             _rs1_value <= rs1_value;
-            _rs2_value <= rs2_value;
+            // _rs2_value <= rs2_value;
             _imm <= imm;
             _PC <= PC;
             _AluSrc <= AluSrc;
             _AluOp <= AluOp;
             _AluControl <= AluControl;
             
-            _MemWrite <= in_MemWrite;
-            _MemRead <= in_MemRead;
-            _RegWrite <= in_RegWrite;
-            _RegDest <= in_RegDest;
-            _MemToReg <= in_MemToReg;
-            _RegDataSrc <= in_RegDataSrc;
-            _PCSrc <= in_PCSrc;
+            out_MemWrite <= in_MemWrite;
+            out_MemRead <= in_MemRead;
+            out_RegWrite <= in_RegWrite;
+            out_RegDest <= in_RegDest;
+            out_MemToReg <= in_MemToReg;
+            out_RegDataSrc <= in_RegDataSrc;
+            out_PCSrc <= in_PCSrc;
         end
     end
 
+    assign b = DataSrc == 'b00 ? imm : 
+               DataSrc == 'b01 ? rs2_value :
+               DataSrc == 'b10 ? AluSrcValue : 12;
+
+    wire [31:0] AluSrcValue;
+    assign AluSrcValue = _AluSrc ? _imm : rs2_value;
+
+    reg [2:0] DataSrc = 0;
+    // 00 = imm
+    // 01 = rs2_value
+    // 10 = AluSrcValue
+    // 11 = 12
+    
     always @(*)
     begin
-        a <= 0;
-        b <= 0;
-
-        case(_AluOp)
-        // Tipo Load ou Store
-        3'b000 :
-        begin
-            a <= _rs1_value;
-            b <= _imm;
-        end
-
-        // Tipo B
-        3'b001 :
-        begin
-            a <= _rs1_value;
-            b <= _rs2_value;
-            //como que passa o RD pra escrever no banco de REGs dps?
-        end
-
-        // Tipo R OU I
-        3'b010 :
-        begin
-            a <= _rs1_value;
-            case(_AluSrc)
-            1'b1 :
+        case(AluOp)
+            // Tipo Load ou Store
+            3'b000 :
             begin
-                b <= _imm;
+                a <= rs1_value;
+                // b <= imm;
+                DataSrc <= 'b00;
             end
-            1'b0 :
+
+            // Tipo B
+            3'b001 :
             begin
-                b <= _rs2_value;
+                a <= rs1_value;
+                // b <= rs2_value;
+                DataSrc <= 'b01;
             end
-            endcase
-        end
 
-        // Tipo U LUI
-        3'b100:
-        begin
-            a <= _imm;
-            b <= 12;
-            // é Literalmente isso o LUI, coloca isso no rd direto
-        end
+            // Tipo R OU I
+            3'b010 :
+            begin
+                a <= rs1_value;
+                // b <= (_AluSrc ? _imm : _rs2_value);
+                DataSrc <= 'b10;
+            end
 
-        // Tipo U AUIPC
-        3'b101:
-        begin
-            a <= _PC;
-            b <= _imm;
-            // é Literalmente isso o AIUPC, coloca isso no PC direto
-        end
+            // Tipo U LUI
+            3'b100:
+            begin
+                a <= imm;
+                // b <= 12;
+                DataSrc <= 'b11;
+            end
 
-        // Tipo J
-        3'b011:
-        begin
-            a <= _PC;
-            b <= _imm;
-            //isso pula pra um endereço X, então acho q o mais certo é usar o PC pra fazer os cálculos
-        end
+            // Tipo U AUIPC
+            3'b101:
+            begin
+                a <= PC;
+                // b <= imm;
+                DataSrc <= 'b00;
+            end
 
-        // TODO: JALR
-        3'b111:
-        begin
-            a <= _PC;
-            b <= _imm;
-            // TODO: Set rd target
-            // rd recebe Pc + 4
-            // PC <= rs1_value + imm; //dá pra fazer isso aqui?
-            // TODO: Isso tem que virar um sinal de controle
-            // Sets PC <= Reg[rs1] + immediate COMO????
-        end
-    endcase
+            // Tipo J
+            3'b011:
+            begin
+                a <= PC;
+                DataSrc <= 'b00;
+            end
 
-    out_MemWrite <= _MemWrite;
-    out_MemRead <= _MemRead;
-    out_RegWrite <= _RegWrite;
-    out_RegDest <= _RegDest;
-    out_MemToReg <= _MemToReg;
-    out_RegDataSrc <= _RegDataSrc;
-    out_PCSrc <= _PCSrc;
-end
-    
+            // TODO: JALR
+            3'b111:
+            begin
+                a <= PC;
+                DataSrc <= 'b00;
+            end
+
+            default:
+            begin
+                a <= 0;
+                DataSrc <= 'b00;
+            end
+        endcase
+    end
 endmodule
 
 `endif

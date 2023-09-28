@@ -17,11 +17,22 @@ module nano9k (
 );
     wire cpu_enable;
     
+    localparam WAIT_TIME = 5000000;
+    wire effClk;
+    reg [23:0] clockCounter = 0;
+    always @(posedge clk) begin
+        clockCounter <= clockCounter + 1;
+        if (clockCounter == WAIT_TIME) begin
+            clockCounter <= 0;
+            effClk <= ~effClk;
+        end
+    end
+
     cpu Cpu(
-        .clock(~btn2), 
+        .clock(effClk),
         .reset(~btn1),
         .led(led),
-        .enable('b1)
+        .enable(~btn2)
     );
 
     // uart Uart(
