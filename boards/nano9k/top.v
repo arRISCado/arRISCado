@@ -1,5 +1,5 @@
 `ifndef TESTBENCH
-
+`define UART_FILE "../../project/init_uart.txt"
 `ifndef ROM_FILE
 `define ROM_FILE  "../../project/init_rom.txt"
 `endif
@@ -16,6 +16,7 @@ module nano9k (
     output [5:0] led
 );
     wire cpu_enable;
+    wire [31:0] instruction_data, instruction_address;
     
     localparam WAIT_TIME = 5000000;
     wire effClk;
@@ -32,17 +33,19 @@ module nano9k (
         .clock(effClk),
         .reset(~btn1),
         .led(led),
-        .enable(~btn2)
+        .enable(cpu_enable),    
+        .rom_address(instruction_address),
+        .rom_data(instruction_data)
     );
 
-    // uart Uart(
-    //     .clk(clk), 
-    //     .uart_rx(uart_rx), 
-    //     // .led(led), 
-    //     .cpu_enable(cpu_enable)
-    // );
-    
-    // assign Cpu.Rom.memory = Uart.memory;
+    uart Uart(
+        .clk(clk), 
+        .uart_rx(uart_rx), 
+        //.led(led), 
+        .cpu_enable(cpu_enable),
+        .address(instruction_address),
+        .data(instruction_data)
+    );
 
 endmodule
 
