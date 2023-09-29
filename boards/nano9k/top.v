@@ -28,7 +28,7 @@ module nano9k (
             effClk <= ~effClk;
         end
     end
-
+/*
     cpu Cpu(
         .clock(effClk),
         .reset(~btn1),
@@ -46,6 +46,56 @@ module nano9k (
         .address(instruction_address),
         .data(instruction_data)
     );
+
+*/
+`include "../../project/cpu/register_bank.v"
+    register_bank RegisterBank(
+        .clk(effClk),
+        .reset(~btn1),
+        .write_enable(rb_write_enable),
+        .write_address(rb_write_address),
+        .write_value(rb_write_value),
+        .read_address1(rb_read_address1),
+        .read_address2(rb_read_address2),
+        .led(led[5:3]),
+        .value1(rb_value1),
+        .value2(rb_value2)
+    );
+
+  wire rb_write_enable = 0;
+  wire [4:0] rb_write_address;
+  wire [31:0] rb_write_value;
+  wire [4:0] rb_read_address1;
+  wire [4:0] rb_read_address2;
+
+reg writeEnables[0:32];
+reg [4:0] writeAdresses[0:32];
+reg [31:0] writeValues[0:32];
+reg [7:0] counter = 0;
+
+
+always @(posedge effClk) begin
+    rb_write_address = writeAdresses[counter];
+    rb_write_value = writeValues[counter];
+    rb_write_enable = writeEnables[counter];
+    led[0] <= ~rb_write_enable;
+    counter = counter + 1;
+end
+
+integer i;
+initial begin
+    for(i = 0; i < 32; i++) begin
+        writeAdresses[i] = 0;
+        writeValues[i] = 0;
+        writeEnables[i] = 1;
+    end
+    writeAdresses[5] = 2;
+    writeValues[5] = 5;
+    writeEnables[5] = 1;
+    writeEnables[6] = 1;
+    led[2:0] <= ~0;
+end
+
 
 endmodule
 
