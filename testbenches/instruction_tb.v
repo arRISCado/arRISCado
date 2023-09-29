@@ -8,7 +8,11 @@ module test();
 
     // Testbench procedure
     initial begin
-        #10
+        //#10
+        //rst = 1'b1;
+        //#10
+        //rst = 1'b0;
+        //#10
 
         for (integer i = 0; i < 100; i = i + 1)
         begin

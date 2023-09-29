@@ -123,16 +123,17 @@ for test_file in tests: #Run all tests
     elif platform.system() == "Linux":
         result = subprocess.run(command, shell=True, capture_output = True, cwd="project", executable='/bin/bash')
         print(result)
-    result_lines = result.stdout.decode('ascii').split("\n")
+    
+    result_lines = result.stdout.decode('utf-8').split("\n")
 
     if print_output:
         print("-------------------------------")
         print("stdout\n")
         #print(repr(result.stdout.decode('ascii')))
-        print(result.stdout.decode('ascii').replace("\r", ""))
+        print(result.stdout.decode('utf-8').replace("\r", ""))
         print("-------------------------------")
         print("stderr")
-        print(result.stderr.decode('ascii'))
+        print(result.stderr.decode('utf-8'))
         print("-------------------------------")
     
     #Get registers values from result
