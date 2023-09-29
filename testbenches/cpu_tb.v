@@ -5,7 +5,11 @@ module test;
   reg clock = 0;
   reg reset = 0;
   
-  cpu cpu(clock, reset, 1);
+  cpu cpu(
+    .clock(clock), 
+    .reset(reset), 
+    .enable(1'b1)
+  );
 
   // Clock generation
   always
@@ -18,22 +22,20 @@ module test;
     reset = 1;
     #5;
     reset = 0;
+    
+    #200;
 
-    // for (i = 1; i <= 5; i++)
-      // $display("%h: %h", i, cpu.RegisterBank.register[i]);
-    // $display("%h", cpu.fetch.pc);
-    // $monitor("%h %b %h %h", cpu.fetch.pc, cpu.RegisterBank.write_enable, cpu.RegisterBank.write_value, cpu.RegisterBank.write_address);
-    // $monitor("%h", cpu.Ram.storage[0]);
-    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Ram.write_enable, cpu.Ram.address, cpu.Ram.data_in);
-    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory.mem_write_enable, cpu.Memory.mem_addr, cpu.Memory.mem_write_data);
-    $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_addr, cpu.Memory.mem_read_data);
+    // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
+    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Writeback.data_mem, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
 
-    #300;
+    #400;
 
-    $display("### Registers ###");
-    for (i = 1; i <= 6; i++)
-      $display("%h: %h", i, cpu.RegisterBank.register[i]);
-    $display("%d", cpu.Fetch.pc);
+    $display("RAM");
+    for (i = 0; i < 5; i++)
+      $display("%d: %h", i, cpu.Ram.storage[i]);
+    $display("Registers");
+    for (i = 1; i < 7; i++)
+      $display("%d: %h", i, cpu.RegisterBank.register[i]);
 
     $finish;
   end

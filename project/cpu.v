@@ -20,9 +20,15 @@ module cpu(
     input clock,
     input reset,
     input enable,
+    input [5:0] led,
     output port_pwm1
+    input enable
 );
+    assign led = mem_wb_data_out[5:0];
+
+    wire clock_real;
     assign clock_real = clock & enable;
+
     // ### Component wires ###
 
     // ROM
@@ -52,7 +58,8 @@ module cpu(
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
-        .write_enable(ex_mem_MemWrite),
+        .write_enable(ram_write_enable),
+        // .led(led),
         .data_out(ram_data_out)
     );
 
@@ -117,6 +124,7 @@ module cpu(
     wire [4:0] ex_mem_RegDest;       // Goes to WB
     wire ex_mem_RegDataSrc;          // Goes to WB
     wire ex_mem_PCSrc;               // Goes to next Fetch
+    wire [31:0] ex_mem_rs2_value;
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
@@ -132,9 +140,6 @@ module cpu(
     // Writeback -> Fetch
     wire [31:0] wr_if_branch_target;
     wire wb_if_PCSrc;               // Dies on Fetch
-
-
-
 
     // ### Pipeline ###
 
@@ -173,7 +178,6 @@ module cpu(
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
         .PCSrc(de_ex_PCSrc)
-
     );
 
     execute Execute(
@@ -209,8 +213,6 @@ module cpu(
         ._rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result)
     );
-
-    wire [31:0] ex_mem_rs2_value;
 
     memory Memory(
         .clk(clock_real),
