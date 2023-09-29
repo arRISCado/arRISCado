@@ -1,4 +1,4 @@
-`include "pwm_port.v"
+`include "peripheral/pwm_port.v"
 
 //Peripheral Manager
 //
@@ -26,8 +26,8 @@ module peripheral_manager(
     //xxx...xxx = addr
 
     //Peripherals
-    wire write_pwm1_1 = 0;
-    wire write_pwm1_2 = 0;
+    reg write_pwm1_1 = 0;
+    reg write_pwm1_2 = 0;
     pwm_port pwm_port1(
         .clk(clk), 
         .mem_write(write_pwm1_1),
@@ -38,7 +38,7 @@ module peripheral_manager(
     );
 
     //Write/read peripheral
-    always(posedge *) begin
+    always @(*) begin
         if(write_enable) begin
 
             if(addr[31:29] == 3'b001) begin //pwm_port1

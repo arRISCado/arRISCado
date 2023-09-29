@@ -22,7 +22,6 @@ module cpu(
     input enable,
     input [5:0] led,
     output port_pwm1
-    input enable
 );
     assign led = mem_wb_data_out[5:0];
 
@@ -66,7 +65,7 @@ module cpu(
     peripheral_manager peripheral_manager(
         .clk(clock),
         .addr(ram_address),
-        .data_in(data_in),
+        .data_in(ram_data_in),
         .write_enable(ram_write_enable),
         .pwm1_out(port_pwm1)
     );
