@@ -313,7 +313,7 @@ begin
             MemWrite <= 0;
             Branch <= 0;
             // synthesis translate_off
-            $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
+            $display("%h INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!", _instruction);
             // synthesis translate_on
         end
         

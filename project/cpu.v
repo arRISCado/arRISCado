@@ -62,7 +62,7 @@ module cpu(
         .data_out(ram_data_out)
     );
 
-    peripheral_manager peripheral_manager(
+    peripheral_manager Peripheral_manager(
         .clk(clock),
         .addr(ram_address),
         .data_in(ram_data_in),

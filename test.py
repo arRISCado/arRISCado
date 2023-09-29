@@ -64,6 +64,8 @@ if platform.system() == "Windows":
     command += "&& "
     command += "vvp test"
 
+    print(command)
+
 
 elif platform.system() == "Linux":
     if args.oss_cad_path is not None:
