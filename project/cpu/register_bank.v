@@ -10,35 +10,31 @@ module register_bank(
   input [31:0] write_value,
   input [4:0] read_address1,
   input [4:0] read_address2,
-  output reg [31:0] value1,
-  output reg [31:0] value2
+  output [5:0] led,
+  output [31:0] value1,
+  output [31:0] value2
 );
-  reg [31:0] register [31:1];
+  reg [31:0] register [31:0];
 
   integer i;
-  
-  // always @(posedge reset)
-  // begin
-  //   for (i = 1; i < 32; i = i + 1)
-  //     register[i] <= 0;
-  // end
 
   initial
-    for (i = 1; i < 32; i = i + 1)
+  begin
+    for (i = 0; i < 32; i = i + 1)
       register[i] <= 0;
+  end
+
+  assign led = write_enable;
 
   always @(posedge clk)
   begin
-    if (write_enable)
-      if (write_address)
+    if (write_enable == 1)
+      if (write_address != 0)
         register[write_address] <= write_value;
-
-    value1 <= (read_address1 == 0) ? 0 : register[read_address1];
-    value2 <= (read_address2 == 0) ? 0 : register[read_address2];
   end
 
-  // assign value1 = (read_address1 == 0) ? 0 : register[read_address1];
-  // assign value2 = (read_address2 == 0) ? 0 : register[read_address2];
+  assign value1 = register[read_address1];
+  assign value2 = register[read_address2];
 
 endmodule
 `endif
