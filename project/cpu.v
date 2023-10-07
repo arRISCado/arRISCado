@@ -21,7 +21,10 @@ module cpu(
     input [5:0] led,
     input enable
 );
-    assign led = mem_wb_data_out[5:0];
+    assign led[3:0] = ex_mem_result[3:0];
+    //assign led[3] = ram_write_enable;
+    //assign led[4] = ex_mem_MemWrite;
+    assign led[5:4] = 2'b11;
 
     wire clock_real;
     assign clock_real = clock & enable;

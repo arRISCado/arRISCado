@@ -55,7 +55,7 @@ begin
     PCSrc <= 0;
     
      /// Most common Immediate
-    imm <= {_instruction[31:20], 21'b0};
+    imm <= {21'b0, _instruction[31:20]};
     
     // Eventualmente, com as instruções de 16 bits, vai ter que
     // separar a instrução de 32 bits em 2 intruções de 16 bits
@@ -86,7 +86,7 @@ begin
                 MemWrite <= 0;
                 Branch <= 0;
                 AluControl <= 4'b0110;
-                imm <= {_instruction[31:12], 12'b0};
+                imm <= {12'b0, _instruction[31:12]};
             end
         
         // AUIPC: Add U-Immediate with PC (Tipo U)
@@ -99,7 +99,7 @@ begin
                 MemWrite <= 0;
                 Branch <= 1;
                 AluControl <= 4'b0110;
-                imm <= {_instruction[31:12], 12'b0};
+                imm <= {12'b0, _instruction[31:12]};
             end
 
         // JAL: Jump And Link (Tipo J)
@@ -113,7 +113,7 @@ begin
             MemWrite <= 0;
             Branch <= 1;
             AluControl <= 4'b0110;
-            imm <= {_instruction[31:12], 12'b0};
+            imm <= {12'b0, _instruction[31:12]};
         end
 
         //JARL: Jump And Link Register (Tipo I)
@@ -140,6 +140,7 @@ begin
             MemWrite <= 0;
             Branch <= 1;
             AluControl <= 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
+            // inverter esse imediato
             imm <= {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
 
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
@@ -196,7 +197,7 @@ begin
                 MemRead <= 0;
                 MemWrite <= 0;
                 Branch <= 0;
-                imm <= _instruction[31:20];
+                imm <= {21'b0, _instruction[31:20]};
 
                 // ADDI
                 if (func3 == 000)

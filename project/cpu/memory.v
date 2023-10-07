@@ -38,7 +38,7 @@ module memory (
     reg [31:0] _addr, _data_in;
     reg _load, _store, _MemToReg, _RegWrite, _RegDataSrc, _PCSrc;
     reg [4:0] _RegDest;
-    
+
     assign mem_addr = _addr;
     assign mem_write_data = _data_in;
     assign data_out = mem_read_data;
@@ -57,8 +57,8 @@ module memory (
             _RegDest <= 0;
             _RegDataSrc <= 0;
             _PCSrc <= 0;
-            mem_done <= 0;
             mem_write_enable <= 0;
+            mem_done <= 0;
         end
         else 
         begin
@@ -74,33 +74,27 @@ module memory (
             _RegDest <= in_RegDest;
             _RegDataSrc <= in_RegDataSrc;
             _PCSrc <= in_PCSrc;
-            mem_done <= 0;
-            mem_write_enable <= 0;
+            if (_load)
+            begin
+                mem_write_enable <= 0;
+                mem_done <= 1;
+            end
+            
+            if (_store)
+            begin
+                mem_write_enable <= 1;
+                mem_done <= 1;
+            end
         end
     end
 
-    always @(*)
-    begin
-        
-        if (_load)
-        begin
-            mem_write_enable <= 0;
-            mem_done <= 1;
-        end
-        
-        if (_store)
-        begin
-            mem_write_enable <= 1;
-            mem_done <= 1;
-        end
-        
-        out_MemToReg <= _MemToReg;
-        out_RegWrite <= _RegWrite;
-        out_RegDest <= _RegDest;
-        out_RegDataSrc <= _RegDataSrc;
-        out_PCSrc <= _PCSrc;
-        out_AluResult <= _addr;
-    end
+
+    assign out_MemToReg = _MemToReg;
+    assign out_RegWrite = _RegWrite;
+    assign out_RegDest = _RegDest;
+    assign out_RegDataSrc = _RegDataSrc;
+    assign out_PCSrc = _PCSrc;
+    assign out_AluResult = _addr;
 
 endmodule
 

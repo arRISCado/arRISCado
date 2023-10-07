@@ -19,14 +19,16 @@ module test;
 
   initial
   begin
+  $dumpfile("cpu_tb.vcd");
+  $dumpvars(0, test);
     reset = 1;
     #5;
     reset = 0;
     
-    #200;
+    #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
-    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Writeback.data_mem, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
+    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
 
     #400;
 
