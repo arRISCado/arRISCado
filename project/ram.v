@@ -17,9 +17,9 @@ module ram (
     // assign led = {address[5:0]};
 
     integer i;
-    //initial
-    //    for (i = 0; i <= 255; i = i + 1)
-    //        storage[i] <= 0;
+    initial
+       for (i = 0; i <= 255; i = i + 1)
+           storage[i] <= 0;
 
     // always @(posedge reset)
     // begin

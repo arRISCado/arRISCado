@@ -22,15 +22,15 @@ module memory (
     output reg mem_done,              // Memory operation done signal
 
     // Control Signals
-    output reg out_MemToReg,
-    output reg out_RegWrite,
-    output reg [4:0] out_RegDest,
-    output reg out_RegDataSrc,
-    output reg out_PCSrc,
+    output out_MemToReg,
+    output out_RegWrite,
+    output [4:0] out_RegDest,
+    output out_RegDataSrc,
+    output out_PCSrc,
 
     // to RAM signals
     output [31:0] mem_addr,       // Send   address to RAM
-    output reg [31:0] out_AluResult,       // Propagate ALU result
+    output [31:0] out_AluResult,       // Propagate ALU result
     output [31:0] mem_write_data, // Send data to write in RAM
     output reg mem_write_enable      // Send signal to enable writing in RAM
 );
