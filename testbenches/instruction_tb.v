@@ -40,6 +40,7 @@ module test();
         
             $display("IF %0d", i);
             $display("instr: %h", cpu.Fetch.instr);
+            $display("pc: %0d", cpu.Fetch.pc);
 
             $display("");
 
@@ -50,6 +51,7 @@ module test();
             $display("RegWrite: %b", cpu.Decode.RegWrite);
             $display("RegDest: %0d", cpu.Decode.RegDest);
             $display("imm: %0d", cpu.Decode.imm);
+            $display("PC_out: %0d", cpu.Decode.PC_out);
             //$display("rs1: %0d", cpu.Decode.rs1);
             //$display("imm: %0d", cpu.Decode.imm);
             //$display("AluSrc: %b", cpu.Decode.AluSrc);
@@ -95,6 +97,11 @@ module test();
             for (integer j = 10; j < 18; j = j + 1)
             begin
                 $display("a%0d=x%0d %0d", j-10,j, cpu.RegisterBank.register[j]);
+            end
+
+            for (integer j = 18; j < 28; j = j + 1)
+            begin
+                $display("s%0d=x%0d %0d", j-16, j, cpu.RegisterBank.register[j]);
             end
 
             //$display("a0=x10 %0d", cpu.RegisterBank.register[10]);

@@ -7,6 +7,7 @@ module decode (
     input rst,                // Reset signal
 
     input [31:0] next_instruction,
+    input [31:0] PC,
 
     // TODO: Clean unused outputs
     output reg [31:0] imm,
@@ -27,10 +28,12 @@ module decode (
     output reg Branch,          // True or False depending if the instruction is a Branch
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
-    output reg PCSrc = 0        // Determines where the PC will come from
+    output reg PCSrc = 0,        // Determines where the PC will come from
+    output reg [31:0] PC_out
 );
 
 reg [31:0] _instruction;
+reg [31:0] _PC;
 
 // Divide each possible part of an instruction
 assign opcode = _instruction[6:0];
@@ -46,7 +49,9 @@ begin
     if (rst)
         _instruction <= 0;
     else
-        _instruction <= next_instruction;       
+        _instruction <= next_instruction;  
+
+    _PC <= PC;     
 end
 
 always @(_instruction) 
@@ -63,6 +68,8 @@ begin
     MemToReg   <= 0; 
     RegDataSrc <= 0;    
     PCSrc      <= 0;
+
+    PC_out <= _PC;
 
     case (opcode)
         // LUI: Load Upper Immediate (Tipo U)
