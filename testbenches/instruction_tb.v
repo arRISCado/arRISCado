@@ -31,6 +31,7 @@ module test();
         begin
             $display("#STEP_START");
             $display("Step %0d", i);
+            $display("");
 
             //$display("ROM");
             //$display("address: %0d", cpu.Rom.address);
@@ -48,6 +49,7 @@ module test();
             $display("OUT");
             $display("RegWrite: %b", cpu.Decode.RegWrite);
             $display("RegDest: %0d", cpu.Decode.RegDest);
+            $display("imm: %0d", cpu.Decode.imm);
             //$display("rs1: %0d", cpu.Decode.rs1);
             //$display("imm: %0d", cpu.Decode.imm);
             //$display("AluSrc: %b", cpu.Decode.AluSrc);
@@ -59,8 +61,13 @@ module test();
             $display("Execute %0d", i-2);
             $display("in_RegWrite %b", cpu.Execute.in_RegWrite);
             $display("in_RegDest %0d", cpu.Execute.in_RegDest);
+            $display("_imm %0d", cpu.Execute._imm);
             $display("out_RegWrite %b", cpu.Execute.out_RegWrite);
             $display("out_RegDest %0d", cpu.Execute.out_RegDest);
+            $display("alu.AluControl %b", cpu.Execute.alu.AluControl);
+            $display("alu.a %0d", cpu.Execute.alu.a);
+            $display("alu.b %0d", cpu.Execute.alu.b);
+            $display("alu.result %0d", cpu.Execute.alu.result);
             
             $display("");
             
@@ -84,7 +91,16 @@ module test();
             $display("Write enable %0d", cpu.RegisterBank.write_enable);
             $display("Write address %0d", cpu.RegisterBank.write_address);
             $display("Write value %0d", cpu.RegisterBank.write_value);
-            $display("a0=x10 %0d", cpu.RegisterBank.register[10]);
+
+            for (integer j = 10; j < 18; j = j + 1)
+            begin
+                $display("a%0d=x%0d %0d", j-10,j, cpu.RegisterBank.register[j]);
+            end
+
+            //$display("a0=x10 %0d", cpu.RegisterBank.register[10]);
+            //$display("a4=x14 %0d", cpu.RegisterBank.register[14]);
+            //$display("a6=x16 %0d", cpu.RegisterBank.register[16]);
+            //$display("a7=x17 %0d", cpu.RegisterBank.register[17]);
             
             $display("");
             $display("#STEP_END");

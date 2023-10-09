@@ -111,7 +111,9 @@ for test_file in tests: #Run all tests
     with open(test_file, "r") as file:
         lines = file.readlines()
 
-    code = lines + ["00100013\n"] * (256-len(lines))
+    code = ["00100013\n"] * 1
+    code += lines
+    code += ["00100013\n"] * (256-len(code))
     code[-1] = code[-1][:-1]
 
     with open(rom_path, "w") as file:
@@ -162,15 +164,22 @@ for test_file in tests: #Run all tests
         lines = file.readlines()
         for line in lines:
             value = line.split(" ")[0]
+            
+            if value == "x":
+                value = "0"
+            
             expected_result.append(value)
 
     correct = True
+    
+    wrong_regs = []
 
     #Check for errors
     for i in range(32):
-        if expected_result[i] == result_values[i]:
+        if  expected_result[i] != result_values[i]:
             correct = False
             all_correct = False
+            wrong_regs.append(i)
     
     if correct:
         print(".")
@@ -178,8 +187,11 @@ for test_file in tests: #Run all tests
         print("ERROR")
         #Print diff
         if print_diff:
-            for i in range(32):
-                if expected_result[i] != result_values[i]:
+            print("Expected Result")
+            for i in range(32):#in wrong_regs:
+                if i in wrong_regs:
+                    print(f"{i}:", expected_result[i], result_values[i], "XXXXX")
+                else:
                     print(f"{i}:", expected_result[i], result_values[i])
 
 

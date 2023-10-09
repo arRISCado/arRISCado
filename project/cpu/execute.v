@@ -82,7 +82,7 @@ module execute (
         end
     end
 
-    assign b = DataSrc == 'b00 ? imm : 
+    assign b = DataSrc == 'b00 ? _imm : 
                DataSrc == 'b01 ? rs2_value :
                DataSrc == 'b10 ? AluSrcValue : 12;
 
@@ -97,7 +97,7 @@ module execute (
     
     always @(*)
     begin
-        case(AluOp)
+        case(_AluOp)
             // Tipo Load ou Store
             3'b000 :
             begin
