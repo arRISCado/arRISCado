@@ -33,7 +33,6 @@ module decode (
 );
 
 reg [31:0] _instruction;
-reg [31:0] _PC;
 
 // Divide each possible part of an instruction
 assign opcode = _instruction[6:0];
@@ -50,8 +49,6 @@ begin
         _instruction <= 0;
     else
         _instruction <= next_instruction;  
-
-    _PC <= PC;     
 end
 
 always @(_instruction) 
@@ -68,8 +65,7 @@ begin
     MemToReg   <= 0; 
     RegDataSrc <= 0;    
     PCSrc      <= 0;
-
-    PC_out <= _PC;
+    PC_out <= PC;
 
     case (opcode)
         // LUI: Load Upper Immediate (Tipo U)
