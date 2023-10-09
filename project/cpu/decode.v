@@ -83,11 +83,11 @@ begin
         7'b0010111 : begin
                 AluOp <= 3'b101;
                 AluSrc <= 1;
-                MemToReg <= 1;
-                RegWrite <= 0;
+                MemToReg <= 0;
+                RegWrite <= 1;
                 MemRead <= 0;
                 MemWrite <= 0;
-                Branch <= 1;
+                Branch <= 0;
                 AluControl <= 4'b0010;
                 imm <= {_instruction[31:12], 12'b0};
             end
