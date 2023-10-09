@@ -1,10 +1,18 @@
+`define TEST
 `define ROM_FILE "../testbenches/instruction_tb_rom.txt"
 
 module test();
     reg clk;
     reg rst;
+
+    wire [5:0] led;
+    wire [31:0] rom_data;
     
-    cpu cpu(clk, rst, 1'b1);
+    cpu cpu(
+        .clock(clk), 
+        .reset(rst), 
+        .enable(1'b1),
+        .led(led));
 
     // Testbench procedure
     initial begin
@@ -14,10 +22,20 @@ module test();
         //rst = 1'b0;
         //#10
 
+        clk = 0;
+        #10;        
+        clk = 1;
+        #10;
+
         for (integer i = 0; i < 100; i = i + 1)
         begin
             $display("#STEP_START");
             $display("Step %0d", i);
+
+            //$display("ROM");
+            //$display("address: %0d", cpu.Rom.address);
+            //$display("data: %h", cpu.Rom.data);
+            //$display("memory[addr]: %h", cpu.Rom.memory[cpu.Rom.address]);
         
             $display("IF %0d", i);
             $display("instr: %h", cpu.Fetch.instr);
@@ -26,7 +44,7 @@ module test();
 
             $display("Decode %0d", i-1);
             $display("IN");
-            $display("_instruction: | %h", cpu.Decode._instruction);    
+            $display("_instruction: %h", cpu.Decode._instruction);    
             $display("OUT");
             $display("RegWrite: %b", cpu.Decode.RegWrite);
             $display("RegDest: %0d", cpu.Decode.RegDest);

@@ -19,9 +19,14 @@ module cpu(
     input clock,
     input reset,
     input [5:0] led,
-    input enable,
+    input enable
+
+    `ifndef TEST 
+    ,
     input wire [31:0] rom_data,
     output wire [31:0] rom_address
+    
+    `endif
 );
     assign led = rom_data[5:0];
 
@@ -29,9 +34,6 @@ module cpu(
     assign clock_real = clock & enable;
 
     // ### Component wires ###
-
-    // ROM
-    // wire [31:0] rom_data, rom_address;
 
     // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
@@ -53,13 +55,6 @@ module cpu(
         // .led(led),
         .data_out(ram_data_out)
     );
-
-    /*
-    rom Rom(
-        .address(rom_address),
-        .data(rom_data)
-    );
-    */
 
     register_bank RegisterBank(
         .clk(clock_real),
@@ -264,6 +259,17 @@ module cpu(
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
+
+    // ROM
+    `ifdef TEST
+
+    wire [31:0] rom_data, rom_address;
+    rom Rom(
+        .address(rom_address),
+        .data(rom_data)
+    );
+    
+    `endif
 
 endmodule
 
