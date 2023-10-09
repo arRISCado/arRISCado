@@ -75,7 +75,7 @@ begin
                 MemRead <= 0;
                 MemWrite <= 0;
                 Branch <= 0;
-                AluControl <= 4'b0110;
+                AluControl <= 4'b0010;
                 imm <= {_instruction[31:12], 12'b0};
             end
         
@@ -88,7 +88,7 @@ begin
                 MemRead <= 0;
                 MemWrite <= 0;
                 Branch <= 1;
-                AluControl <= 4'b0110;
+                AluControl <= 4'b0010;
                 imm <= {_instruction[31:12], 12'b0};
             end
 

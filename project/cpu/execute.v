@@ -125,9 +125,9 @@ module execute (
             // Tipo U LUI
             3'b100:
             begin
-                a <= imm;
+                a <= 0;
                 // b <= 12;
-                DataSrc <= 'b11;
+                DataSrc <= 'b00;
             end
 
             // Tipo U AUIPC
