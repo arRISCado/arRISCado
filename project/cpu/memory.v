@@ -74,7 +74,6 @@ module memory (
             _RegDest <= in_RegDest;
             _RegDataSrc <= in_RegDataSrc;
             _PCSrc <= in_PCSrc;
-            mem_write_enable <= 0;
 
             if (_load)
             begin
