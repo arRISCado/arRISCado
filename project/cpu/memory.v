@@ -74,22 +74,24 @@ module memory (
             _RegDest <= in_RegDest;
             _RegDataSrc <= in_RegDataSrc;
             _PCSrc <= in_PCSrc;
+            mem_done <= 1;
 
-            if (_load)
-            begin
-                mem_write_enable <= 0;
-                mem_done <= 1;
-            end
-            
+            `ifndef TESTBENCH
             if (_store)
+            `else
+            if (MemWrite)
+            `endif
             begin
+                // Why this works? I think this signal should be assigned one cycle before.
                 mem_write_enable <= 1;
-                mem_done <= 1;
+                `ifndef TESTBENCH
                 mem_write_enable <= 0;
+                `endif
             end
+            else
+                mem_write_enable <= 0;
         end
     end
-
 
     assign out_MemToReg = _MemToReg;
     assign out_RegWrite = _RegWrite;
