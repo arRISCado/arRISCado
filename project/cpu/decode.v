@@ -44,25 +44,15 @@ assign func7 = _instruction[31:25];
 always @(posedge clk or posedge rst)
 begin
     if (rst)
-        _instruction = 0;
+        _instruction <= 0;
     else
-        _instruction = next_instruction;       
+        _instruction <= next_instruction;       
 end
 
 always @(_instruction) 
 begin
     // Standart Value for PCSrc
-    PCSrc <= 0;
-    
-     /// Most common Immediate
-    imm <= {21'b0, _instruction[31:20]};
-    
-    // Eventualmente, com as instruções de 16 bits, vai ter que
-    // separar a instrução de 32 bits em 2 intruções de 16 bits
-
-    // Pelo que o professor falou, os 2 primeiros bits da instrução
-    // definem se é 32, 16 ou 64 bits.
-
+    imm <= 0;
     MemWrite   <= 0;
     MemRead    <= 0;
     RegWrite   <= 0;
@@ -208,11 +198,13 @@ begin
                 // SLTI
                 else if (func3 == 010)
                 begin
+                    AluControl <= 4'b0010;
                 end
 
                 // SLLI, SRLI, SRAI (Tipo I)
                 else if ((func3 == 3'b001) || (func3 == 3'b101))
                 begin
+                    AluControl <= 4'b0010;
                 end
                 
             end

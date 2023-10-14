@@ -14,7 +14,7 @@ module writeback (
     input [4:0] in_RegDest,
     input in_PCSrc,
 
-    output reg [31:0] data_wb,   // Data to be written back
+    output [31:0] data_wb,   // Data to be written back
 
     // Control Signal
     output reg out_RegWrite,
@@ -55,16 +55,11 @@ module writeback (
 
     always @(*)
     begin
-        // TODO: There is probably a case when there is nothing to be written to in_RegDest.
-        if (_mem_done && _MemToReg)
-            data_wb <= data_mem;
-        else
-            data_wb <= _result_alu;
-
         out_RegDest <= _RegDest;
         out_PCSrc <= _PCSrc;
         out_RegWrite <= _RegWrite;
     end
-endmodule
 
+    assign data_wb = (_MemToReg) ? data_mem : _result_alu;
+endmodule
 `endif
