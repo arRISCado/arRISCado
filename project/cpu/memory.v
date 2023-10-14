@@ -76,14 +76,10 @@ module memory (
             _PCSrc <= in_PCSrc;
             mem_done <= 1;
 
-            // Why this works? I think this signal should be assigned one cycle before.
-            if (_store)
-            begin
+            if (MemWrite)
                 mem_write_enable <= 1;
-                mem_write_enable <= 0;
-            end
 
-           if (_read)
+            if (_read)
                 mem_write_enable <= 0;
         end
     end
