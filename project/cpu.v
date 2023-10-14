@@ -33,7 +33,7 @@ module cpu(
 // addi x2, x2, 5   /* 20    10100*/
 
 
-    assign led[5:0] = ex_mem_result[5:0];
+    // assign led[5:0] = ex_mem_result[5:0];
     // assign led[4] = ram_write_enable;
     // assign led[5] = ex_mem_MemWrite;
 
@@ -79,6 +79,7 @@ module cpu(
         .write_value(rb_write_value),
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
+        .led(led),
         .value1(rb_value1),
         .value2(rb_value2)
     );

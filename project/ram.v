@@ -9,12 +9,9 @@ module ram (
     input [31:0] address,
     input [31:0] data_in,
     input write_enable,
-    // output [5:0] led,
     output reg [31:0] data_out
 );
     reg [31:0] storage [255:0];
-
-    // assign led = {address[5:0]};
 
     integer i;
     initial

@@ -1,5 +1,6 @@
 `define ROM_FILE "../../testbenches/cpu_tb.txt"
 `include "../../testbenches/utils/imports.v"
+// `timescale 1ps/1ps
 
 module test;
   reg clock = 0;
@@ -28,7 +29,7 @@ module test;
     #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
-    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
+    $monitor("%h %h", cpu.Ram.data_out, cpu.Ram.address);
 
     #400;
 

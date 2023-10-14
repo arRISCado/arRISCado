@@ -7,11 +7,15 @@ module register_bank(
   input [31:0] write_value,
   input [4:0] read_address1,
   input [4:0] read_address2,
+  output [5:0] led,
   output [31:0] value1,
   output [31:0] value2
 );
 
   reg [31:0] register [31:0];
+
+  assign led[4:0] = register[4];
+  assign led[5] = clk;
 
   integer i;
   initial
