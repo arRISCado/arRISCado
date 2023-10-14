@@ -76,20 +76,12 @@ module memory (
             _PCSrc <= in_PCSrc;
             mem_done <= 1;
 
-            `ifndef TESTBENCH
+            // Why this works? I think this signal should be assigned one cycle before.
             if (_store)
-            `else
-            if (MemWrite)
-            `endif
             begin
-                // Why this works? I think this signal should be assigned one cycle before.
                 mem_write_enable <= 1;
-                `ifndef TESTBENCH
                 mem_write_enable <= 0;
-                `endif
             end
-            else
-                mem_write_enable <= 0;
         end
     end
 
