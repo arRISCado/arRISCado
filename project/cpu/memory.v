@@ -76,11 +76,15 @@ module memory (
             _PCSrc <= in_PCSrc;
             mem_done <= 1;
 
-            if (MemWrite)
-                mem_write_enable <= 1;
-
-            if (_read)
+            if (mem_write_enable)
                 mem_write_enable <= 0;
+
+            `ifdef TESTBENCH
+            if (MemWrite)
+            `else
+            if (_store)
+            `endif
+                mem_write_enable <= 1;
         end
     end
 
