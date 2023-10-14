@@ -82,6 +82,9 @@ module memory (
                 mem_write_enable <= 1;
                 mem_write_enable <= 0;
             end
+
+           if (_read)
+                mem_write_enable <= 0;
         end
     end
 
