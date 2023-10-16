@@ -89,7 +89,6 @@ module cpu(
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [4:0] de_ex_AluControl;    // Dies on execute
-    wire [2:0] de_ex_BranchOp;       // Dies on Execute
     wire de_ex_MemWrite;            // Goes to MEM stage
     wire de_ex_MemRead;             // Goes to MEM stage
     wire de_ex_RegWrite;            // Goes to WB
@@ -97,6 +96,7 @@ module cpu(
     wire de_ex_MemToReg;            // Goes to MEM
     wire de_ex_RegDataSrc;          // Goes to WB
     wire de_ex_PCSrc;               // Goes to next Fetch
+    wire [2:0] de_ex_BranchOp;       // Dies on Execute
     wire [11:0] de_ex_BranchOffset;
 
     // Execute -> Memory
@@ -110,6 +110,7 @@ module cpu(
     wire ex_mem_RegDataSrc;          // Goes to WB
     wire ex_mem_PCSrc;               // Goes to next Fetch
     wire [31:0] ex_mem_rs2_value;
+    wire [11:0] ex_mem_BranchOffset;
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
@@ -125,6 +126,7 @@ module cpu(
 
     // Writeback -> Fetch
     wire [31:0] wb_if_branch_target;
+    wire [31:0] wb_if_BranchOffset;
     wire wb_if_PCSrc;               // Dies on Fetch
 
     // ### Pipeline ###
@@ -133,7 +135,7 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .branch_target(wb_if_branch_target), // May come from writeback, but ideally from memory stage
+        .BranchOffset(wb_if_BranchOffsett), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
@@ -162,7 +164,9 @@ module cpu(
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
-        .PCSrc(de_ex_PCSrc)
+        .PCSrc(de_ex_PCSrc),
+        .BranchOp(de_ex_BranchOp),
+        .BranchOffset(de_ex_BranchOffset)
     );
 
     execute Execute(
@@ -195,7 +199,7 @@ module cpu(
         .out_MemToReg(ex_mem_MemToReg),
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
-        .out_BranchOffset(ex_mem_BranchOffset),
+        .in_BranchOffset(de_ex_BranchOffset),
 
         ._rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result)
@@ -267,6 +271,7 @@ module cpu(
 
         // control outputs
         .out_PCSrc(wb_if_PCSrc),
+        .out_BranchOffset(wb_if_BranchOffset),
         
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank

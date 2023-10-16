@@ -23,7 +23,6 @@ module execute (
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     input [2:0] in_BranchOp,       // Determines what type of branch is being done
-    input [11:0] in_BranchOffset,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -46,7 +45,6 @@ module execute (
     reg [3:0] _AluControl;
     reg [4:0] _RegDest;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
-    reg [11:0] _BranchOffset;
 
     wire zero;
     wire borrow;
@@ -121,7 +119,7 @@ module execute (
         begin
             a = rs1_value;
             DataSrc <= 'b01;
-            case (func3)  // eu acho que é o func3
+            case (in_BranchOp)  // eu acho que é o func3
                 BEQ:
                 begin
                     out_PCSrc = zero && in_PCSrc;

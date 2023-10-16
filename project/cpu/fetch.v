@@ -4,7 +4,7 @@
 module fetch (
     input clk,                    // Clock signal
     input rst,                    // Reset signal
-    input signed [31:0] BranchOffset,   // Branch address to jump to if needed
+    input signed [31:0] BranchOffset,    // Branch address to jump to if needed
     input [31:0] rom_data,
 
     input PCSrc,
