@@ -18,13 +18,20 @@
 module cpu(
     input clock,
     input reset,
-    input enable
+    input [5:0] led,
+    input enable,
+    input wire [31:0] rom_data,
+    output wire [31:0] rom_address
 );
+    assign led[5:0] = ex_mem_result[5:0];
+
+    wire clock_real;
     assign clock_real = clock & enable;
+
     // ### Component wires ###
 
     // ROM
-    wire [31:0] rom_data, rom_address;
+    // wire [31:0] rom_data, rom_address;
 
     // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
@@ -42,14 +49,17 @@ module cpu(
         .reset(reset),
         .address(ram_address),
         .data_in(ram_data_in),
-        .write_enable(ex_mem_MemWrite),
+        .write_enable(ram_write_enable),
+        // .led(led),
         .data_out(ram_data_out)
     );
 
+    /*
     rom Rom(
         .address(rom_address),
         .data(rom_data)
     );
+    */
 
     register_bank RegisterBank(
         .clk(clock_real),
@@ -99,7 +109,7 @@ module cpu(
     wire [4:0] ex_mem_RegDest;       // Goes to WB
     wire ex_mem_RegDataSrc;          // Goes to WB
     wire ex_mem_PCSrc;               // Goes to next Fetch
-    wire [11:0] ex_mem_BranchOffset;
+    wire [31:0] ex_mem_rs2_value;
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
@@ -114,8 +124,8 @@ module cpu(
     wire [11:0] mem_wb_BranchOffset;
 
     // Writeback -> Fetch
-    wire [31:0] wb_if_BranchOffset;
-    wire wb_if_PCSrc;
+    wire [31:0] wb_if_branch_target;
+    wire wb_if_PCSrc;               // Dies on Fetch
 
     // ### Pipeline ###
 
@@ -123,7 +133,7 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .BranchOffset(wb_if_BranchOffset), // May come from writeback, but ideally from memory stage
+        .branch_target(wb_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
@@ -152,9 +162,7 @@ module cpu(
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
-        .PCSrc(de_ex_PCSrc),
-        .BranchOp(de_ex_BranchOp),
-        .BranchOffset(de_ex_BranchOffset)
+        .PCSrc(de_ex_PCSrc)
     );
 
     execute Execute(
@@ -177,7 +185,7 @@ module cpu(
         .in_MemToReg(de_ex_MemToReg),
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
-        .in_BranchOffset(de_ex_BranchOffset),
+        // TODO: Missing PC
 
         // Control Outputs
         .out_MemWrite(ex_mem_MemWrite),
@@ -235,7 +243,7 @@ module cpu(
         .mem_write_enable(ram_write_enable)
     );
 
-    wire [4:0] wr_if_RegDest; //LIGAR
+    wire [4:0] wb_if_RegDest; //LIGAR
 
     writeback Writeback(
         // inputs
@@ -259,7 +267,7 @@ module cpu(
 
         // control outputs
         .out_PCSrc(wb_if_PCSrc),
-        .out_BranchOffset(wb_if_BranchOffset),
+        
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );

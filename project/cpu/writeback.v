@@ -15,7 +15,7 @@ module writeback (
     input [4:0] in_RegDest,
     input [11:0] in_BranchOffset,
 
-    output reg [31:0] data_wb,   // Data to be written back
+    output [31:0] data_wb,   // Data to be written back
 
     // Control Signal
     output reg out_RegWrite,
@@ -25,8 +25,7 @@ module writeback (
 );
     // TODO: Pensar como carregar o dado de entrada
     reg _mem_done, _MemToReg;
-    reg [4:0] _rd;
-    reg [31:0] _data_mem, _result_alu;
+    reg [31:0] _result_alu;
 
     reg [4:0] _RegDest;
     reg _PCSrc, _RegWrite;
@@ -36,41 +35,34 @@ module writeback (
     begin
         if (rst)
         begin
-            _mem_done = 0;
-            _MemToReg = 0;
-            _data_mem = 0;
-            _result_alu = 0;
-            _rd = 0;
-            out_RegDest = 0;
+            _mem_done <= 0;
+            _MemToReg <= 0;
+            _result_alu <= 0;
+
+            _RegDest <= 0;
+            _PCSrc <= 0;
+            _RegWrite <= 0;
         end
         else 
         begin
-            _mem_done = mem_done;
-            _MemToReg = MemToReg;
-            _data_mem = data_mem;
-            _result_alu = result_alu;
+            _mem_done <= mem_done;
+            _MemToReg <= MemToReg;
+            _result_alu <= result_alu;
 
             // Control Signal
-            _RegDest = in_RegDest;
-            _PCSrc = in_PCSrc;
-            _RegWrite = in_RegWrite;
-            _BranchOffset = in_BranchOffset;
+            _RegDest <= in_RegDest;
+            _PCSrc <= in_PCSrc;
+            _RegWrite <= in_RegWrite;
         end
     end
 
     always @(*)
     begin
-        // TODO: There is probably a case when there is nothing to be written to in_RegDest.
-        if (_mem_done && _MemToReg)
-            data_wb = _data_mem;
-        else
-            data_wb = _result_alu;
-
-        out_RegDest = _RegDest;
-        out_PCSrc = _PCSrc;
-        out_RegWrite = _RegWrite;
-        out_BranchOffset = {{20{_BranchOffset[11]}}, _BranchOffset};
+        out_RegDest <= _RegDest;
+        out_PCSrc <= _PCSrc;
+        out_RegWrite <= _RegWrite;
     end
-endmodule
 
+    assign data_wb = (_MemToReg) ? data_mem : _result_alu;
+endmodule
 `endif

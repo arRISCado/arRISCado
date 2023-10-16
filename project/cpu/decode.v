@@ -82,20 +82,28 @@ assign func7 = _instruction[31:25];
 assign BranchOp = func3;
 assign BranchOffset = {_instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
 
-always @(*) 
+always @(posedge clk or posedge rst)
 begin
+    if (rst)
+        _instruction <= 0;
+    else
+        _instruction <= next_instruction;       
+end
 
+always @(_instruction) 
+begin
     // Standart Value for PCSrc
-    PCSrc = 0;
-    
-     /// Most common Immediate
-    imm = {_instruction[31:20], 21'b0};
-    
-    // Eventualmente, com as instruções de 16 bits, vai ter que
-    // separar a instrução de 32 bits em 2 intruções de 16 bits
-
-    // Pelo que o professor falou, os 2 primeiros bits da instrução
-    // definem se é 32, 16 ou 64 bits.
+    imm <= 0;
+    MemWrite   <= 0;
+    MemRead    <= 0;
+    RegWrite   <= 0;
+    AluSrc     <= 0;
+    AluOp      <= 0;
+    AluControl <= 0;  
+    Branch     <= 0;
+    MemToReg   <= 0; 
+    RegDataSrc <= 0;    
+    PCSrc      <= 0;
 
     // Intruções dos tipos RV32IMA
     if(opcode[1:0] == 'b11) 
@@ -346,35 +354,35 @@ begin
         // // FENCE: Synch Thread
         // 7'b000111 :
         // begin
-				    // RegDest = instruction[11:7];
+				    // RegDest <= instruction[11:7];
         //     func3= instruction[14:12];
-        //     rs1 = instruction[19:15];
-        //     succ = instruction[22:20];
-        //     pred = instruction[26:23];
-        //     fm = instruction[27:31];        
-				    // RegDest = instruction[11:7];
+        //     rs1 <= instruction[19:15];
+        //     succ <= instruction[22:20];
+        //     pred <= instruction[26:23];
+        //     fm <= instruction[27:31];        
+				    // RegDest <= instruction[11:7];
         //     func3= instruction[14:12];
-        //     rs1 = instruction[19:15];
-        //     succ = instruction[22:20];
-        //     pred = instruction[26:23];
-        //     fm = instruction[27:31];        
+        //     rs1 <= instruction[19:15];
+        //     succ <= instruction[22:20];
+        //     pred <= instruction[26:23];
+        //     fm <= instruction[27:31];        
         // end
 
         // // FENCE.TSO : não faço ideia do que é isso
         // 7'b0001111 :
         // begin
-        //     // RegDest = instruction[11:7];
+        //     // RegDest <= instruction[11:7];
         //     func3= instruction[14:12];
-        //     // rs1 = instruction[19:15];
-        //     // succ = instruction[22:20];
-        //     // pred = instruction[26:23];
-        //     // fm = instruction[27:31];        
-        //     // RegDest = instruction[11:7];
+        //     // rs1 <= instruction[19:15];
+        //     // succ <= instruction[22:20];
+        //     // pred <= instruction[26:23];
+        //     // fm <= instruction[27:31];        
+        //     // RegDest <= instruction[11:7];
         //     func3= instruction[14:12];
-        //     // rs1 = instruction[19:15];
-        //     // succ = instruction[22:20];
-        //     // pred = instruction[26:23];
-        //     // fm = instruction[27:31];        
+        //     // rs1 <= instruction[19:15];
+        //     // succ <= instruction[22:20];
+        //     // pred <= instruction[26:23];
+        //     // fm <= instruction[27:31];        
         // end
 
             // ECALL and EBREAK: chamada de sistema (Tipo I)

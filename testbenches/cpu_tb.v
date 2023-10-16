@@ -1,11 +1,18 @@
-`define ROM_FILE "../../testbenches/cpu_tb.txt"
+// `define ROM_FILE "../../testbenches/cpu_tb.txt"
+`define ROM_FILE "../../project/init_rom.txt"
 `include "../../testbenches/utils/imports.v"
 
 module test;
   reg clock = 0;
   reg reset = 0;
-  
-  cpu cpu(clock, reset, 1'b1);
+  wire [5:0] led;
+
+  cpu cpu(
+    .clock(clock), 
+    .reset(reset), 
+    .led(led),
+    .enable(1'b1)
+  );
 
   // Clock generation
   always
@@ -15,26 +22,25 @@ module test;
 
   initial
   begin
+  $dumpfile("cpu_tb.vcd");
+  $dumpvars(0, test);
     reset = 1;
     #5;
     reset = 0;
+    
+    #600;
 
-    // for (i = 1; i <= 5; i++)
-      // $display("%h: %h", i, cpu.RegisterBank.register[i]);
-    // $monitor("%h", cpu.Fetch.pc);
-    // $monitor("%h %b %h %h", cpu.fetch.pc, cpu.RegisterBank.write_enable, cpu.RegisterBank.write_value, cpu.RegisterBank.write_address);
-    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Ram.write_enable, cpu.Ram.address, cpu.Ram.data_in);
-    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Memory.mem_write_enable, cpu.Memory.mem_addr, cpu.Memory.mem_write_data);
-    $monitor("%h %d %d", cpu.Fetch.pc, cpu.Fetch.pc, cpu.Fetch.BranchOffset);
-
-    // $monitor("%d", cpu.Fetch.pc);
+    // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
+    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
 
     #600;
 
-    $display("### Registers ###");
-    for (i = 1; i <= 6; i++)
-      $display("%h: %h", i, cpu.RegisterBank.register[i]);
-    $display("%d", cpu.Fetch.pc);
+    $display("RAM");
+    for (i = 0; i < 5; i++)
+      $display("%d: %h", i, cpu.Ram.storage[i]);
+    $display("Registers");
+    for (i = 1; i < 7; i++)
+      $display("%d: %h", i, cpu.RegisterBank.register[i]);
 
     $finish;
   end
