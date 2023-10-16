@@ -22,21 +22,16 @@ module test;
 
   initial
   begin
+  $dumpfile("cpu_tb.vcd");
+  $dumpvars(0, test);
     reset = 1;
     #5;
     reset = 0;
     
-    // Register Bank
-    // $monitor("%d %h %h", cpu.Fetch.pc, cpu.Execute.a, cpu.Execute.b);
+    #600;
 
-    // Write Signals
-    $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Ram.write_enable, cpu.Ram.address, cpu.Ram.data_in);
-
-    // Read Signals
-    // $monitor("%h %b %h %h", cpu.Fetch.pc, cpu.Writeback._MemToReg, cpu.Writeback.data_mem, cpu.Ram.data_in);
-
-    // $monitor("%h %b %b", cpu.Fetch.pc, cpu.Ram.address[5:0], cpu.Ram.data_out[5:0]);
-    // $monitor("%d %h %h", cpu.Fetch.pc, cpu.Execute.a, cpu.Execute.b);
+    // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
+    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
 
     #600;
 

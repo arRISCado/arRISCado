@@ -21,12 +21,6 @@ module ram (
         for (i = 0; i <= 255; i = i + 1)
             storage[i] <= 0;
 
-    // always @(posedge reset)
-    // begin
-    //     for (i = 0; i <= 255; i = i + 1)
-    //         storage[i] <= 0;
-    // end
-
     always @(posedge clk)
     begin
         if (write_enable)

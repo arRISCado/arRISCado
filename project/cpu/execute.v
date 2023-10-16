@@ -46,7 +46,8 @@ module execute (
     reg [4:0] _RegDest;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
-    alu alu(_AluControl, a, b, result);
+    wire zero;
+    alu alu(_AluControl, a, b, result, zero);
 
     assign _rs2_value = rs2_value;
 
