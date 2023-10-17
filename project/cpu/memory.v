@@ -17,6 +17,7 @@ module memory (
     input [4:0] in_RegDest, // Just goes to the next stage
     input in_RegDataSrc,    // Just goes to the next stage
     input in_PCSrc,         // Just goes to the next stage
+    input [11:0] in_BranchOffset,
 
     output [31:0] data_out,       // Data output read from memory
     output reg mem_done,              // Memory operation done signal
@@ -27,6 +28,7 @@ module memory (
     output [4:0] out_RegDest,
     output out_RegDataSrc,
     output out_PCSrc,
+    output [11:0] out_BranchOffset,
 
     // to RAM signals
     output [31:0] mem_addr,       // Send   address to RAM
@@ -57,6 +59,7 @@ module memory (
             _RegDest <= 0;
             _RegDataSrc <= 0;
             _PCSrc <= 0;
+            _BranchOffset <= 0;
             mem_write_enable <= 0;
             mem_done <= 0;
         end
@@ -74,6 +77,7 @@ module memory (
             _RegDest <= in_RegDest;
             _RegDataSrc <= in_RegDataSrc;
             _PCSrc <= in_PCSrc;
+            _BranchOffset <= in_BranchOffset;
             mem_done <= 1;
 
             if (mem_write_enable)
@@ -94,6 +98,7 @@ module memory (
     assign out_RegDataSrc = _RegDataSrc;
     assign out_PCSrc = _PCSrc;
     assign out_AluResult = _addr;
+    assign out_BranchOffset = _BranchOffset;
 
 endmodule
 

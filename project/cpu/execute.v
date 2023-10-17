@@ -23,6 +23,7 @@ module execute (
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     input [2:0] in_BranchOp,       // Determines what type of branch is being done
+    input [11:0] in_BranchOffset,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -31,6 +32,7 @@ module execute (
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
+    output [11:0] out_BranchOffset,
     // output reg [31:0] _rs2_value,
     output [31:0] _rs2_value,
 
@@ -39,7 +41,7 @@ module execute (
     output [31:0] b
 );
     reg [31:0] _rs1_value, _imm, _PC;
-    reg [2:0] _AluOp;
+    reg [2:0] _AluOp, _BranchOp;
     reg _AluSrc;
 
     reg [3:0] _AluControl;
@@ -69,6 +71,7 @@ module execute (
             _AluSrc <= 0;
             _AluOp <= 0;
             _AluControl <= 0;
+            _BranchOffset <= 0;
         end
         else
         begin
@@ -87,6 +90,7 @@ module execute (
             out_MemToReg <= in_MemToReg;
             out_RegDataSrc <= in_RegDataSrc;
             out_PCSrc <= in_PCSrc;
+            out_BranchOffset <= in_BranchOffset;
         end
     end
 
@@ -105,7 +109,7 @@ module execute (
     
     always @(*)
     begin
-        case(AluOp)
+        case(_AluOp)
             // Tipo Load ou Store
             3'b000 :
             begin
@@ -119,7 +123,7 @@ module execute (
         begin
             a = rs1_value;
             DataSrc <= 'b01;
-            case (in_BranchOp)  // eu acho que é o func3
+            case (_BranchOp)  // eu acho que é o func3
                 BEQ:
                 begin
                     out_PCSrc = zero && in_PCSrc;

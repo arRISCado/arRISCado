@@ -7,6 +7,7 @@ module writeback (
     input mem_done,             // Memory operation done signal from the memory stage
     input [31:0] data_mem,      // Data read from memory
     input [31:0] result_alu,    // Result of ALU operation
+    input [11:0] in_BranchOffset,
 
     // Control Signals
     input MemToReg,
@@ -53,6 +54,7 @@ module writeback (
             _RegDest <= in_RegDest;
             _PCSrc <= in_PCSrc;
             _RegWrite <= in_RegWrite;
+            _BranchOffset <= in_BranchOffset;
         end
     end
 
@@ -61,6 +63,7 @@ module writeback (
         out_RegDest <= _RegDest;
         out_PCSrc <= _PCSrc;
         out_RegWrite <= _RegWrite;
+        out_BranchOffset <= _BranchOffset;
     end
 
     assign data_wb = (_MemToReg) ? data_mem : _result_alu;
