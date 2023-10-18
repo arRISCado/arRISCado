@@ -31,8 +31,6 @@ module decode (
     output reg PCSrc = 0        // Determines where the PC will come from
 );
 
-reg [31:0] _instruction;
-
 
 // Macros dos opcodes:
 
@@ -59,8 +57,17 @@ localparam CODE_MUL_DIV = 5'b01100;
 // localparam CODE_ = 5'b;
 // localparam CODE_ = 5'b;
 
+reg [31:0] _instruction;
 
-
+assign opcode = _instruction[6:0];
+assign RegDest = _instruction[11:7];
+assign rs1 = _instruction[19:15];
+assign rs2 = _instruction[24:20];
+assign shamt = _instruction[24:20];
+assign func3 = _instruction[14:12];
+assign func7 = _instruction[31:25];
+assign BranchOp = func3;
+assign BranchOffset = {_instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
 
 
 always @(posedge clk or posedge rst) 
@@ -72,16 +79,6 @@ begin
 end
 
 // Divide each possible part of an instruction
-assign opcode = _instruction[6:0];
-assign RegDest = _instruction[11:7];
-assign rs1 = _instruction[19:15];
-assign rs2 = _instruction[24:20];
-assign shamt = _instruction[24:20];
-assign func3 = _instruction[14:12];
-assign func7 = _instruction[31:25];
-assign BranchOp = func3;
-assign BranchOffset = {_instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
-
 always @(posedge clk or posedge rst)
 begin
     if (rst)
@@ -90,7 +87,7 @@ begin
         _instruction <= next_instruction;       
 end
 
-always @(_instruction) 
+always @(_instruction)
 begin
     // Standart Value for PCSrc
     imm <= 0;
@@ -102,7 +99,7 @@ begin
     AluControl <= 0;  
     Branch     <= 0;
     MemToReg   <= 0; 
-    RegDataSrc <= 0;    
+    RegDataSrc <= 0;
     PCSrc      <= 0;
 
     // Intruções dos tipos RV32IMA
@@ -112,51 +109,51 @@ begin
             // LUI: Load Upper Immediate (Tipo U)
             CODE_LUI : 
                 begin
-                    AluOp = 3'b100;
-                    AluSrc = 1;
-                    MemToReg = 0;
-                    RegWrite = 1;
-                    MemRead = 0;
-                    MemWrite = 0;
-                    AluControl = 5'b00110;
-                    imm = {_instruction[31:12], 12'b0};
+                    AluOp <= 3'b100;
+                    AluSrc <= 1;
+                    MemToReg <= 0;
+                    RegWrite <= 1;
+                    MemRead <= 0;
+                    MemWrite <= 0;
+                    AluControl <= 5'b00110;
+                    imm <= {_instruction[31:12], 12'b0};
                 end
             
             // AUIPC: Add U-Immediate with PC (Tipo U)
             // Modificar isso pq tá tudo errado
             CODE_AUIPC : 
                 begin
-                    AluOp = 3'b101;
-                    AluSrc = 1;
-                    MemToReg = 1;
-                    RegWrite = 0;
-                    MemRead = 0;
-                    MemWrite = 0;
-                    AluControl = 5'b00110;
-                    imm = {_instruction[31:12], 12'b0};
+                    AluOp <= 3'b101;
+                    AluSrc <= 1;
+                    MemToReg <= 1;
+                    RegWrite <= 0;
+                    MemRead <= 0;
+                    MemWrite <= 0;
+                    AluControl <= 5'b00110;
+                    imm <= {_instruction[31:12], 12'b0};
                 end
 
             // JAL: Jump And Link (Tipo J)
             CODE_JAL : 
             begin
-                AluOp = 3'b011;
-                AluSrc = 1;
-                MemToReg = 1;
-                RegWrite = 0;
-                MemRead = 0;
-                MemWrite = 0;
-                AluControl = 5'b00110;
-                imm = {_instruction[31:12], 12'b0};
+                AluOp <= 3'b011;
+                AluSrc <= 1;
+                MemToReg <= 1;
+                RegWrite <= 0;
+                MemRead <= 0;
+                MemWrite <= 0;
+                AluControl <= 5'b00110;
+                imm <= {_instruction[31:12], 12'b0};
             end
 
             //JARL: Jump And Link Register (Tipo I)
             CODE_JARL :
             begin
-                AluOp = 3'b111;
+                AluOp <= 3'b111;
                 case (func3)
                 7'b000 :                   
                     begin
-                        imm = {_instruction[31:20], 20'b0};
+                        imm <= {_instruction[31:20], 20'b0};
                     end
 
                 endcase
@@ -165,48 +162,44 @@ begin
             // Instruções de Branch: dependedem de func3 (Tipo B)
             CODE_B_TYPE :
             begin
-                AluOp = 3'b001;
-                AluSrc = 0;
-                // MemToReg = 1; Don't Care
-                RegWrite = 0;
-                MemRead = 0;
-                MemWrite = 0;
-                PCSrc = 1;
-                AluControl = 5'b00100; // Branch performa uma subtração na ALU pra fazer a comparação
-                imm = {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
+                AluOp <= 3'b001;
+                AluSrc <= 0;
+                MemToReg <= 0;
+                RegWrite <= 0;
+                MemRead <= 0;
+                MemWrite <= 0;
+                PCSrc <= 1;
+                AluControl <= 5'b00100; // Branch performa uma subtração na ALU pra fazer a comparação
+                imm <= {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
             end
 
             // Instruções dos tipos de Loads: dependem do func3
             CODE_LOAD_TYPE :
                 begin
-                    AluOp = 3'b000;
-                    AluSrc = 1;
-                    MemToReg = 1;
-                    RegWrite = 1;
-                    MemRead = 1;
-                    MemWrite = 0;
-                    AluControl = 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
-                    imm = {_instruction[31:20], 20'b0};
+                    AluOp <= 3'b000;
+                    AluSrc <= 1;
+                    MemToReg <= 1;
+                    RegWrite <= 1;
+                    MemRead <= 1;
+                    MemWrite <= 0;
+                    AluControl <= 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
+                    imm <= {_instruction[31:20], 20'b0};
 
                     // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
                     // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
-                    // if (func3 == 010) 
-                    begin
-                        
-                    end
                 end
             
             // Instruções pros tipos de Save: dependem do func3 (Tipo S)
             CODE_SAVE_TYPE :
                 begin
-                    AluOp = 3'b000;
-                    AluSrc = 1;
-                    // MemToReg = 1; Don't Care
-                    RegWrite = 0;
-                    MemRead = 0;
-                    MemWrite = 1;
-                    AluControl = 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
-                    imm = {_instruction[11:7], _instruction[31:25], 20'b0};
+                    AluOp <= 3'b000;
+                    AluSrc <= 1;
+                    // MemToReg <= 1; Don't Care
+                    RegWrite <= 0;
+                    MemRead <= 0;
+                    MemWrite <= 1;
+                    AluControl <= 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
+                    imm <= {_instruction[11:7], _instruction[31:25], 20'b0};
                     
                     // Esse sinal irá indicar pra ALU/MEM qual o tipo de store
                     // (Não sei oq fazer pra diferenciar os tipos de store ainda, então o padrão vai ser SW por hora)
@@ -217,76 +210,76 @@ begin
             // ADDI, SLTI, SLTIU, XORI, ORI(muito bom jogo), ANDI, SLLI, SRLI, SRAI
             CODE_I_TYPE :
                 begin
-                    AluOp = 3'b010;
-                    AluSrc  = 1;
-                    MemToReg = 0;
-                    RegWrite = 1;
-                    MemRead = 0;
-                    MemWrite = 0;
-                    imm = {_instruction[31:20], 20'b0};
+                    AluOp <= 3'b010;
+                    AluSrc  <= 1;
+                    MemToReg <= 0;
+                    RegWrite <= 1;
+                    MemRead <= 0;
+                    MemWrite <= 0;
+                    imm <= {_instruction[31:20], 20'b0};
 
                     case (func3)
                         // ADDI
                         3'b000:
                         begin
-                            AluControl = 5'b00010;
+                            AluControl <= 5'b00010;
                         end
                         // SLTI
                         3'b010:
                         begin
-                            AluControl = 5'b01001;
+                            AluControl <= 5'b01001;
                         end
                         // SLTIU
                         3'b011:
                         begin
-                            AluControl = 5'b01010;    
+                            AluControl <= 5'b01010;    
                         end
                         // XORI
                         3'b100:
                         begin
-                            AluControl = 5'b00011;    
+                            AluControl <= 5'b00011;    
                         end
                         // ORI
                         3'b110:
                         begin
-                            AluControl = 5'b00001;    
+                            AluControl <= 5'b00001;    
                         end
                         // ANDI
                         3'b111:
                         begin
-                            AluControl = 5'b00000;
+                            AluControl <= 5'b00000;
                         end
                         // SLLI
                         // dar um jeito no execute pra pegar o SHAMT
                         3'b001:
                         begin
-                            AluControl = 5'b00110;
+                            AluControl <= 5'b00110;
                         end
                         // SRLI, SRAI
                         3'b101:
                         begin
                             if (func7 == 7'b0000000) 
                             begin
-                                AluControl = 5'b00111;
+                                AluControl <= 5'b00111;
                             end
                             else if (func7 == 7'b0100000)
                             begin
-                                AluControl = 5'b01000;
+                                AluControl <= 5'b01000;
                             end
                         end
-                endcase
+                    endcase
                     
                 end
         
             // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND (Tipo R)
             CODE_R_TYPE :
                 begin
-                    AluOp = 3'b010;
-                    AluSrc  = 0;
-                    MemToReg = 0;
-                    RegWrite = 1;
-                    MemRead = 0;
-                    MemWrite = 0;
+                    AluOp <= 3'b010;
+                    AluSrc  <= 0;
+                    MemToReg <= 0;
+                    RegWrite <= 1;
+                    MemRead <= 0;
+                    MemWrite <= 0;
                 
                     case(func3)
                         3'b000 :
@@ -295,34 +288,34 @@ begin
                                 // ADD
                                 7'b0000000 :
                                 begin
-                                    AluControl = 5'b00010;
+                                    AluControl <= 5'b00010;
                                 end
                                 // SUB
                                 7'b0100000 :
                                 begin
-                                    AluControl = 5'b00100;
+                                    AluControl <= 5'b00100;
                                 end
                             endcase
                         end
                         // AND
                         3'b111 :
                         begin
-                            AluControl = 5'b00000;
+                            AluControl <= 5'b00000;
                         end
                         // OR
                         3'b110:
                         begin
-                            AluControl = 5'b00001;
+                            AluControl <= 5'b00001;
                         end
                         // XOR
                         3'b100:
                         begin
-                            AluControl = 5'b00011;
+                            AluControl <= 5'b00011;
                         end
                         // SLL
                         3'b001:
                         begin
-                            AluControl = 5'b00110;
+                            AluControl <= 5'b00110;
                         end
                         // SRL, SRA
                         3'b101 :
@@ -330,23 +323,23 @@ begin
                             // SLR
                             if (func7 == 7'b0000000)
                             begin
-                                AluControl = 5'b00111;
+                                AluControl <= 5'b00111;
                             end
                             // SRA
                             else if (func7 == 7'b0100000) 
                             begin
-                                AluControl = 5'b01000;
+                                AluControl <= 5'b01000;
                             end
                         end
                         // SLT
                         3'b010:
                         begin
-                            AluControl = 5'b01001;
+                            AluControl <= 5'b01001;
                         end
                         // SLTU
                         3'b011:
                         begin
-                            AluControl = 5'b01010;
+                            AluControl <= 5'b01010;
                         end
                     endcase
                 end
@@ -388,59 +381,59 @@ begin
             // ECALL and EBREAK: chamada de sistema (Tipo I)
             CODE_SYS_CALL :
             begin
-                AluOp = 3'b001;
-                imm = {_instruction[31:20], 20'b0};
+                AluOp <= 3'b001;
+                imm <= {_instruction[31:20], 20'b0};
             end
 
             // Multiplication/Division instructions
             CODE_MUL_DIV :
             begin
-                AluOp = 3'b010;
-                AluSrc  = 0;
-                MemToReg = 0;
-                RegWrite = 1;
-                MemRead = 0;
-                MemWrite = 0;
+                AluOp <= 3'b010;
+                AluSrc  <= 0;
+                MemToReg <= 0;
+                RegWrite <= 1;
+                MemRead <= 0;
+                MemWrite <= 0;
 
                 // mul: Place result in lower part of rd
                 if (func3 == 3'b000) 
                 begin
-                    AluControl = 5'b01011;
+                    AluControl <= 5'b01011;
                 end
                 // mulh: Place result in higher part of rd
                 else if (func3 == 3'b001)
                 begin
-                    AluControl = 5'b01100;
+                    AluControl <= 5'b01100;
                 end
                 // mulhsu: mulh with signed rs1 and unsigned rs2
                 else if (func3 == 3'b010)
                 begin
-                    AluControl = 5'b01101;
+                    AluControl <= 5'b01101;
                 end
                 // mulhu: mulh with unsigned rs1 and unsigned rs2
                 else if (func3 == 3'b011)
                 begin
-                    AluControl = 5'b01110;
+                    AluControl <= 5'b01110;
                 end
                 // div: divide signed rs1 by signed rs2
                 else if (func3 == 3'b100)
                 begin
-                    AluControl = 5'b01111;
+                    AluControl <= 5'b01111;
                 end
                 // divu: unsigned div
                 else if (func3 == 3'b101)
                 begin
-                    AluControl = 5'b10000;    
+                    AluControl <= 5'b10000;    
                 end
                 // rem: reminder(resto) of the division rs1 by rs2
                 else if (func3 == 3'b110)
                 begin
-                    AluControl = 5'b10001;
+                    AluControl <= 5'b10001;
                 end
                 // remu: unsigned rem
                 else if (func3 == 3'b111)
                 begin
-                    AluControl = 5'b10010;
+                    AluControl <= 5'b10010;
                 end
             end
 
@@ -448,12 +441,12 @@ begin
         default :
         begin
             // isso tem que virar sinal de controle
-            AluSrc  = 0;
-            MemToReg = 0;
-            RegWrite = 0;
-            MemRead = 0;
-            MemWrite = 0;
-            PCSrc = 0;
+            AluSrc  <= 0;
+            MemToReg <= 0;
+            RegWrite <= 0;
+            MemRead <= 0;
+            MemWrite <= 0;
+            PCSrc <= 0;
             $display("Instrução %h inválida!", _instruction);
         end
         

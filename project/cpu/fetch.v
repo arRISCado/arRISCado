@@ -17,16 +17,17 @@ module fetch (
 
     reg [31:0] pc_next = 32'b0;
 
-    always @(posedge clk or posedge rst) begin
+    always @(posedge clk or posedge rst)
+    begin
         if (rst)
-            pc_next = 0;
+            pc <= 0;
         else if (PCSrc)
-            pc_next = pc_next + BranchOffset; // Use non-blocking assignment here
+            pc <= pc + BranchOffset; // Use non-blocking assignment here
         else
-            pc_next = pc + 1; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+            pc <= pc + 1; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
 
         // Use the PC to fetch the instruction from instr_memory
-        pc = pc_next;
+        // pc <= pc_next;
     end
 
     assign instr = rom_data;
