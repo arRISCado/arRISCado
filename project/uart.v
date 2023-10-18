@@ -1,13 +1,9 @@
-module uart
-#(
-    parameter DELAY_FRAMES = 234  // Delay frames expecting a 115200 Baud rate
-)
-(
+module uart(
     input clk,
     input uart_rx,
     //output reg [5:0] led,
     output reg cpu_enable = 0,
-    input wire [31:0] address,
+    input wire [6:0] address,
     output wire [31:0] data
 );
 
@@ -16,11 +12,12 @@ reg [7:0] inst2;
 reg [7:0] inst3;
 reg [7:0] inst4;
 
-reg [31:0] instructionMemory[255:0];
+reg [31:0] instructionMemory[127:0];
 reg [7:0] currentInst = 0;
 reg [2:0] dataInCount = 0;
 reg [7:0] fullsize = 0;
 
+localparam DELAY_FRAMES = 234;  // Delay frames expecting a 115200 Baud rate
 localparam HALF_DELAY_WAIT = (DELAY_FRAMES / 2);
 
 reg [7:0] dataIn = 0;
@@ -44,7 +41,7 @@ localparam RECEIVE_DONE = 5;
 reg [2:0] romWriteState = RECEIVE_SIZE;
 
 always @(posedge clk) begin
-    if (address <= 32'd255)
+    if (address <= 6'd127)
         data <= instructionMemory[address];
     else
         data <= 32'b10011;
@@ -133,7 +130,7 @@ always @(posedge clk) begin
 end
 
 initial begin
-    $readmemh(`UART_FILE, instructionMemory, 0, 255);
+    $readmemh(`UART_FILE, instructionMemory, 0, 127);
     //led[5:0] <= 6'b111111;
 end
 

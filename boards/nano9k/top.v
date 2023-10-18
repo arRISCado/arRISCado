@@ -37,6 +37,14 @@ module nano9k (
         .rom_address(instruction_address),
         .rom_data(instruction_data)
     );
+    /*
+    initial begin
+        led <= ~0;
+    end
+    always @(posedge clk) begin
+        led <= ~instruction_data[5:0];
+    end
+    */
 
     uart Uart(
         .clk(clk), 

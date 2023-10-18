@@ -9,13 +9,13 @@ module fetch (
 
     input PCSrc,
 
-    output [31:0] rom_address,
+    output [6:0] rom_address,
 
-    output reg [31:0] pc = 32'b0, // Register for the address of the next instruction (10-bit address for 1024 registers)
+    output reg [6:0] pc = 6'b0, // Register for the address of the next instruction (10-bit address for 1024 registers)
     output wire [31:0] instr      // Instruction fetched from memory
 );
 
-    reg [31:0] pc_next = 32'b0;
+    reg [6:0] pc_next = 6'b0;
 
     always @(posedge clk or posedge rst) begin
         if (rst)

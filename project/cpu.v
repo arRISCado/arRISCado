@@ -21,7 +21,7 @@ module cpu(
     input [5:0] led,
     input enable,
     input wire [31:0] rom_data,
-    output wire [31:0] rom_address
+    output wire [6:0] rom_address
 );
     assign led[5:0] = ex_mem_result[5:0];
 
