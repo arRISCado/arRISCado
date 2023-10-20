@@ -11,7 +11,16 @@ module test;
     .clock(clock), 
     .reset(reset), 
     .led(led),
-    .enable(1'b1)
+    .enable(1'b1),
+    .rom_data(rom_data),
+    .rom_address(rom_address)
+  );
+
+  wire [31:0] rom_data, rom_address;
+
+  rom rom(
+    .address(rom_address),
+    .data(rom_data)
   );
 
   // Clock generation
@@ -31,7 +40,7 @@ module test;
     #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
-    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
+    // $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
 
     #600;
 
