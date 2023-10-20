@@ -49,21 +49,23 @@ module decode (
     assign func3 = _instruction[14:12];
     assign func7 = _instruction[31:25];
 
-    reg update = 0;
-
     always @(posedge clk or posedge rst)
     begin
-        if (rst)
+        if (rst) 
+        begin
             _instruction <= 0;
+            _value1 <= 0;
+            _value2 <= 0;
+        end
         else
+        begin
             _instruction <= next_instruction;
             _value1 <= regbank_value1;
             _value2 <= regbank_value2;
-
-        update <= 1;  
+        end
     end
 
-    always @(posedge update) 
+    always @(*) 
     begin
         // Standart Value for PCSrc
         imm <= 0;
@@ -80,8 +82,6 @@ module decode (
         PC_out <= PC-1;
         value1 <= _value1;
         value2 <= _value2;
-
-        update <= 0;
 
         case (opcode)
             // LUI: Load Upper Immediate (Tipo U)
