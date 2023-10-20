@@ -21,7 +21,6 @@ module cpu(
     input reset,
     input enable,
     input [5:0] led,
-    input enable,
     input wire [31:0] rom_data,
     output wire [31:0] rom_address,
     output port_pwm1
