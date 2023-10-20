@@ -98,7 +98,7 @@ begin
     AluOp      <= 0;
     AluControl <= 0;  
     Branch     <= 0;
-    MemToReg   <= 0; 
+    MemToReg   <= 0;
     RegDataSrc <= 0;
     PCSrc      <= 0;
 

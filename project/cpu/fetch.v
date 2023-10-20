@@ -20,14 +20,22 @@ module fetch (
     always @(posedge clk or posedge rst)
     begin
         if (rst)
-            pc_next <= 0;
+        begin
+            pc_next = 0;
+        end
         else
-            pc_next <= PCSrc ? (pc + BranchOffset) : (pc+4); // Use non-blocking assignment here
-
+        begin
+            case (PCSrc)
+            2'b1:
+                pc_next = pc + BranchOffset; // Use non-blocking assignment here
+            2'b0:
+                pc_next = (pc+4);
+            endcase
+        end
         // Use the PC to fetch the instruction from instr_memory
+        pc = pc_next;
     end
 
-    assign pc = pc_next;
     assign instr = rom_data;
     assign rom_address = pc;
 

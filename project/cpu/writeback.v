@@ -14,7 +14,6 @@ module writeback (
     input in_RegWrite,
     input in_PCSrc,
     input [4:0] in_RegDest,
-    input [11:0] in_BranchOffset,
 
     output [31:0] data_wb,   // Data to be written back
 

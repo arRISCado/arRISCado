@@ -135,7 +135,7 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .BranchOffset(wb_if_BranchOffsett), // May come from writeback, but ideally from memory stage
+        .BranchOffset(wb_if_BranchOffset), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
@@ -205,7 +205,6 @@ module cpu(
         .result(ex_mem_result)
     );
 
-    wire [31:0] ex_mem_rs2_value;
 
     memory Memory(
         .clk(clock_real),
