@@ -34,14 +34,15 @@ module test;
         address = 3;
         data_in = 7;
         write_enable = 1;
-        #5
         clk = 1;
-        #5
+        #10
         clk = 0;
+        #10
         $display("Addr: %h, Data: %h", address, data_out);
         #10
         
-        write_enable = 0;
+        write_enable = 1;
+        data_in = 6;
         address = 3;
         clk = 1;
         #10
@@ -67,7 +68,7 @@ module test;
         
         write_enable = 0;
         reset = 1;
-        address = 0;
+        address = 3;
         clk = 1;
         #10
         reset = 0;

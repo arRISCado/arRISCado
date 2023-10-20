@@ -44,25 +44,15 @@ assign func7 = _instruction[31:25];
 always @(posedge clk or posedge rst)
 begin
     if (rst)
-        _instruction = 0;
+        _instruction <= 0;
     else
-        _instruction = next_instruction;       
+        _instruction <= next_instruction;       
 end
 
 always @(_instruction) 
 begin
     // Standart Value for PCSrc
-    PCSrc <= 0;
-    
-     /// Most common Immediate
-    imm <= {_instruction[31:20], 21'b0};
-    
-    // Eventualmente, com as instruções de 16 bits, vai ter que
-    // separar a instrução de 32 bits em 2 intruções de 16 bits
-
-    // Pelo que o professor falou, os 2 primeiros bits da instrução
-    // definem se é 32, 16 ou 64 bits.
-
+    imm <= 0;
     MemWrite   <= 0;
     MemRead    <= 0;
     RegWrite   <= 0;
@@ -86,7 +76,7 @@ begin
                 MemWrite <= 0;
                 Branch <= 0;
                 AluControl <= 4'b0110;
-                imm <= {_instruction[31:12], 12'b0};
+                imm <= {12'b0, _instruction[31:12]};
             end
         
         // AUIPC: Add U-Immediate with PC (Tipo U)
@@ -99,7 +89,7 @@ begin
                 MemWrite <= 0;
                 Branch <= 1;
                 AluControl <= 4'b0110;
-                imm <= {_instruction[31:12], 12'b0};
+                imm <= {12'b0, _instruction[31:12]};
             end
 
         // JAL: Jump And Link (Tipo J)
@@ -113,7 +103,7 @@ begin
             MemWrite <= 0;
             Branch <= 1;
             AluControl <= 4'b0110;
-            imm <= {_instruction[31:12], 12'b0};
+            imm <= {12'b0, _instruction[31:12]};
         end
 
         //JARL: Jump And Link Register (Tipo I)
@@ -140,6 +130,7 @@ begin
             MemWrite <= 0;
             Branch <= 1;
             AluControl <= 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
+            // inverter esse imediato
             imm <= {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
 
             // Esse sinal irá indicar pra ALU qual o tipo de Branch
@@ -196,7 +187,7 @@ begin
                 MemRead <= 0;
                 MemWrite <= 0;
                 Branch <= 0;
-                imm <= _instruction[31:20];
+                imm <= {21'b0, _instruction[31:20]};
 
                 // ADDI
                 if (func3 == 000)
@@ -207,11 +198,13 @@ begin
                 // SLTI
                 else if (func3 == 010)
                 begin
+                    AluControl <= 4'b0010;
                 end
 
                 // SLLI, SRLI, SRAI (Tipo I)
                 else if ((func3 == 3'b001) || (func3 == 3'b101))
                 begin
+                    AluControl <= 4'b0010;
                 end
                 
             end

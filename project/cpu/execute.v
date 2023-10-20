@@ -37,7 +37,6 @@ module execute (
     output reg [31:0] a,
     output reg [31:0] b
 );
-
     reg [31:0] _rs1_value, _imm, _PC;
     reg [2:0] _AluOp;
     reg _AluSrc;
@@ -46,43 +45,51 @@ module execute (
     reg [4:0] _RegDest;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
-    alu alu(_AluControl, a, b, result);
+    wire zero;
+    alu alu(_AluControl, a, b, result, zero);
 
     always @(posedge clk or posedge rst)
     begin
         if (rst)
         begin
-            _rs1_value <= 0;
-            _rs2_value <= 0;
-            _imm <= 0;
-            _PC <= 0;
-            _AluSrc <= 0;
+            _rs1_value  <= 0;
+            _rs2_value  <= 0;
+            _imm        <= 0;
+            _PC         <= 0;
+            _AluSrc     <= 0;
+            _AluOp      <= 0;
+            _AluControl <= 0;
+
+            out_MemWrite   <= 0;
+            out_MemRead    <= 0;
+            out_RegWrite   <= 0;
+            out_RegDest    <= 0;
+            out_MemToReg   <= 0;
+            out_RegDataSrc <= 0;
+            out_PCSrc      <= 0;
         end
         else
         begin
-            _rs1_value <= rs1_value;
-            _rs2_value <= rs2_value;
-            _imm <= imm;
-            _PC <= PC;
-            _AluSrc <= AluSrc;
-            _AluOp <= AluOp;
+            _rs1_value  <= rs1_value;
+            _rs2_value  <= rs2_value;
+            _imm        <= imm;
+            _PC         <= PC;
+            _AluSrc     <= AluSrc;
+            _AluOp      <= AluOp;
             _AluControl <= AluControl;
             
-            _MemWrite <= in_MemWrite;
-            _MemRead <= in_MemRead;
-            _RegWrite <= in_RegWrite;
-            _RegDest <= in_RegDest;
-            _MemToReg <= in_MemToReg;
-            _RegDataSrc <= in_RegDataSrc;
-            _PCSrc <= in_PCSrc;
+            out_MemWrite   <= in_MemWrite;
+            out_MemRead    <= in_MemRead;
+            out_RegWrite   <= in_RegWrite;
+            out_RegDest    <= in_RegDest;
+            out_MemToReg   <= in_MemToReg;
+            out_RegDataSrc <= in_RegDataSrc;
+            out_PCSrc      <= in_PCSrc;
         end
     end
 
     always @(*)
     begin
-        a <= 0;
-        b <= 0;
-
         case(_AluOp)
         // Tipo Load ou Store
         3'b000 :
@@ -96,7 +103,6 @@ module execute (
         begin
             a <= _rs1_value;
             b <= _rs2_value;
-            //como que passa o RD pra escrever no banco de REGs dps?
         end
 
         // Tipo R OU I
@@ -120,7 +126,6 @@ module execute (
         begin
             a <= _imm;
             b <= 12;
-            // é Literalmente isso o LUI, coloca isso no rd direto
         end
 
         // Tipo U AUIPC
@@ -128,7 +133,6 @@ module execute (
         begin
             a <= _PC;
             b <= _imm;
-            // é Literalmente isso o AIUPC, coloca isso no PC direto
         end
 
         // Tipo J
@@ -136,7 +140,6 @@ module execute (
         begin
             a <= _PC;
             b <= _imm;
-            //isso pula pra um endereço X, então acho q o mais certo é usar o PC pra fazer os cálculos
         end
 
         // TODO: JALR
@@ -144,23 +147,13 @@ module execute (
         begin
             a <= _PC;
             b <= _imm;
-            // TODO: Set rd target
-            // rd recebe Pc + 4
-            // PC <= rs1_value + imm; //dá pra fazer isso aqui?
-            // TODO: Isso tem que virar um sinal de controle
-            // Sets PC <= Reg[rs1] + immediate COMO????
+        end
+        default:
+        begin
+            a <= 0;
+            b <= 0;
         end
     endcase
-
-    out_MemWrite <= _MemWrite;
-    out_MemRead <= _MemRead;
-    out_RegWrite <= _RegWrite;
-    out_RegDest <= _RegDest;
-    out_MemToReg <= _MemToReg;
-    out_RegDataSrc <= _RegDataSrc;
-    out_PCSrc <= _PCSrc;
-end
-    
+end    
 endmodule
-
 `endif
