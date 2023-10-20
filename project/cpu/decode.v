@@ -43,15 +43,19 @@ assign shamt = _instruction[24:20];
 assign func3 = _instruction[14:12];
 assign func7 = _instruction[31:25];
 
+reg update = 0;
+
 always @(posedge clk or posedge rst)
 begin
     if (rst)
         _instruction <= 0;
     else
-        _instruction <= next_instruction;  
+        _instruction <= next_instruction;
+
+    update <= 1;  
 end
 
-always @(_instruction) 
+always @(posedge update) 
 begin
     // Standart Value for PCSrc
     imm <= 0;
@@ -65,7 +69,9 @@ begin
     MemToReg   <= 0; 
     RegDataSrc <= 0;    
     PCSrc      <= 0;
-    PC_out <= PC;
+    PC_out <= PC-1;
+
+    update <= 0;
 
     case (opcode)
         // LUI: Load Upper Immediate (Tipo U)

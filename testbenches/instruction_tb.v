@@ -46,7 +46,8 @@ module test();
 
             $display("Decode %0d", i-1);
             $display("IN");
-            $display("_instruction: %h", cpu.Decode._instruction);    
+            $display("_instruction: %h", cpu.Decode._instruction);
+            //$display("_PC: %0d", cpu.Decode._PC);    
             $display("OUT");
             $display("RegWrite: %b", cpu.Decode.RegWrite);
             $display("RegDest: %0d", cpu.Decode.RegDest);

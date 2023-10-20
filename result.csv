@@ -214,7 +214,7 @@ OUT
 RegWrite: 1
 RegDest: 10
 imm: 1
-PC_out: 2","Decode 1
+PC_out: 1","Decode 1
 IN
 _instruction: 00000013
 OUT
@@ -228,7 +228,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 0
-PC_out: 4","Decode 3
+PC_out: 3","Decode 3
 IN
 _instruction: 00000013
 OUT
@@ -242,7 +242,7 @@ OUT
 RegWrite: 1
 RegDest: 11
 imm: 0
-PC_out: 6","Decode 5
+PC_out: 5","Decode 5
 IN
 _instruction: 00a50633
 OUT
@@ -256,7 +256,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 0
-PC_out: 8","Decode 7
+PC_out: 7","Decode 7
 IN
 _instruction: 00000013
 OUT
@@ -270,7 +270,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 0
-PC_out: 10","Decode 9
+PC_out: 9","Decode 9
 IN
 _instruction: 00c60633
 OUT
@@ -284,7 +284,7 @@ OUT
 RegWrite: 1
 RegDest: 13
 imm: 2047
-PC_out: 12","Decode 11
+PC_out: 11","Decode 11
 IN
 _instruction: 00000013
 OUT
@@ -298,7 +298,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 0
-PC_out: 14","Decode 13
+PC_out: 13","Decode 13
 IN
 _instruction: 00b60733
 OUT
@@ -312,7 +312,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 0
-PC_out: 16","Decode 15
+PC_out: 15","Decode 15
 IN
 _instruction: 00000013
 OUT
@@ -326,7 +326,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 0
-PC_out: 18","Decode 17
+PC_out: 17","Decode 17
 IN
 _instruction: 40e607b3
 OUT
@@ -340,7 +340,7 @@ OUT
 RegWrite: 1
 RegDest: 16
 imm: 5
-PC_out: 20","Decode 19
+PC_out: 19","Decode 19
 IN
 _instruction: 000628b7
 OUT
@@ -354,7 +354,7 @@ OUT
 RegWrite: 1
 RegDest: 18
 imm: 0
-PC_out: 22","Decode 21
+PC_out: 21","Decode 21
 IN
 _instruction: 00100013
 OUT
@@ -368,7 +368,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 24","Decode 23
+PC_out: 23","Decode 23
 IN
 _instruction: 00100013
 OUT
@@ -382,7 +382,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 26","Decode 25
+PC_out: 25","Decode 25
 IN
 _instruction: 00100013
 OUT
@@ -396,7 +396,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 28","Decode 27
+PC_out: 27","Decode 27
 IN
 _instruction: 00100013
 OUT
@@ -410,7 +410,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 30","Decode 29
+PC_out: 29","Decode 29
 IN
 _instruction: 00100013
 OUT
@@ -424,7 +424,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 32","Decode 31
+PC_out: 31","Decode 31
 IN
 _instruction: 00100013
 OUT
@@ -438,7 +438,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 34","Decode 33
+PC_out: 33","Decode 33
 IN
 _instruction: 00100013
 OUT
@@ -452,7 +452,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 36","Decode 35
+PC_out: 35","Decode 35
 IN
 _instruction: 00100013
 OUT
@@ -466,7 +466,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 38","Decode 37
+PC_out: 37","Decode 37
 IN
 _instruction: 00100013
 OUT
@@ -480,7 +480,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 40","Decode 39
+PC_out: 39","Decode 39
 IN
 _instruction: 00100013
 OUT
@@ -494,7 +494,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 42","Decode 41
+PC_out: 41","Decode 41
 IN
 _instruction: 00100013
 OUT
@@ -508,7 +508,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 44","Decode 43
+PC_out: 43","Decode 43
 IN
 _instruction: 00100013
 OUT
@@ -522,7 +522,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 46","Decode 45
+PC_out: 45","Decode 45
 IN
 _instruction: 00100013
 OUT
@@ -536,7 +536,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 48","Decode 47
+PC_out: 47","Decode 47
 IN
 _instruction: 00100013
 OUT
@@ -550,7 +550,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 50","Decode 49
+PC_out: 49","Decode 49
 IN
 _instruction: 00100013
 OUT
@@ -564,7 +564,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 52","Decode 51
+PC_out: 51","Decode 51
 IN
 _instruction: 00100013
 OUT
@@ -578,7 +578,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 54","Decode 53
+PC_out: 53","Decode 53
 IN
 _instruction: 00100013
 OUT
@@ -592,7 +592,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 56","Decode 55
+PC_out: 55","Decode 55
 IN
 _instruction: 00100013
 OUT
@@ -606,7 +606,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 58","Decode 57
+PC_out: 57","Decode 57
 IN
 _instruction: 00100013
 OUT
@@ -620,7 +620,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 60","Decode 59
+PC_out: 59","Decode 59
 IN
 _instruction: 00100013
 OUT
@@ -634,7 +634,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 62","Decode 61
+PC_out: 61","Decode 61
 IN
 _instruction: 00100013
 OUT
@@ -648,7 +648,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 64","Decode 63
+PC_out: 63","Decode 63
 IN
 _instruction: 00100013
 OUT
@@ -662,7 +662,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 66","Decode 65
+PC_out: 65","Decode 65
 IN
 _instruction: 00100013
 OUT
@@ -676,7 +676,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 68","Decode 67
+PC_out: 67","Decode 67
 IN
 _instruction: 00100013
 OUT
@@ -690,7 +690,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 70","Decode 69
+PC_out: 69","Decode 69
 IN
 _instruction: 00100013
 OUT
@@ -704,7 +704,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 72","Decode 71
+PC_out: 71","Decode 71
 IN
 _instruction: 00100013
 OUT
@@ -718,7 +718,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 74","Decode 73
+PC_out: 73","Decode 73
 IN
 _instruction: 00100013
 OUT
@@ -732,7 +732,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 76","Decode 75
+PC_out: 75","Decode 75
 IN
 _instruction: 00100013
 OUT
@@ -746,7 +746,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 78","Decode 77
+PC_out: 77","Decode 77
 IN
 _instruction: 00100013
 OUT
@@ -760,7 +760,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 80","Decode 79
+PC_out: 79","Decode 79
 IN
 _instruction: 00100013
 OUT
@@ -774,7 +774,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 82","Decode 81
+PC_out: 81","Decode 81
 IN
 _instruction: 00100013
 OUT
@@ -788,7 +788,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 84","Decode 83
+PC_out: 83","Decode 83
 IN
 _instruction: 00100013
 OUT
@@ -802,7 +802,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 86","Decode 85
+PC_out: 85","Decode 85
 IN
 _instruction: 00100013
 OUT
@@ -816,7 +816,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 88","Decode 87
+PC_out: 87","Decode 87
 IN
 _instruction: 00100013
 OUT
@@ -830,7 +830,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 90","Decode 89
+PC_out: 89","Decode 89
 IN
 _instruction: 00100013
 OUT
@@ -844,7 +844,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 92","Decode 91
+PC_out: 91","Decode 91
 IN
 _instruction: 00100013
 OUT
@@ -858,7 +858,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 94","Decode 93
+PC_out: 93","Decode 93
 IN
 _instruction: 00100013
 OUT
@@ -872,7 +872,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 96","Decode 95
+PC_out: 95","Decode 95
 IN
 _instruction: 00100013
 OUT
@@ -886,7 +886,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 98","Decode 97
+PC_out: 97","Decode 97
 IN
 _instruction: 00100013
 OUT
@@ -900,7 +900,7 @@ OUT
 RegWrite: 1
 RegDest: 0
 imm: 1
-PC_out: 100",
+PC_out: 99",
 "Execute -2
 in_RegWrite 1
 in_RegDest 0
