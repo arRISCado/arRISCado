@@ -134,8 +134,11 @@ module test();
             $display("Memory %0d", i-3);
             $display("in_RegWrite %b", cpu.Memory.in_RegWrite);
             $display("in_RegDest %0d", cpu.Memory.in_RegDest);
+            $display("mem_read_data: %0d", cpu.Memory.mem_read_data);
             $display("out_RegWrite %b", cpu.Memory.out_RegWrite);
             $display("out_RegDest %0d", cpu.Memory.out_RegDest);
+            
+            $display("data_out: %0d", cpu.Memory.data_out);
 
             $display("");
 
@@ -168,10 +171,10 @@ module test();
                 $display("s%0d=x%0d %0d", j-16, j, cpu.RegisterBank.register[j]);
             end
 
-            //$display("a0=x10 %0d", cpu.RegisterBank.register[10]);
-            //$display("a4=x14 %0d", cpu.RegisterBank.register[14]);
-            //$display("a6=x16 %0d", cpu.RegisterBank.register[16]);
-            //$display("a7=x17 %0d", cpu.RegisterBank.register[17]);
+            $display("");
+            $display("RAM");
+            $display("#3: %0d", cpu.Ram.storage[3]);
+
             
             $display("");
             $display("#STEP_END");

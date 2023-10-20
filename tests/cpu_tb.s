@@ -5,27 +5,27 @@
 	.type	main, @function
 main:
     addi ra, zero, 5
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    sub sp, ra, ra
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi gp, sp, 3
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi tp, gp, 2
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi t0, tp, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
-    addi zero, zero, 1
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi sp, ra, 1
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    add gp, ra, sp
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    sw gp, 3(zero)
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    lw tp, 3(zero)
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
+    addi zero, zero, 0
