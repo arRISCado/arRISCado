@@ -45,9 +45,10 @@ module test();
             $display("");
 
             $display("Decode %0d", i-1);
-            $display("IN--------------");
+            $display("DECODE.IN-----------------");
+            $display("DECODE.INTERNAL-----------");
             $display("_instruction: %h", cpu.Decode._instruction);
-            $display("OUT-------------");
+            $display("DECODE.OUT----------------");
             $display("imm: %0d", cpu.Decode.imm);
             $display("rs1: %0d", cpu.Decode.rs1);
             $display("rs2: %0d", cpu.Decode.rs2);
@@ -67,6 +68,9 @@ module test();
             $display("RegDataSrc: %0d", cpu.Decode.RegDataSrc);
             $display("PCSrc: %0d", cpu.Decode.PCSrc);
             $display("PC_out: %0d", cpu.Decode.PC_out);
+            $display("value1: %0d", cpu.Decode.value1);
+            $display("value2: %0d", cpu.Decode.value2);
+            
 
             $display("");
             
