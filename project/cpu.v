@@ -172,8 +172,8 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .rs1_value(de_ex_value1),
-        .rs2_value(de_ex_value2),
+        .rs1_value(rb_value1),//(de_ex_value1),
+        .rs2_value(rb_value2),//(de_ex_value2),
         .imm(de_ex_imm),
        
         // control inputs
