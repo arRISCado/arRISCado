@@ -70,14 +70,6 @@ assign BranchOp = func3;
 assign BranchOffset = {_instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
 
 
-always @(posedge clk or posedge rst) 
-begin
-    if (rst)
-        _instruction = 0;
-    else
-        _instruction = next_instruction;
-end
-
 // Divide each possible part of an instruction
 always @(posedge clk or posedge rst)
 begin
@@ -115,7 +107,7 @@ begin
                     RegWrite <= 1;
                     MemRead <= 0;
                     MemWrite <= 0;
-                    AluControl <= 5'b00110;
+                    AluControl <= 5'b00010;
                     imm <= {_instruction[31:12], 12'b0};
                 end
             
@@ -396,45 +388,31 @@ begin
                 MemWrite <= 0;
 
                 // mul: Place result in lower part of rd
-                if (func3 == 3'b000) 
-                begin
-                    AluControl <= 5'b01011;
-                end
-                // mulh: Place result in higher part of rd
-                else if (func3 == 3'b001)
-                begin
-                    AluControl <= 5'b01100;
-                end
-                // mulhsu: mulh with signed rs1 and unsigned rs2
-                else if (func3 == 3'b010)
-                begin
-                    AluControl <= 5'b01101;
-                end
-                // mulhu: mulh with unsigned rs1 and unsigned rs2
-                else if (func3 == 3'b011)
-                begin
-                    AluControl <= 5'b01110;
-                end
-                // div: divide signed rs1 by signed rs2
-                else if (func3 == 3'b100)
-                begin
-                    AluControl <= 5'b01111;
-                end
-                // divu: unsigned div
-                else if (func3 == 3'b101)
-                begin
-                    AluControl <= 5'b10000;    
-                end
-                // rem: reminder(resto) of the division rs1 by rs2
-                else if (func3 == 3'b110)
-                begin
-                    AluControl <= 5'b10001;
-                end
-                // remu: unsigned rem
-                else if (func3 == 3'b111)
-                begin
-                    AluControl <= 5'b10010;
-                end
+                case(func3)
+                    3'b000: 
+                        AluControl <= 5'b01011;
+                    // mulh: Place result in higher part of rd
+                    3'b001:
+                        AluControl <= 5'b01100;
+                    // mulhsu: mulh with signed rs1 and unsigned rs2
+                    3'b010:
+                        AluControl <= 5'b01101;
+                    // mulhu: mulh with unsigned rs1 and unsigned rs2
+                    3'b011:
+                        AluControl <= 5'b01110;
+                    // div: divide signed rs1 by signed rs2
+                    3'b100:
+                        AluControl <= 5'b01111;
+                    // divu: unsigned div
+                    3'b101:
+                        AluControl <= 5'b10000;    
+                    // rem: reminder(resto) of the division rs1 by rs2
+                    3'b110:
+                        AluControl <= 5'b10001;
+                    // remu: unsigned rem
+                    3'b111:
+                        AluControl <= 5'b10010;
+                endcase
             end
 
         // Should traslate to NOP

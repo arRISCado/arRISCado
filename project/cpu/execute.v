@@ -170,7 +170,7 @@ module execute (
         3'b100:
         begin
             a <= _imm;
-            b <= 12;
+            b <= 0;
         end
 
         // Tipo U AUIPC
