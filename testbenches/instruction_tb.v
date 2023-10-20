@@ -45,19 +45,28 @@ module test();
             $display("");
 
             $display("Decode %0d", i-1);
-            $display("IN");
+            $display("IN--------------");
             $display("_instruction: %h", cpu.Decode._instruction);
-            //$display("_PC: %0d", cpu.Decode._PC);    
-            $display("OUT");
-            $display("RegWrite: %b", cpu.Decode.RegWrite);
-            $display("RegDest: %0d", cpu.Decode.RegDest);
+            $display("OUT-------------");
             $display("imm: %0d", cpu.Decode.imm);
+            $display("rs1: %0d", cpu.Decode.rs1);
+            $display("rs2: %0d", cpu.Decode.rs2);
+            $display("shamt: %0d", cpu.Decode.shamt);
+            $display("func3: %0d", cpu.Decode.func3);
+            $display("func7: %0d", cpu.Decode.func7);
+            $display("opcode: %0d", cpu.Decode.opcode);
+            $display("MemWrite: %0d", cpu.Decode.MemWrite);
+            $display("MemRead: %0d", cpu.Decode.MemRead);
+            $display("RegWrite: %0d", cpu.Decode.RegWrite);
+            $display("RegDest: %0d", cpu.Decode.RegDest);
+            $display("AluSrc: %0d", cpu.Decode.AluSrc);
+            $display("AluOp: %0d", cpu.Decode.AluOp);
+            $display("AluControl: %0d", cpu.Decode.AluControl);
+            $display("Branch: %0d", cpu.Decode.Branch);
+            $display("MemToReg: %0d", cpu.Decode.MemToReg);
+            $display("RegDataSrc: %0d", cpu.Decode.RegDataSrc);
+            $display("PCSrc: %0d", cpu.Decode.PCSrc);
             $display("PC_out: %0d", cpu.Decode.PC_out);
-            //$display("rs1: %0d", cpu.Decode.rs1);
-            //$display("imm: %0d", cpu.Decode.imm);
-            //$display("AluSrc: %b", cpu.Decode.AluSrc);
-            //$display("AluOp: %b", cpu.Decode.AluOp);
-            //$display("AluControl: %b", cpu.Decode.AluControl);
 
             $display("");
             

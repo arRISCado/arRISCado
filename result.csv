@@ -201,705 +201,2205 @@ pc: 99","IF 99
 instr: 00100013
 pc: 100",
 "Decode -1
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 0","Decode 0
-IN
+IN--------------
 _instruction: 00100513
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 10
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 1","Decode 1
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 2","Decode 2
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 3","Decode 3
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 4","Decode 4
-IN
+IN--------------
 _instruction: 40a005b3
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 10
+shamt: 10
+func3: 0
+func7: 32
+opcode: 51
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 11
-imm: 0
+AluSrc: 0
+AluOp: 2
+AluControl: 6
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 5","Decode 5
-IN
+IN--------------
 _instruction: 00a50633
-OUT
+OUT-------------
+imm: 0
+rs1: 10
+rs2: 10
+shamt: 10
+func3: 0
+func7: 0
+opcode: 51
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 12
-imm: 0
+AluSrc: 0
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 6","Decode 6
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 7","Decode 7
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 8","Decode 8
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 9","Decode 9
-IN
+IN--------------
 _instruction: 00c60633
-OUT
+OUT-------------
+imm: 0
+rs1: 12
+rs2: 12
+shamt: 12
+func3: 0
+func7: 0
+opcode: 51
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 12
-imm: 0
+AluSrc: 0
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 10","Decode 10
-IN
+IN--------------
 _instruction: 7ff00693
-OUT
+OUT-------------
+imm: 2047
+rs1: 0
+rs2: 31
+shamt: 31
+func3: 0
+func7: 63
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 13
-imm: 2047
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 11","Decode 11
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 12","Decode 12
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 13","Decode 13
-IN
+IN--------------
 _instruction: 00b60733
-OUT
+OUT-------------
+imm: 0
+rs1: 12
+rs2: 11
+shamt: 11
+func3: 0
+func7: 0
+opcode: 51
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 14
-imm: 0
+AluSrc: 0
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 14","Decode 14
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 15","Decode 15
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 16","Decode 16
-IN
+IN--------------
 _instruction: 00000013
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 0
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 17","Decode 17
-IN
+IN--------------
 _instruction: 40e607b3
-OUT
+OUT-------------
+imm: 0
+rs1: 12
+rs2: 14
+shamt: 14
+func3: 0
+func7: 32
+opcode: 51
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 15
-imm: 0
+AluSrc: 0
+AluOp: 2
+AluControl: 6
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 18","Decode 18
-IN
+IN--------------
 _instruction: 00568813
-OUT
+OUT-------------
+imm: 5
+rs1: 13
+rs2: 5
+shamt: 5
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 16
-imm: 5
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 19","Decode 19
-IN
+IN--------------
 _instruction: 000628b7
-OUT
+OUT-------------
+imm: 401408
+rs1: 12
+rs2: 0
+shamt: 0
+func3: 2
+func7: 0
+opcode: 55
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 17
-imm: 401408
+AluSrc: 1
+AluOp: 4
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 20","Decode 20
-IN
+IN--------------
 _instruction: 00000917
-OUT
+OUT-------------
+imm: 0
+rs1: 0
+rs2: 0
+shamt: 0
+func3: 0
+func7: 0
+opcode: 23
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 18
-imm: 0
+AluSrc: 1
+AluOp: 5
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 21","Decode 21
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 22","Decode 22
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 23","Decode 23
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 24","Decode 24
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 25","Decode 25
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 26","Decode 26
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 27","Decode 27
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 28","Decode 28
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 29","Decode 29
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 30","Decode 30
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 31","Decode 31
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 32","Decode 32
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 33","Decode 33
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 34","Decode 34
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 35","Decode 35
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 36","Decode 36
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 37","Decode 37
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 38","Decode 38
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 39","Decode 39
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 40","Decode 40
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 41","Decode 41
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 42","Decode 42
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 43","Decode 43
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 44","Decode 44
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 45","Decode 45
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 46","Decode 46
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 47","Decode 47
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 48","Decode 48
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 49","Decode 49
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 50","Decode 50
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 51","Decode 51
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 52","Decode 52
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 53","Decode 53
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 54","Decode 54
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 55","Decode 55
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 56","Decode 56
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 57","Decode 57
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 58","Decode 58
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 59","Decode 59
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 60","Decode 60
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 61","Decode 61
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 62","Decode 62
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 63","Decode 63
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 64","Decode 64
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 65","Decode 65
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 66","Decode 66
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 67","Decode 67
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 68","Decode 68
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 69","Decode 69
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 70","Decode 70
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 71","Decode 71
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 72","Decode 72
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 73","Decode 73
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 74","Decode 74
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 75","Decode 75
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 76","Decode 76
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 77","Decode 77
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 78","Decode 78
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 79","Decode 79
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 80","Decode 80
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 81","Decode 81
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 82","Decode 82
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 83","Decode 83
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 84","Decode 84
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 85","Decode 85
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 86","Decode 86
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 87","Decode 87
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 88","Decode 88
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 89","Decode 89
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 90","Decode 90
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 91","Decode 91
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 92","Decode 92
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 93","Decode 93
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 94","Decode 94
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 95","Decode 95
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 96","Decode 96
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 97","Decode 97
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 98","Decode 98
-IN
+IN--------------
 _instruction: 00100013
-OUT
+OUT-------------
+imm: 1
+rs1: 0
+rs2: 1
+shamt: 1
+func3: 0
+func7: 0
+opcode: 19
+MemWrite: 0
+MemRead: 0
 RegWrite: 1
 RegDest: 0
-imm: 1
+AluSrc: 1
+AluOp: 2
+AluControl: 2
+Branch: 0
+MemToReg: 0
+RegDataSrc: 0
+PCSrc: 0
 PC_out: 99",
 "Execute -2
 in_RegWrite 1
@@ -962,18 +2462,18 @@ _imm 0
 out_RegWrite 1
 out_RegDest 11
 alu.AluControl 0110
-alu.a 0
+alu.a 1
 alu.b 1
-alu.result 4294967295","Execute 5
+alu.result 0","Execute 5
 in_RegWrite 1
 in_RegDest 0
 _imm 0
 out_RegWrite 1
 out_RegDest 12
 alu.AluControl 0010
-alu.a 1
-alu.b 1
-alu.result 2","Execute 6
+alu.a 0
+alu.b 0
+alu.result 0","Execute 6
 in_RegWrite 1
 in_RegDest 0
 _imm 0
@@ -1007,9 +2507,9 @@ _imm 0
 out_RegWrite 1
 out_RegDest 12
 alu.AluControl 0010
-alu.a 2
-alu.b 2
-alu.result 4","Execute 10
+alu.a 0
+alu.b 0
+alu.result 0","Execute 10
 in_RegWrite 1
 in_RegDest 0
 _imm 2047
@@ -1043,9 +2543,9 @@ _imm 0
 out_RegWrite 1
 out_RegDest 14
 alu.AluControl 0010
-alu.a 4
-alu.b 4294967295
-alu.result 3","Execute 14
+alu.a 0
+alu.b 0
+alu.result 0","Execute 14
 in_RegWrite 1
 in_RegDest 0
 _imm 0
@@ -1079,18 +2579,18 @@ _imm 0
 out_RegWrite 1
 out_RegDest 15
 alu.AluControl 0110
-alu.a 4
-alu.b 3
-alu.result 1","Execute 18
+alu.a 2047
+alu.b 0
+alu.result 2047","Execute 18
 in_RegWrite 1
 in_RegDest 17
 _imm 5
 out_RegWrite 1
 out_RegDest 16
 alu.AluControl 0010
-alu.a 2047
+alu.a 0
 alu.b 5
-alu.result 2052","Execute 19
+alu.result 5","Execute 19
 in_RegWrite 1
 in_RegDest 18
 _imm 401408
@@ -2775,7 +4275,7 @@ s10=x26 0
 s11=x27 0","Register bank
 Write enable 1
 Write address 11
-Write value 4294967295
+Write value 0
 a0=x10 1
 a1=x11 0
 a2=x12 0
@@ -2796,9 +4296,9 @@ s10=x26 0
 s11=x27 0","Register bank
 Write enable 1
 Write address 12
-Write value 2
+Write value 0
 a0=x10 1
-a1=x11 4294967295
+a1=x11 0
 a2=x12 0
 a3=x13 0
 a4=x14 0
@@ -2819,8 +4319,8 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 2
+a1=x11 0
+a2=x12 0
 a3=x13 0
 a4=x14 0
 a5=x15 0
@@ -2840,8 +4340,8 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 2
+a1=x11 0
+a2=x12 0
 a3=x13 0
 a4=x14 0
 a5=x15 0
@@ -2861,8 +4361,8 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 2
+a1=x11 0
+a2=x12 0
 a3=x13 0
 a4=x14 0
 a5=x15 0
@@ -2880,10 +4380,10 @@ s10=x26 0
 s11=x27 0","Register bank
 Write enable 1
 Write address 12
-Write value 4
+Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 2
+a1=x11 0
+a2=x12 0
 a3=x13 0
 a4=x14 0
 a5=x15 0
@@ -2903,8 +4403,8 @@ Write enable 1
 Write address 13
 Write value 2047
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 0
 a4=x14 0
 a5=x15 0
@@ -2924,8 +4424,8 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
 a4=x14 0
 a5=x15 0
@@ -2945,8 +4445,8 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
 a4=x14 0
 a5=x15 0
@@ -2964,10 +4464,10 @@ s10=x26 0
 s11=x27 0","Register bank
 Write enable 1
 Write address 14
-Write value 3
+Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
 a4=x14 0
 a5=x15 0
@@ -2987,10 +4487,10 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
+a4=x14 0
 a5=x15 0
 a6=x16 0
 a7=x17 0
@@ -3008,10 +4508,10 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
+a4=x14 0
 a5=x15 0
 a6=x16 0
 a7=x17 0
@@ -3029,10 +4529,10 @@ Write enable 1
 Write address 0
 Write value 0
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
+a4=x14 0
 a5=x15 0
 a6=x16 0
 a7=x17 0
@@ -3048,12 +4548,12 @@ s10=x26 0
 s11=x27 0","Register bank
 Write enable 1
 Write address 15
-Write value 1
+Write value 2047
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
+a4=x14 0
 a5=x15 0
 a6=x16 0
 a7=x17 0
@@ -3069,13 +4569,13 @@ s10=x26 0
 s11=x27 0","Register bank
 Write enable 1
 Write address 16
-Write value 2052
+Write value 5
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
+a4=x14 0
+a5=x15 2047
 a6=x16 0
 a7=x17 0
 s2=x18 0
@@ -3092,12 +4592,12 @@ Write enable 1
 Write address 17
 Write value 401408
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 0
 s2=x18 0
 s3=x19 0
@@ -3113,12 +4613,12 @@ Write enable 1
 Write address 18
 Write value 22
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 0
 s3=x19 0
@@ -3134,12 +4634,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3155,12 +4655,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3176,12 +4676,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3197,12 +4697,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3218,12 +4718,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3239,12 +4739,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3260,12 +4760,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3281,12 +4781,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3302,12 +4802,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3323,12 +4823,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3344,12 +4844,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3365,12 +4865,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3386,12 +4886,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3407,12 +4907,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3428,12 +4928,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3449,12 +4949,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3470,12 +4970,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3491,12 +4991,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3512,12 +5012,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3533,12 +5033,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3554,12 +5054,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3575,12 +5075,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3596,12 +5096,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3617,12 +5117,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3638,12 +5138,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3659,12 +5159,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3680,12 +5180,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3701,12 +5201,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3722,12 +5222,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3743,12 +5243,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3764,12 +5264,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3785,12 +5285,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3806,12 +5306,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3827,12 +5327,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3848,12 +5348,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3869,12 +5369,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3890,12 +5390,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3911,12 +5411,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3932,12 +5432,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3953,12 +5453,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3974,12 +5474,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -3995,12 +5495,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4016,12 +5516,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4037,12 +5537,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4058,12 +5558,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4079,12 +5579,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4100,12 +5600,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4121,12 +5621,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4142,12 +5642,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4163,12 +5663,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4184,12 +5684,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4205,12 +5705,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4226,12 +5726,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4247,12 +5747,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4268,12 +5768,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4289,12 +5789,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4310,12 +5810,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4331,12 +5831,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4352,12 +5852,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4373,12 +5873,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4394,12 +5894,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4415,12 +5915,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4436,12 +5936,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4457,12 +5957,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4478,12 +5978,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4499,12 +5999,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4520,12 +6020,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4541,12 +6041,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4562,12 +6062,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4583,12 +6083,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4604,12 +6104,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4625,12 +6125,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4646,12 +6146,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4667,12 +6167,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
@@ -4688,12 +6188,12 @@ Write enable 1
 Write address 0
 Write value 1
 a0=x10 1
-a1=x11 4294967295
-a2=x12 4
+a1=x11 0
+a2=x12 0
 a3=x13 2047
-a4=x14 3
-a5=x15 1
-a6=x16 2052
+a4=x14 0
+a5=x15 2047
+a6=x16 5
 a7=x17 401408
 s2=x18 22
 s3=x19 0
