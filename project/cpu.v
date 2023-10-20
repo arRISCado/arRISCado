@@ -93,6 +93,8 @@ module cpu(
     wire de_ex_RegDataSrc;          // Goes to WB
     wire de_ex_PCSrc;               // Goes to next Fetch
     wire [31:0] de_ex_PC;
+    wire [31:0] de_ex_value1;
+    wire [31:0] de_ex_value2;
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
@@ -143,6 +145,8 @@ module cpu(
         
         .next_instruction(if_de_instr),
         .PC(if_de_pc),
+        .regbank_value1(rb_value1),
+        .regbank_value2(rb_value2),
         
         .imm(de_ex_imm),
         .rs1(rb_read_address1),
@@ -159,16 +163,17 @@ module cpu(
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
         .PCSrc(de_ex_PCSrc),
-        .PC_out(de_ex_PC)
-        
+        .PC_out(de_ex_PC),
+        .value1(de_ex_value1),
+        .value2(de_ex_value2)
     );
 
     execute Execute(
         .clk(clock_real),
         .rst(reset),
         
-        .rs1_value(rb_value1),
-        .rs2_value(rb_value2),
+        .rs1_value(de_ex_value1),
+        .rs2_value(de_ex_value2),
         .imm(de_ex_imm),
        
         // control inputs
