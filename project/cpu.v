@@ -28,7 +28,7 @@ module cpu(
     
     `endif
 );
-    assign led = rom_data[5:0];
+    assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real;
     assign clock_real = clock & enable;
