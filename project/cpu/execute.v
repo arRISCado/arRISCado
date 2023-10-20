@@ -71,6 +71,14 @@ module execute (
             _AluSrc     <= 0;
             _AluOp      <= 0;
             _AluControl <= 0;
+
+            out_MemWrite   <= 0;
+            out_MemRead    <= 0;
+            out_RegWrite   <= 0;
+            out_RegDest    <= 0;
+            out_MemToReg   <= 0;
+            out_RegDataSrc <= 0;
+            out_PCSrc      <= 0;
             _BranchOffset <= 0;
         end
         else
@@ -102,14 +110,14 @@ module execute (
             begin
                 a <= rs1_value;
                 // b <= imm;
-                DataSrc <= _imm;
+                b <= _imm;
             end
 
         // Tipo B
         3'b001 :
         begin
             a = rs1_value;
-            DataSrc <= 'b01;
+            b <= _imm;
             case (_BranchOp)  // eu acho que é o func3
                 BEQ:
                 begin
