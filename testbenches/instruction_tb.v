@@ -103,7 +103,7 @@ module test();
             $display("_MemToReg: %0d", cpu.Execute._MemToReg);
             $display("_RegDataSrc: %0d", cpu.Execute._RegDataSrc);
             $display("_PCSrc: %0d", cpu.Execute._PCSrc);
-            $display("zero: %0d", cpu.Execute.zero);
+            //$display("zero: %0d", cpu.Execute.zero);
             $display("_rs2_value: %0d", cpu.Execute._rs2_value);
             $display("");
             $display("EXECUTE.ALU---------------");
@@ -143,10 +143,16 @@ module test();
             $display("");
 
             $display("Register bank");
-            $display("Write enable %0d", cpu.RegisterBank.write_enable);
-            $display("Write address %0d", cpu.RegisterBank.write_address);
-            $display("Write value %0d", cpu.RegisterBank.write_value);
-
+            $display("RegisterBank.IN-----------");
+            $display("write_enable: %0d", cpu.RegisterBank.write_enable);
+            $display("write_address: %0d", cpu.RegisterBank.write_address);
+            $display("write_value: %0d", cpu.RegisterBank.write_value);
+            $display("read_address1: %0d", cpu.RegisterBank.read_address1);
+            $display("read_address2: %0d", cpu.RegisterBank.read_address2);
+            $display("RegisterBank.OUT----------");
+            $display("value1: %0d", cpu.RegisterBank.value1);
+            $display("value2: %0d", cpu.RegisterBank.value2);
+            $display("RegisterBank.REGS---------");
             for (integer j = 10; j < 18; j = j + 1)
             begin
                 $display("a%0d=x%0d %0d", j-10,j, cpu.RegisterBank.register[j]);
