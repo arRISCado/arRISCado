@@ -125,6 +125,7 @@ module test();
             $display("a: %0d", cpu.Execute.a);
             $display("b: %0d", cpu.Execute.b);
 
+            $display("");
 
             $display("Memory %0d", i-3);
             $display("in_RegWrite %b", cpu.Memory.in_RegWrite);
