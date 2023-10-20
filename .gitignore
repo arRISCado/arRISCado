@@ -5,3 +5,6 @@ boards/**/string_pnr.json
 boards/**/abc.history
 .~lock.result.ods#
 *.vcd
+result.csv
+result.txt
+project/test
