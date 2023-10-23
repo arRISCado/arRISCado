@@ -48,7 +48,7 @@ module test;
     for (i = 0; i < 5; i++)
       $display("%d: %h", i, cpu.Ram.storage[i]);
     $display("Registers");
-    for (i = 1; i < 7; i++)
+    for (i = 1; i < 5; i++)
       $display("%d: %h", i, cpu.RegisterBank.register[i]);
 
     $finish;
