@@ -6,13 +6,21 @@ module test();
     reg rst;
 
     wire [5:0] led;
-    wire [31:0] rom_data;
+    wire [31:0] instruction_data, instruction_address;
     
     cpu cpu(
         .clock(clk), 
         .reset(rst), 
         .enable(1'b1),
-        .led(led));
+        .led(led),
+        .rom_address(instruction_address),
+        .rom_data(instruction_data)
+    );
+    
+    rom Rom(
+        .address(instruction_address),
+        .data(instruction_data)
+    );
 
     // Testbench procedure
     initial begin
