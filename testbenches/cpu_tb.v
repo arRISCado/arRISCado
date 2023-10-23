@@ -41,7 +41,6 @@ module test;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
     // $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
-    $display("%h %h %b %d", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.mem_wb_RegWrite, cpu.RegisterBank.register[5]);
 
     #600;
     
