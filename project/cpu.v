@@ -266,16 +266,5 @@ module cpu(
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 
-    // ROM
-    `ifdef TEST
-
-    wire [31:0] rom_data, rom_address;
-    rom Rom(
-        .address(rom_address),
-        .data(rom_data)
-    );
-    
-    `endif
-
 endmodule
 `endif
