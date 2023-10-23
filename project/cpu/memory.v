@@ -39,6 +39,7 @@ module memory (
 
     reg [31:0] _addr, _data_in;
     reg _load, _store, _MemToReg, _RegWrite, _RegDataSrc, _PCSrc;
+    reg [11:0] _BranchOffset;
     reg [4:0] _RegDest;
 
     assign mem_addr = _addr;

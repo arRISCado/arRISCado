@@ -192,7 +192,7 @@ module cpu(
         .out_PCSrc(ex_mem_PCSrc),
         .in_BranchOffset(de_ex_BranchOffset),
 
-        ._rs2_value(ex_mem_rs2_value),
+        .out_rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result)
     );
 

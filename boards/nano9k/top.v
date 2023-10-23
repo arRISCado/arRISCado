@@ -33,7 +33,7 @@ module nano9k (
         .clock(effClk),
         .reset(~btn1),
         .led(led),
-        .enable(~btn2),
+        .enable(effClk),
         .rom_address(instruction_address),
         .rom_data(instruction_data)
     );

@@ -88,8 +88,7 @@ begin
     RegWrite   <= 0;
     AluSrc     <= 0;
     AluOp      <= 0;
-    AluControl <= 0;  
-    Branch     <= 0;
+    AluControl <= 0;
     MemToReg   <= 0;
     RegDataSrc <= 0;
     PCSrc      <= 0;
