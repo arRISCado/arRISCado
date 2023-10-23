@@ -27,9 +27,9 @@ module fetch (
         begin
             case (PCSrc)
             2'b1:
-                pc_next = pc + BranchOffset; // Use non-blocking assignment here
+                pc_next = BranchOffset; // Use non-blocking assignment here
             2'b0:
-                pc_next = (pc+4);
+                pc_next = (pc+1);
             endcase
         end
         // Use the PC to fetch the instruction from instr_memory

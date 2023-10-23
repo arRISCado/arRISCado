@@ -180,6 +180,7 @@ module cpu(
         .in_MemToReg(de_ex_MemToReg),
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
+        .in_BranchOffset(de_ex_BranchOffset),
         // TODO: Missing PC
 
         // Control Outputs
@@ -190,7 +191,7 @@ module cpu(
         .out_MemToReg(ex_mem_MemToReg),
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
-        .in_BranchOffset(de_ex_BranchOffset),
+        .out_BranchOffset(ex_mem_BranchOffset),
 
         .out_rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result)

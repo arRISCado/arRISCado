@@ -99,7 +99,7 @@ module execute (
             out_MemToReg     <= in_MemToReg;
             out_RegDataSrc   <= in_RegDataSrc;
             out_PCSrc        <= in_PCSrc;
-            out_BranchOffset <= in_BranchOffset;
+            out_BranchOffset <= in_BranchOffset + PC;
             out_rs2_value <= rs2_value;
 
         end

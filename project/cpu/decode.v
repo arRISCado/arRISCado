@@ -134,7 +134,7 @@ begin
                 MemRead <= 0;
                 MemWrite <= 0;
                 AluControl <= 5'b00110;
-                imm <= {_instruction[31:12], 12'b0};
+                imm <= {12'b0, _instruction[31:12]};
             end
 
             //JARL: Jump And Link Register (Tipo I)
@@ -144,7 +144,7 @@ begin
                 case (func3)
                 7'b000 :                   
                     begin
-                        imm <= {_instruction[31:20], 20'b0};
+                        imm <= {_instruction[31:20]};
                     end
 
                 endcase
@@ -174,7 +174,8 @@ begin
                     MemRead <= 1;
                     MemWrite <= 0;
                     AluControl <= 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
-                    imm <= {_instruction[31:20], 20'b0};
+                    imm <= {20'b0, _instruction[31:20]};
+
 
                     // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
                     // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
@@ -190,7 +191,7 @@ begin
                     MemRead <= 0;
                     MemWrite <= 1;
                     AluControl <= 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
-                    imm <= {_instruction[11:7], _instruction[31:25], 20'b0};
+                    imm <= {_instruction[31:25], _instruction[11:7]};
                     
                     // Esse sinal irá indicar pra ALU/MEM qual o tipo de store
                     // (Não sei oq fazer pra diferenciar os tipos de store ainda, então o padrão vai ser SW por hora)
@@ -207,7 +208,7 @@ begin
                     RegWrite <= 1;
                     MemRead <= 0;
                     MemWrite <= 0;
-                    imm <= {_instruction[31:20], 20'b0};
+                    imm <= {21'b0, _instruction[31:20]};
 
                     case (func3)
                         // ADDI
@@ -373,7 +374,7 @@ begin
             CODE_SYS_CALL :
             begin
                 AluOp <= 3'b001;
-                imm <= {_instruction[31:20], 20'b0};
+                imm <= {20'b0, _instruction[31:20]};
             end
 
             // Multiplication/Division instructions
