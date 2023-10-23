@@ -47,17 +47,10 @@ module writeback (
             _result_alu <= result_alu;
 
             // Control Signal
-            _RegDest <= in_RegDest;
-            _PCSrc <= in_PCSrc;
-            _RegWrite <= in_RegWrite;
+            out_RegDest <= in_RegDest;
+            out_PCSrc <= in_PCSrc;
+            out_RegWrite <= in_RegWrite;
         end
-    end
-
-    always @(*)
-    begin
-        out_RegDest <= _RegDest;
-        out_PCSrc <= _PCSrc;
-        out_RegWrite <= _RegWrite;
     end
 
     assign data_wb = (_MemToReg) ? data_mem : _result_alu;
