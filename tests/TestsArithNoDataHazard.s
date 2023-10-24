@@ -7,14 +7,18 @@ main:
 	addi a0, zero, 1
 	addi zero, zero, 0
 	addi zero, zero, 0
+	addi zero, zero, 0
 	sub a1, zero, a0
 	add a2, a0, a0
+	addi zero, zero, 0
 	addi zero, zero, 0
 	addi zero, zero, 0
 	add a2, a2, a2
 	addi a3, zero, 2047 
 	addi zero, zero, 0
+	addi zero, zero, 0
 	add a4, a2, a1
+	addi zero, zero, 0
 	addi zero, zero, 0
 	addi zero, zero, 0
 	sub a5, a2, a4

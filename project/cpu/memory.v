@@ -81,6 +81,8 @@ module memory (
 
             `ifdef TESTBENCH
             if (MemWrite)
+            `elsif TEST
+            if (MemWrite)
             `else
             if (_store)
             `endif
