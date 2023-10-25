@@ -23,7 +23,7 @@ module execute (
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     input [2:0] in_BranchOp,       // Determines what type of branch is being done
-    input [11:0] in_BranchOffset,
+    input [31:0] in_BranchOffset,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -32,7 +32,7 @@ module execute (
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
-    output reg [11:0] out_BranchOffset,
+    output reg [31:0] out_BranchOffset,
     // output reg [31:0] _rs2_value,
     output reg [31:0] out_rs2_value,
 
@@ -91,6 +91,7 @@ module execute (
             _AluSrc     <= AluSrc;
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
+            _BranchOp = in_BranchOp;
             
             out_MemWrite     <= in_MemWrite;
             out_MemRead      <= in_MemRead;
@@ -99,7 +100,7 @@ module execute (
             out_MemToReg     <= in_MemToReg;
             out_RegDataSrc   <= in_RegDataSrc;
             out_PCSrc        <= in_PCSrc;
-            out_BranchOffset <= in_BranchOffset + PC;
+            out_BranchOffset <= in_BranchOffset;
             out_rs2_value <= rs2_value;
 
         end
@@ -119,8 +120,8 @@ module execute (
         // Tipo B
         3'b001 :
         begin
-            a = rs1_value;
-            b <= _imm;
+            a <= rs1_value;
+            b <= rs2_value;
             case (_BranchOp)  // eu acho que é o func3
                 BEQ:
                 begin

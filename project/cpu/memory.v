@@ -17,7 +17,7 @@ module memory (
     input [4:0] in_RegDest, // Just goes to the next stage
     input in_RegDataSrc,    // Just goes to the next stage
     input in_PCSrc,         // Just goes to the next stage
-    input [11:0] in_BranchOffset,
+    input [31:0] in_BranchOffset,
 
     output [31:0] data_out,       // Data output read from memory
     output reg mem_done,              // Memory operation done signal
@@ -28,7 +28,7 @@ module memory (
     output [4:0] out_RegDest,
     output out_RegDataSrc,
     output out_PCSrc,
-    output [11:0] out_BranchOffset,
+    output [31:0] out_BranchOffset,
 
     // to RAM signals
     output [31:0] mem_addr,       // Send   address to RAM

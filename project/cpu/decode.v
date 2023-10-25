@@ -27,7 +27,7 @@ module decode (
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
     output [2:0] BranchOp,    // Determines what type of branch is being done
-    output [11:0] BranchOffset,
+    output [31:0] BranchOffset,
     output reg PCSrc = 0        // Determines where the PC will come from
 );
 
@@ -67,7 +67,7 @@ assign shamt = _instruction[24:20];
 assign func3 = _instruction[14:12];
 assign func7 = _instruction[31:25];
 assign BranchOp = func3;
-assign BranchOffset = {_instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
+assign BranchOffset = {20'b0, _instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]};
 
 
 // Divide each possible part of an instruction
@@ -133,6 +133,7 @@ begin
                 RegWrite <= 0;
                 MemRead <= 0;
                 MemWrite <= 0;
+                PCSrc <= 1;
                 AluControl <= 5'b00110;
                 imm <= {12'b0, _instruction[31:12]};
             end

@@ -88,7 +88,7 @@ module cpu(
     wire de_ex_RegDataSrc;          // Goes to WB
     wire de_ex_PCSrc;               // Goes to next Fetch
     wire [2:0] de_ex_BranchOp;       // Dies on Execute
-    wire [11:0] de_ex_BranchOffset;
+    wire [31:0] de_ex_BranchOffset;
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
@@ -101,7 +101,7 @@ module cpu(
     wire ex_mem_RegDataSrc;          // Goes to WB
     wire ex_mem_PCSrc;               // Goes to next Fetch
     wire [31:0] ex_mem_rs2_value;
-    wire [11:0] ex_mem_BranchOffset;
+    wire [31:0] ex_mem_BranchOffset;
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
@@ -113,7 +113,7 @@ module cpu(
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
     wire [31:0] mem_wb_AluResult;
-    wire [11:0] mem_wb_BranchOffset;
+    wire [31:0] mem_wb_BranchOffset;
 
     // Writeback -> Fetch
     wire [31:0] wb_if_branch_target;
