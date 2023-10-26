@@ -46,7 +46,8 @@ module execute (
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
     wire zero;
-    alu alu(_AluControl, a, b, result, zero);
+    wire negative;
+    alu alu(_AluControl, a, b, result, negative, zero);
 
     always @(posedge clk or posedge rst)
     begin
