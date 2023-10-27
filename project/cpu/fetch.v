@@ -20,7 +20,7 @@ module fetch (
         else if (PCSrc)
             pc <= branch_target; // Use non-blocking assignment here
         else
-            pc <= pc + 1; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+            pc <= pc + 4; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
     end
 
     assign instr = rom_data;
