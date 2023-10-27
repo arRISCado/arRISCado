@@ -325,6 +325,8 @@ module decode (
                 MemWrite <= 0;
                 Branch <= 0;
                 // synthesis translate_off
+                $display("%b", opcode);
+                $display("%b", _instruction[6:0]);
                 $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
                 // synthesis translate_on
             end

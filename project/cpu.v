@@ -186,6 +186,13 @@ module cpu(
         .in_PCSrc(de_ex_PCSrc),
         // TODO: Missing PC
 
+        // Data Fowarding
+        .ex_mem_RegWrite(ex_mem_RegWrite),
+        .ex_mem_RegDest(ex_mem_RegDest),
+        .rb_read_address1(rb_read_address1),
+        .rb_read_address2(rb_read_address2),
+        .in_result(ex_mem_result),
+
         // Control Outputs
         .out_MemWrite(ex_mem_MemWrite),
         .out_MemRead(ex_mem_MemRead),
