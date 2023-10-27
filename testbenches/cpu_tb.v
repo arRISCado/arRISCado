@@ -1,5 +1,5 @@
-// `define ROM_FILE "../../testbenches/cpu_tb.txt"
-`define ROM_FILE "../../project/init_rom.txt"
+`define ROM_FILE "../../testbenches/cpu_tb.txt"
+// `define ROM_FILE "../../project/init_rom.txt"
 `include "../../testbenches/utils/imports.v"
 
 module test;
@@ -40,7 +40,7 @@ module test;
     #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
-    // $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
+    $monitor("%h %h %b %b", cpu.Fetch.pc, cpu.Fetch.rom_data, cpu.Writeback._mem_done, cpu.Writeback._MemToReg);
 
     #600;
 
