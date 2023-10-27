@@ -9,7 +9,7 @@ module fetch (
 
     input PCSrc,
 
-    output [31:0] rom_address,
+    output [7:0] rom_address,
 
     output reg [31:0] pc = 32'b0, // Register for the address of the next instruction (10-bit address for 1024 registers)
     output wire [31:0] instr      // Instruction fetched from memory
@@ -24,7 +24,7 @@ module fetch (
     end
 
     assign instr = rom_data;
-    assign rom_address = pc;
+    assign rom_address = pc[7:0];
 
 endmodule
 `endif
