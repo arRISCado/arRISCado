@@ -15,14 +15,14 @@ module test;
 
     fetch fetch(
         .clk(clk),
-        .pc_src(pc_src),
+        .PCSrc(pc_src),
         .branch_target(0),
         .pc(pc),
         .instr(instr),
         .rom_data(rom_data)
     );
 
-    wire [20:0] imm;
+    wire [31:0] imm;
     wire [6:0] opcode;
     wire [2:0] aluOp;
 
@@ -46,28 +46,49 @@ module test;
 
         // Test case 1: Sequential fetch
         $display("Test Case 1: Sequential fetch");
-        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
 
         clk = 1;
         #10;
         clk = 0;
         #10;
 
-        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
 
         clk = 1;
         #10;
         clk = 0;
         #10;
 
-        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
 
         clk = 1;
         #10;
         clk = 0;
         #10;
 
-        $display("Instr: %h, Opcode: %b, AluOp: %b", instr, opcode, aluOp);
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
+
+        clk = 1;
+        #10;
+        clk = 0;
+        #10;
+
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
+
+        clk = 1;
+        #10;
+        clk = 0;
+        #10;
+
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
+
+        clk = 1;
+        #10;
+        clk = 0;
+        #10;
+
+        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
 
         $finish;
     end

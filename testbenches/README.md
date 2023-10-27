@@ -9,8 +9,8 @@ Os testes atuais são:
 
 - [alu_tb.v](alu_tb.v): Testa as operações da [Alu](../project/cpu/alu.v).
 - [cpu_tb.v](cpu_tb.v): Testa as operações na [CPU](../project/cpu.v) com todos os módulos.
-- [fetch_decode_tb.v](fetch_decode_tb.v): 
-- [fetch_tb.v](fetch_tb.v): 
+- [fetch_decode_tb.v](fetch_decode_tb.v): Testa o conjunto dos modulos de [fetch](../project/cpu/fetch.v) e [decode](../project/cpu/decode.v).
+- [fetch_tb.v](fetch_tb.v): Testa o módulo de [fetch](../project/cpu/fetch.v); verifica o andamento do pc e possiveis saltos.
 - [if_de_ex_tb.v](if_de_ex_tb.v): 
 - [if_de_ex_wb_tb.v](if_de_ex_wb_tb.v): 
 - [instruction_tb.v](instruction_tb.v): 
@@ -23,4 +23,4 @@ Adicionais:
 
 - [cpu_tb.txt](cpu_tb.txt): Serve como set de instruções para o [cpu_tb.v](cpu_tb.v)
 - [if_de_ex_wb_tb.txt](if_de_ex_wb_tb.txt): 
-- [instruction_tb_rom.txt](instruction_tb_rom.txt): Serve como instruções para o [test.py](../test.py)
+- [instruction_tb_rom.txt](instruction_tb_rom.txt): Serve como instruções para o [test.py](../test.py) e o [instruction_tb.v](instruction_tb.v).

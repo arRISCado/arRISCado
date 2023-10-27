@@ -1,5 +1,5 @@
-`define ROM_FILE "../../testbenches/cpu_tb.txt"
-// `define ROM_FILE "../../project/init_rom.txt"
+// `define ROM_FILE "../../testbenches/cpu_tb.txt"
+`define ROM_FILE "../../project/init_rom.txt"
 `include "../../testbenches/utils/imports.v"
 
 module test;
