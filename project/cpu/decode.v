@@ -20,15 +20,15 @@ module decode (
     output reg MemWrite,        // True or False depending if the operation Writes in the Memory or not
     output reg MemRead,         // True or False depending if the operation Reads from the Memory or not
     output reg RegWrite,        // True or False depending if the operation writes in a Register or not
-    output [4:0] RegDest,   // Determines which register to write the ALU result
+    output [4:0] RegDest,       // Determines which register to write the ALU result
     output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
     output reg [2:0] AluOp,     // Operation type ALU will perform
     output reg [4:0] AluControl,// Exact operation ALU will perform
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
-    output [2:0] BranchOp,    // Determines what type of branch is being done
+    output [2:0] BranchOp,      // Determines what type of branch is being done
     output [31:0] BranchOffset,
-    output reg PCSrc = 0        // Determines where the PC will come from
+    output reg PCSrc            // Determines where the PC will come from
 );
 
 

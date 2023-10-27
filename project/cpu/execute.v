@@ -33,7 +33,6 @@ module execute (
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     output reg [31:0] out_BranchOffset,
-    // output reg [31:0] _rs2_value,
     output reg [31:0] out_rs2_value,
 
     output [31:0] result,
@@ -91,7 +90,7 @@ module execute (
             _AluSrc     <= AluSrc;
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
-            _BranchOp = in_BranchOp;
+            _BranchOp <= in_BranchOp;
             
             out_MemWrite     <= in_MemWrite;
             out_MemRead      <= in_MemRead;
@@ -99,7 +98,7 @@ module execute (
             out_RegDest      <= in_RegDest;
             out_MemToReg     <= in_MemToReg;
             out_RegDataSrc   <= in_RegDataSrc;
-            out_PCSrc        <= in_PCSrc;
+            out_PCSrc        = in_PCSrc;
             out_BranchOffset <= in_BranchOffset;
             out_rs2_value <= rs2_value;
 
@@ -113,15 +112,14 @@ module execute (
             3'b000 :
             begin
                 a <= rs1_value;
-                // b <= imm;
                 b <= _imm;
             end
 
         // Tipo B
         3'b001 :
         begin
-            a <= rs1_value;
-            b <= rs2_value;
+            a <= _rs1_value;
+            b <= _rs2_value;
             case (_BranchOp)  // eu acho que é o func3
                 BEQ:
                 begin
