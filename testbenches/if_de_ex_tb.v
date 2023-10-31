@@ -58,10 +58,10 @@ module test;
     wire [31:0] de_ex_imm;
     wire [2:0] de_ex_aluOp;
     wire de_ex_aluSrc;
-    wire [4:0] de_ex_rd;
+    //wire [4:0] de_ex_rd;
 
     // Execute -> Memory
-    wire [31:0] ex_mem_result;
+    // wire [31:0] ex_mem_result;
     wire [4:0] ex_mem_rd;
 
     // ### Pipeline ###
@@ -70,7 +70,7 @@ module test;
         .clk(clock),
         .rst(reset),
         
-        .pc_src(pc_src), // May come from writeback, but ideally from memory stage
+        .PCSrc(pc_src), // May come from writeback, but ideally from memory stage
         .branch_target(branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
@@ -86,7 +86,7 @@ module test;
         .next_instruction(if_de_instr),
         
         .imm(de_ex_imm),
-        .rd(de_ex_rd),
+        //.rd(de_ex_rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
@@ -105,20 +105,20 @@ module test;
         // Control signals
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
-        .in_MemWrite(),
-        .in_MemRead(),
-        .in_RegWrite(),
-        .in_RegDest(),
-        .in_AluControl(),
-        .in_Branch(),
-        .in_MemToReg(),
-        .in_RegDataSrc(),
-        .in_PCSrc(),
+        // .in_MemWrite(),
+        // .in_MemRead(),
+        // .in_RegWrite(),
+        // .in_RegDest(),
+        // .in_AluControl(),
+        // .in_Branch(),
+        // .in_MemToReg(),
+        // .in_RegDataSrc(),
+        // .in_PCSrc(),
 
         .result(ex_mem_result),
         .a(a),
-        .b(b),
-        .rd_out(ex_mem_rd)
+        .b(b)
+        // .rd_out(ex_mem_rd)
     );
 
     wire [31:0] a;
@@ -135,7 +135,7 @@ module test;
         // Test case 1: Sequential fetch
         $display("Test Case 1");
 
-        for (i = 0; i < 5; i = i + 1)
+        for (i = 0; i < 8; i = i + 1)
         begin
             $display("Instr: %h, AluOp: %b, AluSrc: %b", if_de_instr, de_ex_aluOp, de_ex_aluSrc);
             $display("1: Addr: %h, Value: %h, a: %h", rb_read_address1, rb_value1, a);

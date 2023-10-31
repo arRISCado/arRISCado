@@ -35,6 +35,8 @@ module test;
         .AluOp(aluOp)
     );
 
+    integer i;
+
     // Testbench procedure
     initial begin
         // Initialize inputs
@@ -46,49 +48,16 @@ module test;
 
         // Test case 1: Sequential fetch
         $display("Test Case 1: Sequential fetch");
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
 
-        clk = 1;
-        #10;
-        clk = 0;
-        #10;
+        for (i = 0; i < 7; i = i + 1)
+        begin
+            $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
 
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
-
-        clk = 1;
-        #10;
-        clk = 0;
-        #10;
-
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
-
-        clk = 1;
-        #10;
-        clk = 0;
-        #10;
-
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
-
-        clk = 1;
-        #10;
-        clk = 0;
-        #10;
-
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
-
-        clk = 1;
-        #10;
-        clk = 0;
-        #10;
-
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
-
-        clk = 1;
-        #10;
-        clk = 0;
-        #10;
-
-        $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
+            clk = 1;
+            #10;
+            clk = 0;
+            #10;
+        end
 
         $finish;
     end
