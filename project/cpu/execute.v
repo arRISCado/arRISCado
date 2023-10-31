@@ -31,6 +31,10 @@ module execute (
     input [4:0] rb_read_address1,
     input [4:0] rb_read_address2,
     input [31:0] in_result,
+    input mem_wb_RegWrite,
+    input [4:0] mem_wb_RegDest,
+    input [31:0] mem_wb_data_out,
+    input [31:0] mem_wb_AluResult,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -80,19 +84,19 @@ module execute (
         begin
             if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address1 == ex_mem_RegDest))
                 _rs1_value  <= in_result;
-
+            else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))
+                _rs1_value = mem_wb_AluResult;
             else
                 _rs1_value <= rs1_value;
 
 
             if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address2 == ex_mem_RegDest))
-            begin
                 _rs2_value  <= in_result;
-            end
+            else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address2 == mem_wb_RegDest))
+                _rs2_value = mem_wb_AluResult;
             else
-            begin
                 _rs2_value <= rs2_value;
-            end
+
             _imm        <= imm;
             _PC         <= PC;
             _AluSrc     <= AluSrc;
