@@ -35,6 +35,9 @@ module execute (
     input [4:0] mem_wb_RegDest,
     input [31:0] mem_wb_data_out,
     input [31:0] mem_wb_AluResult,
+    input [31:0] rb_write_value,
+    input rb_write_enable,
+    input [4:0] rb_write_address,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -86,6 +89,8 @@ module execute (
                 _rs1_value  <= in_result;
             else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))
                 _rs1_value = mem_wb_AluResult;
+            else if(rb_write_enable && (rb_write_address != 0) && (rb_read_address1 == rb_write_address))
+                _rs1_value = rb_write_value;
             else
                 _rs1_value <= rs1_value;
 
@@ -94,6 +99,8 @@ module execute (
                 _rs2_value  <= in_result;
             else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address2 == mem_wb_RegDest))
                 _rs2_value = mem_wb_AluResult;
+            else if(rb_write_enable && (rb_write_address != 0) && (rb_read_address2 == rb_write_address))
+                _rs2_value = rb_write_value;
             else
                 _rs2_value <= rs2_value;
 
