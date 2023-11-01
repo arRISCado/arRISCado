@@ -4,6 +4,8 @@
 module writeback (
     input clk,                  // Clock signal
     input rst,                  // Reset signal
+    input stall,
+
     input mem_done,             // Memory operation done signal from the memory stage
     input [31:0] data_mem,      // Data read from memory
     input [31:0] result_alu,    // Result of ALU operation
@@ -40,7 +42,7 @@ module writeback (
             _PCSrc <= 0;
             _RegWrite <= 0;
         end
-        else 
+        else if(~stall)
         begin
             _mem_done <= mem_done;
             _MemToReg <= MemToReg;

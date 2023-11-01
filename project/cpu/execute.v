@@ -5,6 +5,7 @@
 module execute (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
+    input stall,
     
     input [31:0] rs1_value,
     input [31:0] rs2_value,
@@ -68,7 +69,7 @@ module execute (
             out_RegDataSrc <= 0;
             out_PCSrc      <= 0;
         end
-        else
+        else if(~stall)
         begin
             _rs1_value  <= rs1_value;
             _rs2_value  <= rs2_value;
@@ -90,70 +91,72 @@ module execute (
 
     always @(*)
     begin
-        case(_AluOp)
-        // Tipo Load ou Store
-        3'b000 :
-        begin
-            a <= _rs1_value;
-            b <= _imm;
-        end
+        if(~stall) begin
+            case(_AluOp)
+                // Tipo Load ou Store
+                3'b000 :
+                begin
+                    a <= _rs1_value;
+                    b <= _imm;
+                end
 
-        // Tipo B
-        3'b001 :
-        begin
-            a <= _rs1_value;
-            b <= _rs2_value;
-        end
+                // Tipo B
+                3'b001 :
+                begin
+                    a <= _rs1_value;
+                    b <= _rs2_value;
+                end
 
-        // Tipo R OU I
-        3'b010 :
-        begin
-            a <= _rs1_value;
-            case(_AluSrc)
-            1'b1 :
-            begin
-                b <= _imm;
-            end
-            1'b0 :
-            begin
-                b <= _rs2_value;
-            end
+                // Tipo R OU I
+                3'b010 :
+                begin
+                    a <= _rs1_value;
+                    case(_AluSrc)
+                    1'b1 :
+                    begin
+                        b <= _imm;
+                    end
+                    1'b0 :
+                    begin
+                        b <= _rs2_value;
+                    end
+                    endcase
+                end
+
+                // Tipo U LUI
+                3'b100:
+                begin
+                    a <= 0;
+                    b <= _imm;
+                end
+
+                // Tipo U AUIPC
+                3'b101:
+                begin
+                    a <= _PC;
+                    b <= _imm;
+                end
+
+                // Tipo J
+                3'b011:
+                begin
+                    a <= _PC;
+                    b <= _imm;
+                end
+
+                // TODO: JALR
+                3'b111:
+                begin
+                    a <= _PC;
+                    b <= _imm;
+                end
+                default:
+                begin
+                    a <= 0;
+                    b <= 0;
+                end
             endcase
         end
-
-        // Tipo U LUI
-        3'b100:
-        begin
-            a <= 0;
-            b <= _imm;
-        end
-
-        // Tipo U AUIPC
-        3'b101:
-        begin
-            a <= _PC;
-            b <= _imm;
-        end
-
-        // Tipo J
-        3'b011:
-        begin
-            a <= _PC;
-            b <= _imm;
-        end
-
-        // TODO: JALR
-        3'b111:
-        begin
-            a <= _PC;
-            b <= _imm;
-        end
-        default:
-        begin
-            a <= 0;
-            b <= 0;
-        end
-    endcase
-end    
+    end    
 endmodule
 `endif

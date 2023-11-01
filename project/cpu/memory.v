@@ -4,6 +4,8 @@
 module memory (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
+    input stall,
+
     input [31:0] addr,         // Address input
     input [31:0] data_in,      // Data input to be written
     
@@ -61,7 +63,7 @@ module memory (
             mem_write_enable <= 0;
             mem_done <= 0;
         end
-        else 
+        else if(~stall)
         begin
             // Input signals from execute and control
             _addr <= addr;

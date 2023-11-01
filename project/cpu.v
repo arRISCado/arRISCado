@@ -39,6 +39,13 @@ module cpu(
     wire [4:0] rb_write_address, rb_read_address1, rb_read_address2;
     wire [31:0] rb_value1, rb_value2, rb_write_value;
 
+    // ### Stall Control ###
+    wire stall_if = 0;
+    wire stall_de = 0;
+    wire stall_ex = 0;
+    wire stall_mem = 0;
+    wire stall_wb = 0;
+
     // ### Components ###
 
     ram Ram(
@@ -124,6 +131,7 @@ module cpu(
     fetch Fetch(
         .clk(clock_real),
         .rst(reset),
+        .stall(stall_if),
         
         .branch_target(wb_if_branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
@@ -138,6 +146,7 @@ module cpu(
     decode Decode(
         .clk(clock_real),
         .rst(reset),
+        .stall(stall_de),
         
         .next_instruction(if_de_instr),
         .PC(if_de_pc),
@@ -167,6 +176,7 @@ module cpu(
     execute Execute(
         .clk(clock_real),
         .rst(reset),
+        .stall(stall_ex),
         
         .rs1_value(rb_value1),//(de_ex_value1),
         .rs2_value(rb_value2),//(de_ex_value2),
@@ -203,6 +213,7 @@ module cpu(
     memory Memory(
         .clk(clock_real),
         .rst(reset),
+        .stall(stall_mem),
 
         .addr(ex_mem_result), // deve ser atualizado
         .data_in(ex_mem_rs2_value), 
@@ -244,6 +255,7 @@ module cpu(
         // inputs
         .clk(clock_real),
         .rst(reset),
+        .stall(stall_wb),
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
