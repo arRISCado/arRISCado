@@ -1,6 +1,6 @@
 0           x0	zero
 x           x1	ra
-x           x2	sp
+100         x2	sp
 x           x3	gp
 x           x4	tp
 x           x5	t0

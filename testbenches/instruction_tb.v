@@ -143,6 +143,7 @@ module test();
             $display("in_RegWrite %b", cpu.Memory.in_RegWrite);
             $display("in_RegDest %0d", cpu.Memory.in_RegDest);
             $display("mem_read_data: %0d", cpu.Memory.mem_read_data);
+            $display("mem_addr: %0d", cpu.Memory.mem_addr);
             $display("out_RegWrite %b", cpu.Memory.out_RegWrite);
             $display("out_RegDest %0d", cpu.Memory.out_RegDest);
             
@@ -155,6 +156,7 @@ module test();
             $display("in_RegDest %0d", cpu.Writeback.in_RegDest);
             $display("out_RegWrite %b", cpu.Writeback.out_RegWrite);
             $display("out_RegDest %0d", cpu.Writeback.out_RegDest);
+            $display("data_wb: %0d", cpu.Writeback.data_wb);
 
             $display("");
 
@@ -169,6 +171,10 @@ module test();
             $display("value1: %0d", cpu.RegisterBank.value1);
             $display("value2: %0d", cpu.RegisterBank.value2);
             $display("RegisterBank.REGS---------");
+
+            $display("ra=x01 %0d", cpu.RegisterBank.register[1]);
+            $display("sp=x02 %0d", cpu.RegisterBank.register[2]);
+
             for (integer j = 10; j < 18; j = j + 1)
             begin
                 $display("a%0d=x%0d %0d", j-10,j, cpu.RegisterBank.register[j]);
@@ -181,7 +187,13 @@ module test();
 
             $display("");
             $display("RAM");
-            $display("#3: %0d", cpu.Ram.storage[3]);
+            $display("address: %0d", cpu.Ram.address);
+            $display("data_out: %b", cpu.Ram.data_out);
+            $display("#3: %b", cpu.Ram.storage[3]);
+            $display("#100: %b", cpu.Ram.storage[100]);
+            $display("#102: %b", cpu.Ram.storage[102]);
+            $display("#104: %b", cpu.Ram.storage[104]);
+            $display("#105: %b", cpu.Ram.storage[105]);
 
             
             $display("");

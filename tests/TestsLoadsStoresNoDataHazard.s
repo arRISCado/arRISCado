@@ -4,8 +4,14 @@
 	.globl	main
 	.type	main, @function
 main:
+	addi zero, zero, 0
+	addi zero, zero, 0
+	addi zero, zero, 0
+	addi zero, zero, 0
 	addi sp,sp,-8
 	addi a1, zero, 20
+	addi zero, zero, 0
+	addi zero, zero, 0
 	addi zero, zero, 0
 	addi zero, zero, 0
 	sw a1, 4(sp)
@@ -14,7 +20,11 @@ main:
 	addi a2, a1, 93
 	addi zero, zero, 0
 	addi zero, zero, 0
+	addi zero, zero, 0
+	addi zero, zero, 0
 	sw a2, 1(sp)
+	addi zero, zero, 0
+	addi zero, zero, 0
 	addi zero, zero, 0
 	addi zero, zero, 0
 	lw a3, 4(sp)
