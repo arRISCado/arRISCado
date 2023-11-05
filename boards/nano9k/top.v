@@ -7,6 +7,7 @@
 // Top Level Target for Nano 9k
 `include "../../project/cpu.v"
 `include "../../project/uart.v"
+`include "../../project/peripheral/pwm_port.v"
 
 module nano9k (
     input clk,
