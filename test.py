@@ -115,6 +115,7 @@ for test_file in tests: #Run all tests
 
     code = ["00100013\n"] * 1
     code += lines
+    code[-1] += "\n"
     code += ["00100013\n"] * (256-len(code))
     code[-1] = code[-1][:-1]
 

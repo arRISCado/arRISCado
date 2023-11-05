@@ -8,7 +8,7 @@ out_file = open("result.csv", "w")
 
 steps = text.split("#STEP_START\n")
 
-lines = [[] for _ in range(13)]
+lines = [[] for _ in range(14)]
 
 for step in steps:
     if step.find("#STEP_END") == -1:
