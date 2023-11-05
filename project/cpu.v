@@ -19,21 +19,18 @@
 module cpu(
     input clock,
     input reset,
+    output [5:0] led,
     input enable,
-    input [5:0] led,
     input wire [31:0] rom_data,
-    output wire [31:0] rom_address,
+    output wire [7:0] rom_address,
     output port_pwm1
 );
-    assign led[5:0] = ex_mem_result[5:0];
+    // assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real;
     assign clock_real = clock & enable;
 
     // ### Component wires ###
-
-    // ROM
-    // wire [31:0] rom_data, rom_address;
 
     // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
@@ -88,6 +85,7 @@ module cpu(
         .write_value(rb_write_value),
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
+        .led(led),
         .value1(rb_value1),
         .value2(rb_value2)
     );
@@ -116,6 +114,9 @@ module cpu(
     wire de_ex_MemToReg;            // Goes to MEM
     wire de_ex_RegDataSrc;          // Goes to WB
     wire de_ex_PCSrc;               // Goes to next Fetch
+    wire [31:0] de_ex_PC;
+    wire [31:0] de_ex_value1;
+    wire [31:0] de_ex_value2;
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
@@ -165,6 +166,9 @@ module cpu(
         .rst(reset),
         
         .next_instruction(if_de_instr),
+        .PC(if_de_pc),
+        .regbank_value1(rb_value1),
+        .regbank_value2(rb_value2),
         
         .imm(de_ex_imm),
         .rs1(rb_read_address1),
@@ -180,15 +184,18 @@ module cpu(
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
-        .PCSrc(de_ex_PCSrc)
+        .PCSrc(de_ex_PCSrc),
+        .PC_out(de_ex_PC),
+        .value1(de_ex_value1),
+        .value2(de_ex_value2)
     );
 
     execute Execute(
         .clk(clock_real),
         .rst(reset),
         
-        .rs1_value(rb_value1),
-        .rs2_value(rb_value2),
+        .rs1_value(rb_value1),//(de_ex_value1),
+        .rs2_value(rb_value2),//(de_ex_value2),
         .imm(de_ex_imm),
        
         // control inputs
@@ -215,7 +222,8 @@ module cpu(
         .out_PCSrc(ex_mem_PCSrc),
 
         ._rs2_value(ex_mem_rs2_value),
-        .result(ex_mem_result)
+        .result(ex_mem_result),
+        .PC(de_ex_PC)
     );
 
     memory Memory(
@@ -285,5 +293,4 @@ module cpu(
     );
 
 endmodule
-
-`endif 
+`endif

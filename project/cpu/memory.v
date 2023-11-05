@@ -22,11 +22,11 @@ module memory (
     output reg mem_done,              // Memory operation done signal
 
     // Control Signals
-    output out_MemToReg,
-    output out_RegWrite,
-    output [4:0] out_RegDest,
-    output out_RegDataSrc,
-    output out_PCSrc,
+    output reg out_MemToReg,
+    output reg out_RegWrite,
+    output reg [4:0] out_RegDest,
+    output reg out_RegDataSrc,
+    output reg out_PCSrc,
 
     // to RAM signals
     output [31:0] mem_addr,       // Send   address to RAM
@@ -36,12 +36,13 @@ module memory (
 );
 
     reg [31:0] _addr, _data_in;
-    reg _load, _store, _MemToReg, _RegWrite, _RegDataSrc, _PCSrc;
+    reg _load, _store;
     reg [4:0] _RegDest;
 
     assign mem_addr = _addr;
     assign mem_write_data = _data_in;
     assign data_out = mem_read_data;
+    assign out_AluResult = _addr;
 
     always @(posedge clk or posedge rst)
     begin
@@ -52,11 +53,11 @@ module memory (
             _load <= 0;
             _store <= 0;
             
-            _MemToReg <= 0;
-            _RegWrite <= 0;
-            _RegDest <= 0;
-            _RegDataSrc <= 0;
-            _PCSrc <= 0;
+            out_MemToReg <= 0;
+            out_RegWrite <= 0;
+            out_RegDest <= 0;
+            out_RegDataSrc <= 0;
+            out_PCSrc <= 0;
             mem_write_enable <= 0;
             mem_done <= 0;
         end
@@ -69,11 +70,11 @@ module memory (
             _store <= MemWrite;
 
             // Control signals to the next step
-            _MemToReg <= in_MemToReg;
-            _RegWrite <= in_RegWrite;
-            _RegDest <= in_RegDest;
-            _RegDataSrc <= in_RegDataSrc;
-            _PCSrc <= in_PCSrc;
+            out_MemToReg <= in_MemToReg;
+            out_RegWrite <= in_RegWrite;
+            out_RegDest <= in_RegDest;
+            out_RegDataSrc <= in_RegDataSrc;
+            out_PCSrc <= in_PCSrc;
             mem_done <= 1;
 
             if (mem_write_enable)
@@ -81,20 +82,13 @@ module memory (
 
             `ifdef TESTBENCH
             if (MemWrite)
+            `elsif TEST
+            if (MemWrite)
             `else
             if (_store)
             `endif
                 mem_write_enable <= 1;
         end
     end
-
-    assign out_MemToReg = _MemToReg;
-    assign out_RegWrite = _RegWrite;
-    assign out_RegDest = _RegDest;
-    assign out_RegDataSrc = _RegDataSrc;
-    assign out_PCSrc = _PCSrc;
-    assign out_AluResult = _addr;
-
 endmodule
-
 `endif

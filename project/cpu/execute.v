@@ -124,8 +124,8 @@ module execute (
         // Tipo U LUI
         3'b100:
         begin
-            a <= _imm;
-            b <= 12;
+            a <= 0;
+            b <= _imm;
         end
 
         // Tipo U AUIPC

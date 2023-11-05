@@ -15,9 +15,9 @@ module alu (
   localparam BITWISE_OR  = 4'b0001;
   localparam ADDITION    = 4'b0010;
   localparam BITWISE_XOR = 4'b0011;
-  localparam SUBTRACTION = 4'b0100;
+  localparam SUBTRACTION = 4'b0110;
   localparam BITWISE_NOT = 4'b0101;
-  localparam SHIFT_LEFT  = 4'b0110;
+  localparam SHIFT_LEFT  = 4'b1111;
   localparam SHIFT_RIGHT = 4'b0111;
   localparam ARIT_SRIGHT = 4'b1000;
 

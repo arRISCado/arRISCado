@@ -8,14 +8,25 @@ out_file = open("result.csv", "w")
 
 steps = text.split("#STEP_START\n")
 
+lines = [[] for _ in range(13)]
+
 for step in steps:
     if step.find("#STEP_END") == -1:
         continue
     step = step.split("#STEP_END")[0]
 
-    out_file.write("\"")
-    out_file.write(step)
-    out_file.write("\",")
+    step_stages = step.split("\n\n")
+
+    for i in range(len(step_stages)):
+        lines[i].append(step_stages[i])
+
+for line in lines:
+    for column in line:
+        out_file.write("\"")
+        out_file.write(column)
+        out_file.write("\",")
+
+    out_file.write("\n")
 
 
 out_file.close()
