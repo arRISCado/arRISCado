@@ -56,12 +56,21 @@ module execute (
     reg [2:0] _AluOp;
     reg _AluSrc;
 
-    reg [3:0] _AluControl;
+    reg [4:0] _AluControl;
     reg [4:0] _RegDest;
     reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
 
     wire zero;
-    alu alu(_AluControl, a, b, result, zero);
+    wire borrow;
+
+    alu alu(_AluControl, a, b, result, zero, borrow);
+
+    localparam BEQ = 3'b000;
+    localparam BNE = 3'b001;
+    localparam BLT = 3'b100;
+    localparam BGE = 3'b101;
+    localparam BLTU = 3'b110;
+    localparam BGEU = 3'b111;
 
     always @(posedge clk or posedge rst)
     begin
@@ -119,18 +128,48 @@ module execute (
     always @(*)
     begin
         case(_AluOp)
-        // Tipo Load ou Store
-        3'b000 :
-        begin
-            a <= _rs1_value;
-            b <= _imm;
-        end
+            // Tipo Load ou Store
+            3'b000 :
+            begin
+                a <= rs1_value;
+                b <= _imm;
+            end
 
         // Tipo B
         3'b001 :
         begin
             a <= _rs1_value;
             b <= _rs2_value;
+            case (_BranchOp)  // eu acho que é o func3
+                BEQ:
+                begin
+                    out_PCSrc = zero && in_PCSrc;
+                end
+                BNE:
+                begin
+                    out_PCSrc = !(zero) && in_PCSrc;
+                end
+                BLT:
+                begin
+                    out_PCSrc = result[31] && in_PCSrc;
+                end
+                BGE:
+                begin
+                    out_PCSrc = !(result[31]) && in_PCSrc;
+                end
+                BLTU:
+                begin
+                    out_PCSrc = borrow && in_PCSrc;
+                end
+                BGEU:
+                begin
+                    out_PCSrc = !(borrow) && in_PCSrc;
+                end
+                default: 
+                begin
+                    $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
+                end
+            endcase
         end
 
         // Tipo R OU I
@@ -152,8 +191,8 @@ module execute (
         // Tipo U LUI
         3'b100:
         begin
-            a <= 0;
-            b <= _imm;
+            a <= _imm;
+            b <= 0;
         end
 
         // Tipo U AUIPC
