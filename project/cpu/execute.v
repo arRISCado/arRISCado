@@ -24,6 +24,21 @@ module execute (
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
 
+
+    // Possible Fowarding Data
+    input ex_mem_RegWrite,
+    input [4:0] ex_mem_RegDest,
+    input [4:0] rb_read_address1,
+    input [4:0] rb_read_address2,
+    input [31:0] in_result,
+    input mem_wb_RegWrite,
+    input [4:0] mem_wb_RegDest,
+    input [31:0] mem_wb_data_out,
+    input [31:0] mem_wb_AluResult,
+    input [31:0] rb_write_value,
+    input rb_write_enable,
+    input [4:0] rb_write_address,
+
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
     output reg out_RegWrite,         // True or False depending if the operation writes in a Register or not
@@ -70,8 +85,21 @@ module execute (
         end
         else
         begin
-            _rs1_value  <= rs1_value;
-            _rs2_value  <= rs2_value;
+            if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address1 == ex_mem_RegDest))
+                _rs1_value  <= in_result;
+            else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))
+                _rs1_value = mem_wb_AluResult;
+            else
+                _rs1_value <= rs1_value;
+
+
+            if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address2 == ex_mem_RegDest))
+                _rs2_value  <= in_result;
+            else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address2 == mem_wb_RegDest))
+                _rs2_value = mem_wb_AluResult;
+            else
+                _rs2_value <= rs2_value;
+
             _imm        <= imm;
             _PC         <= PC;
             _AluSrc     <= AluSrc;
