@@ -14,7 +14,6 @@ module register_bank(
   output [31:0] value1,
   output [31:0] value2
 );
-  assign led = {register[4], clk};
   // TODO: We should take the ram_style out when we can use the LEDs as a peripheral, 
   // because we can't connect the leds to the register if it is synthesized as ram
   // Also, the read should be synchronous, so we might need to change the execute 

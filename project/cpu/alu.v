@@ -8,7 +8,8 @@ module alu (
   input [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
-  output reg zero
+  output reg zero,
+  output reg borrow
 );
 
   localparam BITWISE_AND    = 5'b00000;
@@ -30,6 +31,7 @@ module alu (
   localparam MUL_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
   localparam REM_USGN       = 5'b10010;
+  localparam SUB_USN        = 5'b10011;
 
 
   always @(*)

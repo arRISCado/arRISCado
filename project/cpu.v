@@ -23,7 +23,7 @@ module cpu(
     input wire [31:0] rom_data,
     output wire [7:0] rom_address
 );
-    // assign led[5:0] = ex_mem_result[5:0];
+    assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real;
     assign clock_real = clock & enable;
