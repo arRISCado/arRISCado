@@ -12,6 +12,9 @@ module alu (
   output reg borrow
 );
 
+  wire [31:0] u_a;
+  wire [31:0] u_b;
+
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
   localparam ADDITION       = 5'b00010;
@@ -33,6 +36,8 @@ module alu (
   localparam REM_USGN       = 5'b10010;
   localparam SUB_USN        = 5'b10011;
 
+  assign u_a = a;
+  assign u_b = b;
 
   always @(*)
   begin

@@ -39,17 +39,17 @@ module decode (
 );
 
     // Macros dos opcodes:
-    localparam CODE_LUI         = 7'b1101101;
-    localparam CODE_AUIPC       = 7'b1100101;
-    localparam CODE_JAL         = 7'b1111011;
-    localparam CODE_JARL        = 7'b1111001;
-    localparam CODE_B_TYPE      = 7'b1111000;
-    localparam CODE_LOAD_TYPE   = 7'b1100000;
-    localparam CODE_SAVE_TYPE   = 7'b1101000;
-    localparam CODE_I_TYPE      = 7'b1100100;
-    localparam CODE_R_TYPE      = 7'b1101100;
-    localparam CODE_SYS_CALL    = 7'b1111100;
-    localparam CODE_MUL_DIV     = 7'b1101100;
+    localparam CODE_LUI         = 7'b0110111;
+    localparam CODE_AUIPC       = 7'b0010111;
+    localparam CODE_JAL         = 7'b1101111;
+    localparam CODE_JARL        = 7'b1100111;
+    localparam CODE_B_TYPE      = 7'b1100011;
+    localparam CODE_LOAD_TYPE   = 7'b0000011;
+    localparam CODE_SAVE_TYPE   = 7'b0100011;
+    localparam CODE_I_TYPE      = 7'b0010011;
+    localparam CODE_R_TYPE      = 7'b0110011;
+    localparam CODE_SYS_CALL    = 7'b1110011;
+    localparam CODE_MUL_DIV     = 7'b0110011;
 
 
     reg [31:0] _instruction;
