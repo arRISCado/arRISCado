@@ -21,9 +21,9 @@ module cpu(
     output [5:0] led,
     input enable,
     input wire [31:0] rom_data,
-    output wire [7:0] rom_address
+    output wire [31:0] rom_address
 );
-    // assign led[5:0] = ex_mem_result[5:0];
+    assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real;
     assign clock_real = clock & enable;
@@ -59,7 +59,7 @@ module cpu(
         .write_value(rb_write_value),
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
-        .led(led),
+        // .led(led),
         .value1(rb_value1),
         .value2(rb_value2)
     );
