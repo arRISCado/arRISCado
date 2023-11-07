@@ -17,7 +17,7 @@ module nano9k (
 );
     wire cpu_enable;
     wire [31:0] instruction_data;
-    wire [31:0] instruction_address;
+    wire [7:0] instruction_address;
     
     localparam WAIT_TIME = 5000000;
     wire effClk;
