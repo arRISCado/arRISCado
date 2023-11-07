@@ -7,8 +7,11 @@ module test;
     reg mem_done;
     reg [31:0] data_mem;
     reg [31:0] result_alu;
-    reg mem_to_reg_ctrl;
     wire [31:0] data_wb;
+    reg [31:0] addr;
+    reg [31:0] data_in;
+    reg load_store;
+    reg [1:0] op;
 
     writeback writeback_test (
         // inputs
@@ -18,16 +21,15 @@ module test;
         .mem_done(mem_done),
         .data_mem(data_mem),
         .result_alu(result_alu),
-        .mem_to_reg_ctrl(mem_to_reg_ctrl),
 
         // control inputs
-        .RegWrite(mem_wr_RegWrite),
-        .RegDataSrc(mem_wr_RegDataSrc),
-        .in_RegDest(mem_wr_RegDest),
-        .in_PCSrc(mem_wr_PCSrc),
+        .MemToReg(),
+        .in_RegWrite(),
+        .in_RegDest(),
+        .in_PCSrc(),
 
         // outputs
-        .rb_write_en(rb_write_en),
+        // .rb_write_en(rb_write_en),
         .data_wb(data_wb),
 
         // control outputs
@@ -42,7 +44,7 @@ module test;
 
     // Initialize signals
     initial begin
-        $display("\n\nTest Case 1: Store operation, no reset");
+        $display("Test Case 1: Store operation, no reset");
         reset = 0;
         addr = 32'b0010;
         data_in = 32'h1234_5678;

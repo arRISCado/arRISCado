@@ -15,8 +15,7 @@
         "../../testbenches/instruction_tb.v",
         "../../testbenches/memory_tb.v",
         "../../testbenches/ram_tb.v",
-        "../../testbenches/rom_tb.v", 
-        "../../testbenches/writeback_tb.v"
+        "../../testbenches/rom_tb.v"
     ],
     "nextPnrGowinOptions": ["--top", "nano9k"],
     "synthGowinOptions": [],
