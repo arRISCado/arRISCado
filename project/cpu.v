@@ -23,7 +23,7 @@ module cpu(
     input wire [31:0] rom_data,
     output wire [7:0] rom_address
 );
-    // assign led[5:0] = ex_mem_result[5:0];
+    assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real;
     assign clock_real = clock & enable;
@@ -79,7 +79,7 @@ module cpu(
     wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
-    wire [3:0] de_ex_AluControl;    // Dies on execute
+    wire [4:0] de_ex_AluControl;    // Dies on execute
     wire de_ex_Branch;              // Dies on Execute
     wire de_ex_MemWrite;            // Goes to MEM stage
     wire de_ex_MemRead;             // Goes to MEM stage
