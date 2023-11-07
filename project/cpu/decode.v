@@ -23,14 +23,15 @@ module decode (
     output reg MemWrite,        // True or False depending if the operation Writes in the Memory or not
     output reg MemRead,         // True or False depending if the operation Reads from the Memory or not
     output reg RegWrite,        // True or False depending if the operation writes in a Register or not
-    output [4:0] RegDest,   // Determines which register to write the ALU result
+    output [4:0] RegDest,       // Determines which register to write the ALU result
     output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
     output reg [2:0] AluOp,     // Operation type ALU will perform
     output reg [3:0] AluControl,// Exact operation ALU will perform
     output reg Branch,          // True or False depending if the instruction is a Branch
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
-    output reg PCSrc = 0,        // Determines where the PC will come from
+    output reg PCSrc = 0,       // Determines where the PC will come from
+    output reg [2:0] BranchType,
     output reg [31:0] PC_out,
     output reg [31:0] value1,
     output reg [31:0] value2
@@ -143,18 +144,13 @@ module decode (
             begin
                 AluOp <= 3'b001;
                 AluSrc <= 0;
-                // MemToReg <= 1; Don't Care
                 RegWrite <= 0;
                 MemRead <= 0;
                 MemWrite <= 0;
                 Branch <= 1;
-                AluControl <= 4'b0110; // Branch performa uma subtração na ALU pra fazer a comparação
-                // inverter esse imediato
-                imm <= {_instruction[11:8], _instruction[30:25], _instruction[7], _instruction[31], 2'b0}; // Imediato usado pra somar no PC
-
-                // Esse sinal irá indicar pra ALU qual o tipo de Branch
-                // (Não sei oq fazer pra diferenciar os tipos de Branch ainda, então o padrão vai ser BGE por hora)
-                // if (func3 == 010) 
+                AluControl <= 4'b0110;
+                imm <= {_instruction[31] ? 19'b1111111111111111111 : 19'b0, _instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8], 1'b0}; // Imediato usado pra somar no PC
+                BranchType <= func3;
             end
 
             // Instruções dos tipos de Loads: dependem do func3
@@ -167,15 +163,8 @@ module decode (
                     MemRead <= 1;
                     MemWrite <= 0;
                     Branch <= 0;
-                    AluControl <= 4'b0010; // LW performa uma soma na ALU pra calculcar endereço
+                    AluControl <= 4'b0010;
                     imm <= {20'b0, _instruction[31:20]};
-
-                    // Esse sinal irá indicar pra ALU/MEM qual o tipo de Load
-                    // (Não sei oq fazer pra diferenciar os tipos de Load ainda, então o padrão vai ser LW por hora)
-                    // if (func3 == 010) 
-                    begin
-                        
-                    end
                 end
             
             // Instruções pros tipos de Save: dependem do func3 (Tipo S)
@@ -183,17 +172,12 @@ module decode (
                 begin
                     AluOp <= 3'b000;
                     AluSrc <= 1;
-                    // MemToReg <= 1; Don't Care
                     RegWrite <= 0;
                     MemRead <= 0;
                     MemWrite <= 1;
                     Branch <= 0;
                     AluControl <= 4'b0010; // SW performa uma soma na ALU pra calculcar endereço
                     imm <= {_instruction[31:25], _instruction[11:7]};
-                    
-                    // Esse sinal irá indicar pra ALU/MEM qual o tipo de store
-                    // (Não sei oq fazer pra diferenciar os tipos de store ainda, então o padrão vai ser SW por hora)
-                    // if (func3 == 010) 
                 end
             
             // Instruções para operações com Imediato (Tipo I)

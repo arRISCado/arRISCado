@@ -23,6 +23,7 @@ module execute (
     input in_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
+    input [2:0] in_BranchType,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -31,6 +32,7 @@ module execute (
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
+    output reg [31:0] out_BranchTarget,
     output reg [31:0] _rs2_value,
 
     output [31:0] result,
@@ -54,11 +56,11 @@ module execute (
         begin
             _rs1_value  <= 0;
             _rs2_value  <= 0;
-            _imm        <= 0;
             _PC         <= 0;
             _AluSrc     <= 0;
             _AluOp      <= 0;
             _AluControl <= 0;
+            _imm        <= 0;
 
             out_MemWrite   <= 0;
             out_MemRead    <= 0;
@@ -67,16 +69,17 @@ module execute (
             out_MemToReg   <= 0;
             out_RegDataSrc <= 0;
             out_PCSrc      <= 0;
+            out_BranchTarget <= 0;
         end
         else
         begin
             _rs1_value  <= rs1_value;
             _rs2_value  <= rs2_value;
-            _imm        <= imm;
             _PC         <= PC;
             _AluSrc     <= AluSrc;
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
+            _imm        <= imm;
             
             out_MemWrite   <= in_MemWrite;
             out_MemRead    <= in_MemRead;
@@ -84,8 +87,27 @@ module execute (
             out_RegDest    <= in_RegDest;
             out_MemToReg   <= in_MemToReg;
             out_RegDataSrc <= in_RegDataSrc;
-            out_PCSrc      <= in_PCSrc;
+            out_BranchTarget <= PC + imm;
+            // out_PCSrc      <= in_PCSrc;
         end
+    end
+
+    always @(*)
+    begin
+        case (in_BranchType)
+            000: // beq
+                out_PCSrc <= zero ? in_PCSrc : 0;
+            001: // bne
+                out_PCSrc <= zero ? 0 : in_PCSrc;
+            100: // blt
+                out_PCSrc <= result[31] ? in_PCSrc : 0;
+            101: // bge
+                out_PCSrc <= result[31] ? 0 : in_PCSrc;
+            // 110: // bltu
+            // 111: // bgeu
+            default:
+                out_PCSrc <= 0;
+        endcase
     end
 
     always @(*)
@@ -153,7 +175,7 @@ module execute (
             a <= 0;
             b <= 0;
         end
-    endcase
-end    
+        endcase
+    end    
 endmodule
 `endif

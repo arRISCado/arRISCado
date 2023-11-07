@@ -116,7 +116,7 @@ module cpu(
     wire [31:0] mem_wb_AluResult;
 
     // Writeback -> Fetch
-    wire [31:0] wb_if_branch_target;
+    wire [31:0] wb_if_BranchTarget;
     wire wb_if_PCSrc;               // Dies on Fetch
 
     // ### Pipeline ###
@@ -125,7 +125,7 @@ module cpu(
         .clk(clock_real),
         .rst(reset),
         
-        .branch_target(wb_if_branch_target), // May come from writeback, but ideally from memory stage
+        .in_BranchTarget(wb_if_BranchTarget), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
@@ -134,6 +134,8 @@ module cpu(
         .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
         .instr(if_de_instr)
     );
+
+    wire [2:0] de_ex_BranchType;
 
     decode Decode(
         .clk(clock_real),
@@ -159,10 +161,13 @@ module cpu(
         .MemToReg(de_ex_MemToReg),
         .RegDataSrc(de_ex_RegDataSrc),
         .PCSrc(de_ex_PCSrc),
+        .BranchType(de_ex_BranchType),
         .PC_out(de_ex_PC),
         .value1(de_ex_value1),
         .value2(de_ex_value2)
     );
+
+    wire [31:0] ex_mem_BranchTarget;
 
     execute Execute(
         .clk(clock_real),
@@ -184,7 +189,7 @@ module cpu(
         .in_MemToReg(de_ex_MemToReg),
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
-        // TODO: Missing PC
+        .in_BranchType(de_ex_BranchType),
 
         // Control Outputs
         .out_MemWrite(ex_mem_MemWrite),
@@ -194,11 +199,14 @@ module cpu(
         .out_MemToReg(ex_mem_MemToReg),
         .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
+        .out_BranchTarget(ex_mem_BranchTarget),
 
         ._rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result),
         .PC(de_ex_PC)
     );
+
+    wire [31:0] mem_wb_BranchTarget;
 
     memory Memory(
         .clk(clock_real),
@@ -219,6 +227,7 @@ module cpu(
         .in_RegDest(ex_mem_RegDest),
         .in_RegDataSrc(ex_mem_RegDataSrc),
         .in_PCSrc(ex_mem_PCSrc),
+        .in_BranchTarget(ex_mem_BranchTarget),
 
         // outputs
         .data_out(mem_wb_data_out),
@@ -231,6 +240,7 @@ module cpu(
         .out_RegDataSrc(mem_wb_RegDataSrc),
         .out_PCSrc(mem_wb_PCSrc),
         .out_AluResult(mem_wb_AluResult),
+        .out_BranchTarget(mem_wb_BranchTarget),
 
         // to RAM signals
         .mem_addr(ram_address),
@@ -255,16 +265,17 @@ module cpu(
         .in_RegWrite(mem_wb_RegWrite),
         .in_RegDest(mem_wb_RegDest),
         .in_PCSrc(mem_wb_PCSrc),
+        .in_BranchTarget(mem_wb_BranchTarget),
 
         // outputs
         .data_wb(rb_write_value),
 
         // control outputs
         .out_PCSrc(wb_if_PCSrc),
+        .out_BranchTarget(wb_if_BranchTarget),
         
         .out_RegWrite(rb_write_enable),
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
-
 endmodule
 `endif
