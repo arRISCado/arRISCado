@@ -1,3 +1,4 @@
+`define ROM_FILE "../../testbenches/cpu_tb.txt"
 `include "../../testbenches/utils/imports.v"
 
 module test;
@@ -25,6 +26,7 @@ module test;
     wire [31:0] imm;
     wire [6:0] opcode;
     wire [2:0] aluOp;
+    wire [3:0] aluControl;
 
     decode decode(
         .clk(clk),
@@ -32,7 +34,8 @@ module test;
         
         .imm(imm),
         .opcode(opcode),
-        .AluOp(aluOp)
+        .AluOp(aluOp),
+        .AluControl(aluControl)
     );
 
     integer i;
@@ -51,7 +54,7 @@ module test;
 
         for (i = 0; i < 7; i = i + 1)
         begin
-            $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b", instr, imm, opcode, aluOp);
+            $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b, AluControl: %b", instr, imm, opcode, aluOp, aluControl);
 
             clk = 1;
             #10;

@@ -15,7 +15,6 @@ module test;
     wire ram_write_enable;
     
     // Register Bank
-
     wire rb_write_enable;
     wire [4:0] rb_write_address, rb_read_address1, rb_read_address2;
     wire [31:0] rb_value1, rb_value2, rb_write_value;
@@ -58,10 +57,9 @@ module test;
     wire [31:0] de_ex_imm;
     wire [2:0] de_ex_aluOp;
     wire de_ex_aluSrc;
-    //wire [4:0] de_ex_rd;
 
     // Execute -> Memory
-    // wire [31:0] ex_mem_result;
+    wire [31:0] ex_mem_result;
     wire [4:0] ex_mem_rd;
 
     // ### Pipeline ###
@@ -86,7 +84,6 @@ module test;
         .next_instruction(if_de_instr),
         
         .imm(de_ex_imm),
-        //.rd(de_ex_rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
@@ -105,20 +102,10 @@ module test;
         // Control signals
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
-        // .in_MemWrite(),
-        // .in_MemRead(),
-        // .in_RegWrite(),
-        // .in_RegDest(),
-        // .in_AluControl(),
-        // .in_Branch(),
-        // .in_MemToReg(),
-        // .in_RegDataSrc(),
-        // .in_PCSrc(),
 
         .result(ex_mem_result),
         .a(a),
         .b(b)
-        // .rd_out(ex_mem_rd)
     );
 
     wire [31:0] a;
