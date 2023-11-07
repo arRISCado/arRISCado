@@ -52,7 +52,7 @@ module test;
         // Test case 1: Sequential fetch
         $display("Test Case 1: Sequential fetch");
 
-        for (i = 0; i < 7; i = i + 1)
+        for (i = 0; i < 40; i = i + 1)
         begin
             $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b, AluControl: %b", instr, imm, opcode, aluOp, aluControl);
 
