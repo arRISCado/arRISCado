@@ -122,6 +122,7 @@ module execute (
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
             _BranchOp <= in_BranchOp;
+            _PCSrc <= in_PCSrc;
             
             out_MemWrite   <= in_MemWrite;
             out_MemRead    <= in_MemRead;
@@ -139,13 +140,13 @@ module execute (
     begin
         case (in_BranchType)
             000: // beq
-                out_PCSrc <= zero ? in_PCSrc : 0;
+                out_PCSrc <= zero ? _PCSrc : 0;
             001: // bne
-                out_PCSrc <= zero ? 0 : in_PCSrc;
+                out_PCSrc <= zero ? 0 : _PCSrc;
             100: // blt
-                out_PCSrc <= result[31] ? in_PCSrc : 0;
+                out_PCSrc <= result[31] ? _PCSrc : 0;
             101: // bge
-                out_PCSrc <= result[31] ? 0 : in_PCSrc;
+                out_PCSrc <= result[31] ? 0 : _PCSrc;
             // 110: // bltu
             // 111: // bgeu
             default:
@@ -171,30 +172,31 @@ module execute (
             case (_BranchOp)  // eu acho que é o func3
                 BEQ:
                 begin
-                    out_PCSrc = zero && in_PCSrc;
+                    out_PCSrc = zero && _PCSrc;
                 end
                 BNE:
                 begin
-                    out_PCSrc = !(zero) && in_PCSrc;
+                    out_PCSrc = !(zero) && _PCSrc;
                 end
                 BLT:
                 begin
-                    out_PCSrc = result[31] && in_PCSrc;
+                    out_PCSrc = result[31] && _PCSrc;
                 end
                 BGE:
                 begin
-                    out_PCSrc = !(result[31]) && in_PCSrc;
+                    out_PCSrc = !(result[31]) && _PCSrc;
                 end
                 BLTU:
                 begin
-                    out_PCSrc = borrow && in_PCSrc;
+                    out_PCSrc = borrow && _PCSrc;
                 end
                 BGEU:
                 begin
-                    out_PCSrc = !(borrow) && in_PCSrc;
+                    out_PCSrc = !(borrow) && _PCSrc;
                 end
                 default: 
                 begin
+                    out_PCSrc = 0;
                     $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
                 end
             endcase

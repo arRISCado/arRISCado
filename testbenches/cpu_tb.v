@@ -16,7 +16,8 @@ module test;
     .rom_address(rom_address)
   );
 
-  wire [31:0] rom_data, rom_address;
+  wire [31:0] rom_data;
+  wire [7:0] rom_address;
 
   rom rom(
     .address(rom_address),
