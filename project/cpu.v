@@ -23,7 +23,7 @@ module cpu(
     input wire [31:0] rom_data,
     output wire [7:0] rom_address
 );
-    // assign led[5:0] = ex_mem_result[5:0];
+    assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real;
     assign clock_real = clock & enable;
@@ -79,7 +79,7 @@ module cpu(
     wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
-    wire [3:0] de_ex_AluControl;    // Dies on execute
+    wire [4:0] de_ex_AluControl;    // Dies on execute
     wire de_ex_Branch;              // Dies on Execute
     wire de_ex_MemWrite;            // Goes to MEM stage
     wire de_ex_MemRead;             // Goes to MEM stage
@@ -190,6 +190,21 @@ module cpu(
         .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
         .in_BranchType(de_ex_BranchType),
+
+        // Data Fowarding
+        .rb_read_address1(rb_read_address1),
+        .rb_read_address2(rb_read_address2),
+
+        // Data Fowarding Execute Signals
+        .ex_mem_RegWrite(ex_mem_RegWrite),
+        .ex_mem_RegDest(ex_mem_RegDest),
+        .in_result(ex_mem_result),
+
+        // Data Fowarding Memory Signals
+        .mem_wb_RegWrite(mem_wb_RegWrite),
+        .mem_wb_RegDest(mem_wb_RegDest),
+        .mem_wb_data_out(mem_wb_data_out),
+        .mem_wb_AluResult(mem_wb_AluResult),
 
         // Control Outputs
         .out_MemWrite(ex_mem_MemWrite),
