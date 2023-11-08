@@ -25,6 +25,8 @@ module test;
 
     wire [31:0] imm;
     wire [6:0] opcode;
+    wire [2:0] func3;
+    wire [6:0] func7;
     wire [2:0] aluOp;
     wire [3:0] aluControl;
 
@@ -34,6 +36,8 @@ module test;
         
         .imm(imm),
         .opcode(opcode),
+        .func3(func3),
+        .func7(func7),
         .AluOp(aluOp),
         .AluControl(aluControl)
     );
@@ -54,7 +58,8 @@ module test;
 
         for (i = 0; i < 40; i = i + 1)
         begin
-            $display("Instr: %h, imm: %h, Opcode: %b, AluOp: %b, AluControl: %b", instr, imm, opcode, aluOp, aluControl);
+            $display("Instr: %h, imm: %h, Opcode: %b, func3: %b, func7: %b, AluOp: %b, AluControl: %b",
+            instr, imm, opcode, func3, func7, aluOp, aluControl);
 
             clk = 1;
             #10;
