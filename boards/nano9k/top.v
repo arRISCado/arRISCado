@@ -16,7 +16,8 @@ module nano9k (
     output [5:0] led
 );
     wire cpu_enable;
-    wire [31:0] instruction_data, instruction_address;
+    wire [31:0] instruction_data;
+    wire [7:0] instruction_address;
     
     localparam WAIT_TIME = 5000000;
     wire effClk;
@@ -33,19 +34,24 @@ module nano9k (
         .clock(effClk),
         .reset(~btn1),
         .led(led),
-        .enable(cpu_enable),    
+        .enable(~btn2),    
         .rom_address(instruction_address),
         .rom_data(instruction_data)
     );
 
-    uart Uart(
-        .clk(clk), 
-        .uart_rx(uart_rx), 
-        //.led(led), 
-        .cpu_enable(cpu_enable),
+    rom rom(
         .address(instruction_address),
         .data(instruction_data)
     );
+
+    // uart Uart(
+    //     .clk(clk), 
+    //     .uart_rx(uart_rx), 
+    //     //.led(led), 
+    //     .cpu_enable(cpu_enable),
+    //     .address(instruction_address),
+    //     .data(instruction_data)
+    // );
 
 endmodule
 
