@@ -166,7 +166,6 @@ module decode (
             // Instruções de Branch: dependedem de func3 (Tipo B)
             CODE_B_TYPE :
             begin
-                $display("quero me matar usando um facão enferrujado");
                 AluOp <= 3'b001;
                 AluSrc <= 0;
                 RegWrite <= 0;
@@ -215,7 +214,6 @@ module decode (
             // Instruções para operações com Imediato (Tipo I)
             CODE_I_TYPE :
                 begin
-                    $display("quero me matar usando um facão de cobre enferrujado");
                     AluOp <= 3'b010;
                     AluSrc  <= 1;
                     MemToReg <= 0;
