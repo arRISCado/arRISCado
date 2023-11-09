@@ -28,7 +28,7 @@ module test;
     wire [2:0] func3;
     wire [6:0] func7;
     wire [2:0] aluOp;
-    wire [3:0] aluControl;
+    wire [4:0] aluControl;
 
     decode decode(
         .clk(clk),

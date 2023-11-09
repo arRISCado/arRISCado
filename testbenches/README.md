@@ -30,4 +30,4 @@ Adicionais:
 - Melhorar testbenches do módulo de writeback, e register_bank.
 - Diferenciar comandos de banches no decode.
 - Diferenciar comandos de load and store.
-- Falta suporte para a instrução SLTIU, xori, ori, andi, sll, sltu, xor, srl, sra, ecall e abreak.
+- Corrigir instruções ecall e abreak.

@@ -1,3 +1,4 @@
+`define ROM_FILE "../../testbenches/cpu_tb.txt"
 `include "../../testbenches/utils/imports.v"
 
 module test;

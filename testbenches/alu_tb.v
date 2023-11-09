@@ -2,14 +2,15 @@
 
 module test;
     // Outputs
-    reg [3:0] AluControl;
+    reg [4:0] AluControl;
     reg [31:0] a;
     reg [31:0] b;
     output [31:0] result;
     output zero;
     output negative;
+    output borrow;
 
-    alu alu(AluControl, a, b, result, negative, zero);
+    alu alu(AluControl, a, b, result, zero, negative, borrow);
 
     // Testbench procedure
     initial begin

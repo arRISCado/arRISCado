@@ -135,13 +135,13 @@ module execute (
 
     always @(*)
     begin
-        case(_AluOp)
-            // Tipo Load ou Store
-            3'b000 :
-            begin
-                a <= rs1_value;
-                b <= _imm;
-            end
+    case(_AluOp)
+        // Tipo Load ou Store
+        3'b000 :
+        begin
+            a <= rs1_value;
+            b <= _imm;
+        end
 
         // Tipo B
         3'b001 :
