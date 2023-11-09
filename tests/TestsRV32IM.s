@@ -137,5 +137,32 @@ _start:
   # AND - AND
   and x28, x7, x10
 
+  # MUL - Multiply (x10 = x5 * x6)
+  mul x10, x5, x6
+
+  # MULH - Multiply High Signed (x11 = x7 * x6)
+  mulh x11, x7, x6
+
+  # MULHSU - Multiply High Signed Unsigned (x12 = x7 * x5)
+  mulhsu x12, x7, x5
+
+  # MULHU - Multiply High Unsigned (x13 = x5 * x5)
+  mulhu x13, x5, x5
+
+  # DIV - Divide (x14 = x6 / x5)
+  div x14, x6, x5
+
+  # DIVU - Divide Unsigned (x15 = x7 / x6)
+  divu x15, x7, x6
+
+  # REM - Remainder (x16 = x5 % x6)
+  rem x16, x5, x6
+
+  # REMU - Remainder Unsigned (x17 = x6 % x7)
+  remu x17, x6, x7
+
+  # Parada
+  ebreak
+
   # Exit
   ecall

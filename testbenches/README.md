@@ -28,6 +28,8 @@ Adicionais:
 ## TO DO
 
 - Melhorar testbenches do módulo de writeback, e register_bank.
-- Diferenciar comandos de banches no decode.
+- Diferenciar comandos de branchs no decode.
 - Diferenciar comandos de load and store.
-- Corrigir instruções ecall e abreak.
+- Alu com problemas para valores assinados do tipo RV32M.
+- Criar testes benches que conferer se o valor retornado esta correto.
+- Criar uma maneira automatizada de verificar se os testes funcionam ou falham.

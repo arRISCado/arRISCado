@@ -56,7 +56,7 @@ module test;
         // Test case 1: Sequential fetch
         $display("Test Case 1: Sequential fetch");
 
-        for (i = 0; i < 40; i = i + 1)
+        for (i = 0; i < 50; i = i + 1)
         begin
             $display("Instr: %h, imm: %h, Opcode: %b, func3: %b, func7: %b, AluOp: %b, AluControl: %b",
             instr, imm, opcode, func3, func7, aluOp, aluControl);

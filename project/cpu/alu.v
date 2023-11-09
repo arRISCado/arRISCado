@@ -32,7 +32,7 @@ module alu (
   localparam MUL_SGN_USGN   = 5'b01101;
   localparam MUL_USGN_USGN  = 5'b01110;
   localparam DIV_SGN        = 5'b01111;
-  localparam MUL_USGN       = 5'b10000;
+  localparam DIV_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
   localparam REM_USGN       = 5'b10010;
   localparam SUB_USN        = 5'b10011;
@@ -42,6 +42,8 @@ module alu (
 
   always @(*)
   begin
+    borrow = 0;                    // set initial value to 0
+
     case (AluControl)
       BITWISE_AND: result = a & b; // Bitwise AND
       BITWISE_OR: result = a | b; // Bitwise OR
@@ -51,29 +53,29 @@ module alu (
       BITWISE_NOT: result = ~a; // Bitwise NOT
       SHIFT_LEFT: result = a << b; // Shift Left
       SHIFT_RIGHT: result = a >> b; // Shift Right
-      ARIT_SRIGHT: result = a >>> b; // Arithmetic Shift Right // TODO: Must be signed
-      SET_LESS:
+      ARIT_SRIGHT: result = a >>> b; // Arithmetic Shift Right
+      SET_LESS:                       // SLT / SLTI
       begin
         if (a < b)
         result = 1;
         else
         result = 0;
       end
-      SET_LESS_U:
+      SET_LESS_U:                     // SLTU / SLTIU
       begin
         if (u_a < u_b)
         result = 1;
         else
         result = 0;
       end
-      MUL_SGN_SGN: result = a * b;
-      MUL_HIGH: result = a * b;
-      MUL_SGN_USGN: result = a * u_b;
-      MUL_USGN_USGN: result = u_a * u_b;
-      DIV_SGN: result = a / b;
-      MUL_USGN: result = u_a / u_b;
-      REM_SGN: result = a % b;
-      REM_USGN: result = u_a % u_b;
+      MUL_SGN_SGN: result = a * b;            //mul
+      MUL_HIGH: result = a * b;               //mulh
+      MUL_SGN_USGN: result = a * u_b;         //mulhsu
+      MUL_USGN_USGN: result = u_a * u_b;      //mulhu
+      DIV_SGN: result = a / b;                //div
+      DIV_USGN: result = u_a / u_b;           //divu
+      REM_SGN: result = a % b;                //rem
+      REM_USGN: result = u_a % u_b;           //remu
       SUB_USN: {result, borrow} = u_a - u_b;
 
       default: result = 32'b0; // Default output
