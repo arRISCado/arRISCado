@@ -58,7 +58,7 @@ module execute (
     output reg [31:0] b
 );
     reg [31:0] _rs1_value, _imm, _PC;
-    reg [2:0] _AluOp, _BranchOp;
+    reg [2:0] _AluOp, _BranchOp, _BranchType;
     reg _AluSrc;
 
     reg [4:0] _AluControl;
@@ -122,6 +122,7 @@ module execute (
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
             _BranchOp <= in_BranchOp;
+            _BranchType <= in_BranchType;
             _PCSrc <= in_PCSrc;
             
             out_MemWrite   <= in_MemWrite;
@@ -138,14 +139,14 @@ module execute (
 
     always @(*)
     begin
-        case (in_BranchType)
-            000: // beq
+        case (_BranchType)
+            'b000: // beq
                 out_PCSrc <= zero ? _PCSrc : 0;
-            001: // bne
+            'b001: // bne
                 out_PCSrc <= zero ? 0 : _PCSrc;
-            100: // blt
+            'b100: // blt
                 out_PCSrc <= result[31] ? _PCSrc : 0;
-            101: // bge
+            'b101: // bge
                 out_PCSrc <= result[31] ? 0 : _PCSrc;
             // 110: // bltu
             // 111: // bgeu
@@ -169,37 +170,6 @@ module execute (
         begin
             a <= _rs1_value;
             b <= _rs2_value;
-            case (_BranchOp)  // eu acho que é o func3
-                BEQ:
-                begin
-                    out_PCSrc = zero && _PCSrc;
-                end
-                BNE:
-                begin
-                    out_PCSrc = !(zero) && _PCSrc;
-                end
-                BLT:
-                begin
-                    out_PCSrc = result[31] && _PCSrc;
-                end
-                BGE:
-                begin
-                    out_PCSrc = !(result[31]) && _PCSrc;
-                end
-                BLTU:
-                begin
-                    out_PCSrc = borrow && _PCSrc;
-                end
-                BGEU:
-                begin
-                    out_PCSrc = !(borrow) && _PCSrc;
-                end
-                default: 
-                begin
-                    out_PCSrc = 0;
-                    $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
-                end
-            endcase
         end
 
         // Tipo R OU I
