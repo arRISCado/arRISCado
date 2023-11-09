@@ -60,11 +60,11 @@ module test;
     wire [31:0] de_ex_imm;
     wire [2:0] de_ex_aluOp;
     wire de_ex_aluSrc;
-    wire [4:0] de_ex_rd;
+    // wire [4:0] de_ex_rd;
 
     // Execute -> Memory
     wire [31:0] ex_mem_result;
-    wire [4:0] ex_mem_rd;
+    // wire [4:0] ex_mem_rd;
 
     assign ex_mem_rd = mem_wr_rd_out;
 
@@ -99,7 +99,7 @@ module test;
         .next_instruction(if_de_instr),
         
         .imm(de_ex_imm),
-        .rd(de_ex_rd),
+        // .rd(de_ex_rd),
         .rs1(rb_read_address1),
         .rs2(rb_read_address2),
         
@@ -121,8 +121,8 @@ module test;
 
         .result(ex_mem_result),
         .a(a),
-        .b(b),
-        .rd_out(ex_mem_rd)
+        .b(b)
+        // .rd_out(ex_mem_rd)
     );
 
     writeback writeback(
@@ -137,7 +137,7 @@ module test;
         // .pc_src(wr_if_pc_src),
 
         .out_RegDest(rb_write_address),
-        .rb_write_en(rb_write_enable),
+        // .rb_write_en(rb_write_enable),
         .data_wb(rb_write_value)
     );
 

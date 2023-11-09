@@ -49,7 +49,6 @@ module decode (
     localparam CODE_I_TYPE      = 7'b0010011;
     localparam CODE_R_TYPE      = 7'b0110011;
     localparam CODE_SYS_CALL    = 7'b1110011;
-    localparam CODE_MUL_DIV     = 7'b0110011;
 
 
     reg [31:0] _instruction;
@@ -286,7 +285,7 @@ module decode (
                 end
 
         
-            // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND (Tipo R)
+            // Tipo R
             CODE_R_TYPE :
                 begin
                     AluOp <= 3'b010;
@@ -296,66 +295,102 @@ module decode (
                     MemRead <= 0;
                     MemWrite <= 0;
                     Branch <= 0;
-                
-                    case(func3)
-                        3'b000 :
+
+                    case(func7)
+                        // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND (Tipo R)
+                        7'b0000000 :
                         begin
-                            case (func7)
-                                // ADD
-                                7'b0000000 :
+                            case(func3)
+                                3'b000 :
                                 begin
-                                    AluControl <= 5'b00010;
+                                    case (func7)
+                                        // ADD
+                                        7'b0000000 :
+                                        begin
+                                            AluControl <= 5'b00010;
+                                        end
+                                        // SUB
+                                        7'b0100000 :
+                                        begin
+                                            AluControl <= 5'b00100;
+                                        end
+                                    endcase
                                 end
-                                // SUB
-                                7'b0100000 :
+                                // AND
+                                3'b111 :
                                 begin
-                                    AluControl <= 5'b00100;
+                                    AluControl <= 5'b00000;
+                                end
+                                // OR
+                                3'b110:
+                                begin
+                                    AluControl <= 5'b00001;
+                                end
+                                // XOR
+                                3'b100:
+                                begin
+                                    AluControl <= 5'b00011;
+                                end
+                                // SLL
+                                3'b001:
+                                begin
+                                    AluControl <= 5'b00110;
+                                end
+                                // SRL, SRA
+                                3'b101 :
+                                begin
+                                    // SLR
+                                    if (func7 == 7'b0000000)
+                                    begin
+                                        AluControl <= 5'b00111;
+                                    end
+                                    // SRA
+                                    else if (func7 == 7'b0100000) 
+                                    begin
+                                        AluControl <= 5'b01000;
+                                    end
+                                end
+                                // SLT
+                                3'b010:
+                                begin
+                                    AluControl <= 5'b01001;
+                                end
+                                // SLTU
+                                3'b011:
+                                begin
+                                    AluControl <= 5'b01010;
                                 end
                             endcase
                         end
-                        // AND
-                        3'b111 :
+                        // MUL, MULH, MULHSU, MULHU, DIV, DIVU, REM, REMU (RV32M)
+                        7'b0000001 :
                         begin
-                            AluControl <= 5'b00000;
-                        end
-                        // OR
-                        3'b110:
-                        begin
-                            AluControl <= 5'b00001;
-                        end
-                        // XOR
-                        3'b100:
-                        begin
-                            AluControl <= 5'b00011;
-                        end
-                        // SLL
-                        3'b001:
-                        begin
-                            AluControl <= 5'b00110;
-                        end
-                        // SRL, SRA
-                        3'b101 :
-                        begin
-                            // SLR
-                            if (func7 == 7'b0000000)
-                            begin
-                                AluControl <= 5'b00111;
-                            end
-                            // SRA
-                            else if (func7 == 7'b0100000) 
-                            begin
-                                AluControl <= 5'b01000;
-                            end
-                        end
-                        // SLT
-                        3'b010:
-                        begin
-                            AluControl <= 5'b01001;
-                        end
-                        // SLTU
-                        3'b011:
-                        begin
-                            AluControl <= 5'b01010;
+                            case(func3)
+                                // mul: Place result in lower part of rd
+                                3'b000: 
+                                    AluControl <= 5'b01011;
+                                // mulh: Place result in higher part of rd
+                                3'b001:
+                                    AluControl <= 5'b01100;
+                                // mulhsu: mulh with signed rs1 and unsigned rs2
+                                3'b010:
+                                    AluControl <= 5'b01101;
+                                // mulhu: mulh with unsigned rs1 and unsigned rs2
+                                3'b011:
+                                    AluControl <= 5'b01110;
+                                // div: divide signed rs1 by signed rs2
+                                3'b100:
+                                    AluControl <= 5'b01111;
+                                // divu: unsigned div
+                                3'b101:
+                                    AluControl <= 5'b10000;    
+                                // rem: reminder(resto) of the division rs1 by rs2
+                                3'b110:
+                                    AluControl <= 5'b10001;
+                                // remu: unsigned rem
+                                3'b111:
+                                    AluControl <= 5'b10010;
+                            endcase
                         end
                     endcase
                 end
@@ -402,43 +437,6 @@ module decode (
                 imm <= {20'b0, _instruction[31:20]};
             end
 
-            CODE_MUL_DIV :
-            begin
-                AluOp <= 3'b010;
-                AluSrc  <= 0;
-                MemToReg <= 0;
-                RegWrite <= 1;
-                MemRead <= 0;
-                MemWrite <= 0;
-
-                case(func3)
-                    // mul: Place result in lower part of rd
-                    3'b000: 
-                        AluControl <= 5'b01011;
-                    // mulh: Place result in higher part of rd
-                    3'b001:
-                        AluControl <= 5'b01100;
-                    // mulhsu: mulh with signed rs1 and unsigned rs2
-                    3'b010:
-                        AluControl <= 5'b01101;
-                    // mulhu: mulh with unsigned rs1 and unsigned rs2
-                    3'b011:
-                        AluControl <= 5'b01110;
-                    // div: divide signed rs1 by signed rs2
-                    3'b100:
-                        AluControl <= 5'b01111;
-                    // divu: unsigned div
-                    3'b101:
-                        AluControl <= 5'b10000;    
-                    // rem: reminder(resto) of the division rs1 by rs2
-                    3'b110:
-                        AluControl <= 5'b10001;
-                    // remu: unsigned rem
-                    3'b111:
-                        AluControl <= 5'b10010;
-                endcase
-            end
-
 
             // Should traslate to NOP
             default :
@@ -459,5 +457,4 @@ module decode (
     end
     
 endmodule
-
 `endif
