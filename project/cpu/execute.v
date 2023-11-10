@@ -25,7 +25,7 @@ module execute (
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     input [2:0] in_BranchOp,       // Determines what type of branch is being done
     input [31:0] in_BranchOffset,
-
+    input [2:0] in_BranchType,
 
 
     // Possible Fowarding Data
@@ -50,6 +50,7 @@ module execute (
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     output reg [31:0] out_BranchOffset,
+    output reg [31:0] out_BranchTarget,
     output reg [31:0] _rs2_value,
 
     output [31:0] result,
@@ -57,7 +58,7 @@ module execute (
     output reg [31:0] b
 );
     reg [31:0] _rs1_value, _imm, _PC;
-    reg [2:0] _AluOp, _BranchOp;
+    reg [2:0] _AluOp, _BranchOp, _BranchType;
     reg _AluSrc;
 
     reg [4:0] _AluControl;
@@ -83,11 +84,11 @@ module execute (
         begin
             _rs1_value  <= 0;
             _rs2_value  <= 0;
-            _imm        <= 0;
             _PC         <= 0;
             _AluSrc     <= 0;
             _AluOp      <= 0;
             _AluControl <= 0;
+            _imm        <= 0;
 
             out_MemWrite   <= 0;
             out_MemRead    <= 0;
@@ -97,6 +98,7 @@ module execute (
             out_RegDataSrc <= 0;
             out_BranchOffset <= 0;
             out_PCSrc      <= 0;
+            out_BranchTarget <= 0;
         end
         else
         begin
@@ -121,6 +123,8 @@ module execute (
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
             _BranchOp <= in_BranchOp;
+            _BranchType <= in_BranchType;
+            _PCSrc <= in_PCSrc;
             
             out_MemWrite   <= in_MemWrite;
             out_MemRead    <= in_MemRead;
@@ -128,9 +132,28 @@ module execute (
             out_RegDest    <= in_RegDest;
             out_MemToReg   <= in_MemToReg;
             out_RegDataSrc <= in_RegDataSrc;
-            out_PCSrc      <= in_PCSrc;
+            out_BranchTarget <= PC + imm;
+            // out_PCSrc      <= in_PCSrc;
             out_BranchOffset <= in_BranchOffset;
         end
+    end
+
+    always @(*)
+    begin
+        case (_BranchType)
+            'b000: // beq
+                out_PCSrc <= zero ? _PCSrc : 0;
+            'b001: // bne
+                out_PCSrc <= zero ? 0 : _PCSrc;
+            'b100: // blt
+                out_PCSrc <= result[31] ? _PCSrc : 0;
+            'b101: // bge
+                out_PCSrc <= result[31] ? 0 : _PCSrc;
+            // 110: // bltu
+            // 111: // bgeu
+            default:
+                out_PCSrc <= 0;
+        endcase
     end
 
     always @(*)
@@ -148,36 +171,6 @@ module execute (
         begin
             a <= _rs1_value;
             b <= _rs2_value;
-            case (_BranchOp)  // eu acho que é o func3
-                BEQ:
-                begin
-                    out_PCSrc = zero && in_PCSrc;
-                end
-                BNE:
-                begin
-                    out_PCSrc = !(zero) && in_PCSrc;
-                end
-                BLT:
-                begin
-                    out_PCSrc = result[31] && in_PCSrc;
-                end
-                BGE:
-                begin
-                    out_PCSrc = !(result[31]) && in_PCSrc;
-                end
-                BLTU:
-                begin
-                    out_PCSrc = borrow && in_PCSrc;
-                end
-                BGEU:
-                begin
-                    out_PCSrc = !(borrow) && in_PCSrc;
-                end
-                default: 
-                begin
-                    $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
-                end
-            endcase
         end
 
         // Tipo R OU I
@@ -228,7 +221,7 @@ module execute (
             a <= 0;
             b <= 0;
         end
-    endcase
-end    
+        endcase
+    end    
 endmodule
 `endif

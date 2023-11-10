@@ -3,6 +3,9 @@
 //PWM modulates the output to make appear it's an analog signal
 //It keeps the output on for a % of a duty cycle, and repeat it at each cycle  
 
+`ifndef PWM
+`define PWM
+
 module pwm_port(
     input clk, //Main clk
     input mem_write, //If the data from memory changed
@@ -61,3 +64,5 @@ module pwm_port(
     end
 
 endmodule
+
+`endif

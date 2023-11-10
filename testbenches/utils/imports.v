@@ -12,3 +12,5 @@
 `include "../../project/cpu/memory.v"
 `include "../../project/cpu/writeback.v"
 `include "../../project/cpu.v"
+`include "../../project/peripheral/peripheral_manager.v"
+`include "../../project/peripheral/pwm_port.v"
