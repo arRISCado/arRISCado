@@ -23,12 +23,20 @@ module ram (
 
     always @(posedge clk)
     begin
-        if(address[31:29] == 3'b000) begin
-            if (write_enable)
-                storage[address] <= data_in;
+        
+    if (reset)
+    begin
+        for (i = 0; i <= 255; i = i + 1)
+            storage[i] <= 0;
+    end
+
+    if(address[31:29] == 3'b000) begin
+        if (write_enable)
+            storage[address] <= data_in;
             
-            data_out <= storage[address];
-        end
+        data_out <= storage[address];
+    end
+
     end
 
 endmodule
