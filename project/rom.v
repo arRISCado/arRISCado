@@ -1,3 +1,7 @@
+`ifndef ROM_FILE
+`define ROM_FILE  "../../project/init_rom.txt"
+`endif
+
 module rom (
   input [7:0] address,
   output wire [31:0] data

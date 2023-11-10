@@ -75,6 +75,14 @@ module test;
         clk = 0;
         $display("Addr: %h, Data: %h", address, data_out);
         #10
+
+        write_enable = 0;
+        address = 3;
+        clk = 1;
+        #10
+        clk = 0;
+        $display("Addr: %h, Data: %h", address, data_out);
+        #10
         
         $finish;
     end

@@ -1,5 +1,6 @@
 `define TEST
 `define ROM_FILE "../testbenches/instruction_tb_rom.txt"
+`include "../../testbenches/utils/imports.v"
 
 module test();
     reg clk;
@@ -169,6 +170,11 @@ module test();
             $display("value1: %0d", cpu.RegisterBank.value1);
             $display("value2: %0d", cpu.RegisterBank.value2);
             $display("RegisterBank.REGS---------");
+            for (integer j = 5; j < 8; j = j + 1)
+            begin
+                $display("t%0d=x%0d %0d", j-5, j, cpu.RegisterBank.register[j]);
+            end
+
             for (integer j = 10; j < 18; j = j + 1)
             begin
                 $display("a%0d=x%0d %0d", j-10,j, cpu.RegisterBank.register[j]);
@@ -178,10 +184,19 @@ module test();
             begin
                 $display("s%0d=x%0d %0d", j-16, j, cpu.RegisterBank.register[j]);
             end
+            
 
             $display("");
             $display("RAM");
             $display("#3: %0d", cpu.Ram.storage[3]);
+
+            $display("");
+            $display("PERIPHERALS");
+            $display("port_pwm1: %0d", cpu.port_pwm1);
+            $display("manager.addr: %0d", cpu.Peripheral_manager.addr);
+            $display("manager.data_in: %0d", cpu.Peripheral_manager.data_in);
+            $display("pwm_port1.clk_per_cycle: %0d", cpu.Peripheral_manager.pwm_port1.clk_per_cycle);
+            $display("pwm_port1.clk_on: %0d", cpu.Peripheral_manager.pwm_port1.clk_on);
 
             
             $display("");

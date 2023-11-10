@@ -10,27 +10,18 @@ module test;
         .data(rom_data)
     );
 
+    integer i;
+
     // Testbench procedure
     initial begin
-        $display("Test Case 1: mem[0]");
-        rom_address = 32'b0;
-        #10;
-        $display("Addr: %h, Data: %h", rom_address, rom_data);
-        
-        $display("Test Case 2: mem[1]");
-        rom_address = 32'b1;
-        #10;
-        $display("Addr: %h, Data: %h", rom_address, rom_data);
-        
-        $display("Test Case 3: mem[2]");
-        rom_address = 32'b10;
-        #10;
-        $display("Addr: %h, Data: %h", rom_address, rom_data);
-        
-        $display("Test Case 4: mem[3]");
-        rom_address = 32'b11;
-        #10;
-        $display("Addr: %h, Data: %h", rom_address, rom_data);
+
+        for (i = 0; i < 6; i = i + 1)
+        begin
+            $display("Test Case %0d: mem[%0d]", i+1, i);
+            rom_address = i;
+            #10;
+            $display("Addr: %h, Data: %h", rom_address, rom_data);
+        end
 
         $finish;
     end

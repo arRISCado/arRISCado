@@ -1,4 +1,4 @@
-`ifndef TESTBENCH
+`ifndef     
 
 `include "ram.v"
 `include "rom.v"
@@ -9,6 +9,7 @@
 `include "cpu/execute.v"
 `include "cpu/memory.v"
 `include "cpu/writeback.v"
+`include "peripheral/peripheral_manager.v"
 
 `endif
 
@@ -21,7 +22,8 @@ module cpu(
     output [5:0] led,
     input enable,
     input wire [31:0] rom_data,
-    output wire [7:0] rom_address
+    output wire [31:0] rom_address,
+    output port_pwm1
 );
     assign led[5:0] = ex_mem_result[5:0];
 
@@ -41,6 +43,14 @@ module cpu(
 
     // ### Components ###
 
+
+    // Memories
+
+    //Address map
+    //abcxxx...xxx
+    //abc = destiny (000 = ram, 001 = peripheral1, ..., 111 = peripheral7)
+    //xxx...xxx = addr
+
     ram Ram(
         .clk(clock_real), 
         .reset(reset),
@@ -50,6 +60,22 @@ module cpu(
         // .led(led),
         .data_out(ram_data_out)
     );
+
+    peripheral_manager Peripheral_manager(
+        .clk(clock),
+        .addr(ram_address),
+        .data_in(ram_data_in),
+        .write_enable(ram_write_enable),
+        .pwm1_out(port_pwm1)
+    );
+
+
+    /*
+    rom Rom(
+        .address(rom_address),
+        .data(rom_data)
+    );
+    */
 
     register_bank RegisterBank(
         .clk(clock_real),

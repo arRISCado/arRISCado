@@ -13,7 +13,7 @@ module test;
     // Instantiate the fetch module
     fetch fetch_inst(
         .clk(clk),
-        .pc_src(pc_src),
+        .PCSrc(pc_src),
         .branch_target(branch_target),
         .pc(pc),
         .instr(instr),
