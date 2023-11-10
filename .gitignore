@@ -4,7 +4,6 @@ boards/**/string.json
 boards/**/string_pnr.json
 boards/**/abc.history
 .~lock.result.ods#
-*.ods
 *.vcd
 result.csv
 result.txt

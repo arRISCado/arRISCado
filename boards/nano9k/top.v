@@ -7,13 +7,15 @@
 // Top Level Target for Nano 9k
 `include "../../project/cpu.v"
 `include "../../project/uart.v"
+`include "../../project/peripheral/pwm_port.v"
 
 module nano9k (
     input clk,
     input btn1,
     input btn2,
     input uart_rx,
-    output [5:0] led
+    output [5:0] led,
+    output pwm1
 );
     wire cpu_enable;
     wire [31:0] instruction_data;
