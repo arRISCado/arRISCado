@@ -1,6 +1,6 @@
 `define TEST
 `define ROM_FILE "../testbenches/instruction_tb_rom.txt"
-`include "../../testbenches/utils/imports.v"
+//`include "../../testbenches/utils/imports.v"
 
 module test();
     reg clk;
