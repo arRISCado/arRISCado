@@ -172,9 +172,6 @@ module decode (
                 MemWrite <= 0;
                 PCSrc <= 1;
                 AluControl <= 5'b00100; // Branch performa uma subtração na ALU pra fazer a comparação
-                // inverter esse imediato
-                // imm <= {2'b0, _instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8]}; // Imediato usado pra somar no PC
-
                 imm <= {_instruction[31] ? 19'b1111111111111111111 : 19'b0, _instruction[31], _instruction[7], _instruction[30:25], _instruction[11:8], 1'b0}; // Imediato usado pra somar no PC
                 BranchType <= func3;
             end
