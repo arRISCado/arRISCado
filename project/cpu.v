@@ -10,6 +10,7 @@
 `include "cpu/memory.v"
 `include "cpu/writeback.v"
 `include "peripheral/peripheral_manager.v"
+`include "peripheral/pwm_port.v"
 
 `endif
 
