@@ -1,6 +1,3 @@
-`ifndef ALU
-`define ALU
-
 // Arithmetic Logic Unit
 
 module alu (
@@ -72,10 +69,12 @@ module alu (
       MUL_HIGH: result = a * b;               //mulh
       MUL_SGN_USGN: result = a * u_b;         //mulhsu
       MUL_USGN_USGN: result = u_a * u_b;      //mulhu
+      /*
       DIV_SGN: result = a / b;                //div
       DIV_USGN: result = u_a / u_b;           //divu
       REM_SGN: result = a % b;                //rem
       REM_USGN: result = u_a % u_b;           //remu
+      */
       SUB_USN: {result, borrow} = u_a - u_b;
 
       default: result = 32'b0; // Default output
@@ -86,4 +85,3 @@ module alu (
   end
 
 endmodule
-`endif

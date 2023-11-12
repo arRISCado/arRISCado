@@ -10,7 +10,6 @@ module register_bank(
   input [31:0] write_value,
   input [4:0] read_address1,
   input [4:0] read_address2,
-  output [5:0] led,
   output [31:0] value1,
   output [31:0] value2
 );
@@ -18,7 +17,8 @@ module register_bank(
   // because we can't connect the leds to the register if it is synthesized as ram
   // Also, the read should be synchronous, so we might need to change the execute 
   // stage to account for that.
-  (* ram_style = "logic" *) reg [31:0] register [31:0];
+  // (* ram_style = "logic" *) reg [31:0] register [31:0];
+  reg [31:0] register [31:0];
 
   integer i;
   initial

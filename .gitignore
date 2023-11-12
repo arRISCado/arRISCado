@@ -8,3 +8,8 @@ boards/**/abc.history
 result.csv
 result.txt
 project/test
+
+# Gowin
+*.user
+impl/
+

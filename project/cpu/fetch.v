@@ -1,6 +1,3 @@
-`ifndef FETCH
-`define FETCH
-
 module fetch (
     input clk,                    // Clock signal
     input rst,                    // Reset signal
@@ -27,4 +24,3 @@ module fetch (
     assign rom_address = pc;
 
 endmodule
-`endif
