@@ -41,13 +41,15 @@ localparam ROM_WRITE_4 = 3;
 localparam RECEIVE_SIZE = 4;
 localparam RECEIVE_DONE = 5;
 
+reg [31:0] dataOut;
 reg [2:0] romWriteState = RECEIVE_SIZE;
+assign data = dataOut;
 
 always @(posedge clk) begin
     if (address <= 8'd127)
-        data <= instructionMemory[address];
+        dataOut <= instructionMemory[address];
     else
-        data <= 32'b10011;
+        dataOut <= 32'b10011;
     case (rxState)
         RX_STATE_IDLE: begin
             if (uart_rx == 0) begin
@@ -133,7 +135,7 @@ always @(posedge clk) begin
 end
 
 initial begin
-    $readmemh(`UART_FILE, instructionMemory, 0, 255);
+    $readmemh(`UART_FILE, instructionMemory, 0, 127);
     //led[5:0] <= 6'b111111;
 end
 
