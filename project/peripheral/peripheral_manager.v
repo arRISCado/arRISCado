@@ -26,8 +26,6 @@ module peripheral_manager(
     //xxx...xxx = addr
 
     //Peripherals
-    reg write_pwm1_1 = 0;
-    reg write_pwm1_2 = 0;
     pwm_port pwm_port1(
         .clk(clk), 
         .mem_write(write_pwm1_1),
@@ -37,25 +35,8 @@ module peripheral_manager(
         .port_output(pwm1_out)
     );
 
-    //Write/read peripheral
-    always @(*) begin
-        if(write_enable) begin
+    assign write_pwm1_1 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 0) ? 1 : 0;
+    assign write_pwm1_2 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 1) ? 1 : 0;
 
-            if(addr[31:29] == 3'b001) begin //pwm_port1
-                if(addr[0] == 0) begin
-                    write_pwm1_1 = 1;
-                end
-                else begin
-                    write_pwm1_2 = 1;
-                end
-
-                write_pwm1_1 = 0;
-                write_pwm1_2 = 0;
-            end
-
-
-        end
-    
-    end
 
 endmodule

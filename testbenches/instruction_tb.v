@@ -1,6 +1,6 @@
 `define TEST
 `define ROM_FILE "../testbenches/instruction_tb_rom.txt"
-//`include "../../testbenches/utils/imports.v"
+`include "../testbenches/utils/imports.v"
 
 module test();
     reg clk;
@@ -72,7 +72,7 @@ module test();
             $display("AluSrc: %0d", cpu.Decode.AluSrc);
             $display("AluOp: %0d", cpu.Decode.AluOp);
             $display("AluControl: %0d", cpu.Decode.AluControl);
-            $display("Branch: %0d", cpu.Decode.Branch);
+            //$display("Branch: %0d", cpu.Decode.Branch);
             $display("MemToReg: %0d", cpu.Decode.MemToReg);
             $display("RegDataSrc: %0d", cpu.Decode.RegDataSrc);
             $display("PCSrc: %0d", cpu.Decode.PCSrc);
@@ -94,7 +94,7 @@ module test();
             $display("AluOp: %0d", cpu.Execute.AluOp);
             $display("AluControl: %0d", cpu.Execute.AluControl);
             $display("in_MemWrite: %0d", cpu.Execute.in_MemWrite);
-            $display("Branch: %0d", cpu.Execute.Branch);
+            //$display("Branch: %0d", cpu.Execute.Branch);
             $display("in_MemRead: %0d", cpu.Execute.in_MemRead);
             $display("in_RegWrite: %0d", cpu.Execute.in_RegWrite);
             $display("in_RegDest: %0d", cpu.Execute.in_RegDest);

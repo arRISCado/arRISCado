@@ -1,3 +1,6 @@
+`ifndef CPU
+`define CPU
+
 module cpu(
     input clock,
     input reset,
@@ -42,7 +45,7 @@ module cpu(
         .data_out(ram_data_out)
     );
 
-    /*
+    
     peripheral_manager Peripheral_manager(
         .clk(clock),
         .addr(ram_address),
@@ -51,6 +54,7 @@ module cpu(
         .pwm1_out(port_pwm1)
     );
 
+    /*
     rom Rom(
         .address(rom_address),
         .data(rom_data)
@@ -295,3 +299,5 @@ module cpu(
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 endmodule
+
+`endif
