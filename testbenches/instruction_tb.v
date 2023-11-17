@@ -25,11 +25,13 @@ module test();
 
     // Testbench procedure
     initial begin
-        //#10
-        //rst = 1'b1;
-        //#10
-        //rst = 1'b0;
-        //#10
+        #10
+        rst = 1'b1;
+        clk = 0;
+        #10
+        rst = ~rst;
+        clk = ~clk;
+        #10
 
         clk = 0;
         #10;        
