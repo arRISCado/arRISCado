@@ -2,6 +2,7 @@
 module decode (
     input clk,                // Clock signal
     input rst,                // Reset signal
+    input stall,
 
     input [31:0] next_instruction,
     input [31:0] PC,
@@ -58,6 +59,7 @@ module decode (
 
     always @(posedge clk or posedge rst)
     begin
+
         if (rst) 
         begin
             _instruction <= 0;
@@ -66,9 +68,11 @@ module decode (
         end
         else
         begin
-            _instruction <= next_instruction;
-            _value1 <= regbank_value1;
-            _value2 <= regbank_value2;
+            if (~stall) begin
+                _instruction <= next_instruction;
+                _value1 <= regbank_value1;
+                _value2 <= regbank_value2;
+            end
         end
     end
 
