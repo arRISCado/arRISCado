@@ -1,6 +1,3 @@
-`ifndef ALU
-`define ALU
-
 // Arithmetic Logic Unit
 
 module alu (
@@ -8,13 +5,12 @@ module alu (
   input signed [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
-  output reg zero,
-  output reg negative,
-  output reg borrow
+  output zero,
+  output negative,
+  output reg borrow = 0
 );
-
-  wire [31:0] u_a;
-  wire [31:0] u_b;
+  wire [31:0] u_a = a;
+  wire [31:0] u_b = b;
 
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
@@ -37,53 +33,36 @@ module alu (
   localparam REM_USGN       = 5'b10010;
   localparam SUB_USN        = 5'b10011;
 
-  assign u_a = a;
-  assign u_b = b;
+  assign zero     = (result == 32'b0);
+  assign negative = (result[31] == 1'b1);
 
   always @(*)
   begin
-    borrow = 0;                    // set initial value to 0
-
+    borrow = 0;
     case (AluControl)
-      BITWISE_AND: result = a & b; // Bitwise AND
-      BITWISE_OR: result = a | b; // Bitwise OR
-      ADDITION: result = a + b; // Addition
-      BITWISE_XOR: result = a ^ b; // Bitwise XOR
-      SUBTRACTION: result = a - b; // Subtraction
-      BITWISE_NOT: result = ~a; // Bitwise NOT
-      SHIFT_LEFT: result = a << b; // Shift Left
-      SHIFT_RIGHT: result = a >> b; // Shift Right
-      ARIT_SRIGHT: result = a >>> b; // Arithmetic Shift Right
-      SET_LESS:                       // SLT / SLTI
-      begin
-        if (a < b)
-        result = 1;
-        else
-        result = 0;
-      end
-      SET_LESS_U:                     // SLTU / SLTIU
-      begin
-        if (u_a < u_b)
-        result = 1;
-        else
-        result = 0;
-      end
-      MUL_SGN_SGN: result = a * b;            //mul
-      MUL_HIGH: result = a * b;               //mulh
-      MUL_SGN_USGN: result = a * u_b;         //mulhsu
-      MUL_USGN_USGN: result = u_a * u_b;      //mulhu
-      DIV_SGN: result = a / b;                //div
-      DIV_USGN: result = u_a / u_b;           //divu
-      REM_SGN: result = a % b;                //rem
-      REM_USGN: result = u_a % u_b;           //remu
-      SUB_USN: {result, borrow} = u_a - u_b;
-
-      default: result = 32'b0; // Default output
+      BITWISE_AND:   result = a & b;     // Bitwise AND
+      BITWISE_OR:    result = a | b;     // Bitwise OR
+      ADDITION:      result = a + b;     // Addition
+      BITWISE_XOR:   result = a ^ b;     // Bitwise XOR
+      SUBTRACTION:   result = a - b;     // Subtraction
+      BITWISE_NOT:   result = ~a;        // Bitwise NOT
+      SHIFT_LEFT:    result = a << b;    // Shift Left
+      SHIFT_RIGHT:   result = a >> b;    // Shift Right
+      ARIT_SRIGHT:   result = a >>> b;   // Arithmetic Shift Right
+      SET_LESS:      result = a < b;     // SLT / SLTI
+      SET_LESS_U:    result = u_a < u_b; // SLTU / SLTIU
+      MUL_SGN_SGN:   result = a * b;     // mul
+      MUL_HIGH:      result = a * b;     // mulh
+      MUL_SGN_USGN:  result = a * u_b;   // mulhsu
+      MUL_USGN_USGN: result = u_a * u_b; // mulhu
+      /*
+      DIV_SGN:       result = a / b;                //div
+      DIV_USGN:      result = u_a / u_b;           //divu
+      REM_SGN:       result = a % b;                //rem
+      REM_USGN:      result = u_a % u_b;           //remu
+      */
+      SUB_USN:      {result, borrow} = u_a - u_b;
+      default:       result = 32'b0;
     endcase
-
-    zero      = (result == 32'b0);
-    negative  = (result[31] == 1'b1);  
   end
-
 endmodule
-`endif

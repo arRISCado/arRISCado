@@ -1,6 +1,3 @@
-`ifndef DECODE
-`define DECODE
-
 // Decode Stage
 module decode (
     input clk,                // Clock signal
@@ -14,10 +11,6 @@ module decode (
     // TODO: Clean unused outputs
     output reg [31:0] imm,
     output [4:0] rs1, rs2,
-    output [5:0] shamt,
-    output [2:0] func3,
-    output [6:0] func7,
-    output [6:0] opcode,
    
     // output sinais de controle
     output reg MemWrite,        // True or False depending if the operation Writes in the Memory or not
@@ -26,14 +19,11 @@ module decode (
     output [4:0] RegDest,       // Determines which register to write the ALU result
     output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
     output reg [2:0] AluOp,     // Operation type ALU will perform
-    output reg [4:0] AluControl,// Exact operation ALU will perform
-    output reg Branch,          // True or False depending if the instruction is a Branch
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
-    output [2:0] BranchOp,      // Determines what type of branch is being done
-    output [31:0] BranchOffset,
     output reg PCSrc,       // Determines where the PC will come from
-    output reg [2:0] BranchType,
+    output reg [2:0] BranchType = 0,
+    output reg [4:0] AluControl = 0,
     output reg [31:0] PC_out,
     output reg [31:0] value1,
     output reg [31:0] value2
@@ -57,13 +47,13 @@ module decode (
     reg [31:0] _value2;
 
     // Divide each possible part of an instruction
-    assign opcode = _instruction[6:0];
+    wire [6:0] opcode = _instruction[6:0];
     assign RegDest = _instruction[11:7];
     assign rs1 = _instruction[19:15];
     assign rs2 = _instruction[24:20];
-    assign shamt = _instruction[24:20];
-    assign func3 = _instruction[14:12];
-    assign func7 = _instruction[31:25];
+    wire [5:0] shamt = _instruction[24:20];
+    wire [2:0] func3 = _instruction[14:12];
+    wire [6:0] func7 = _instruction[31:25];
 
     always @(posedge clk or posedge rst)
     begin
@@ -90,8 +80,8 @@ module decode (
         RegWrite   <= 0;
         AluSrc     <= 0;
         AluOp      <= 0;
-        AluControl <= 0;  
-        Branch     <= 0;
+        AluControl <= 0;
+        BranchType <= 0;
         MemToReg   <= 0; 
         RegDataSrc <= 0;    
         PCSrc      <= 0;
@@ -448,4 +438,3 @@ module decode (
     end
     
 endmodule
-`endif

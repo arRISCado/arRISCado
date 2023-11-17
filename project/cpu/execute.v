@@ -1,6 +1,3 @@
-`ifndef EXECUTE
-`define EXECUTE
-
 // Execute Stage
 module execute (
     input clk,                 // Clock signal
@@ -16,16 +13,13 @@ module execute (
     input [2:0] AluOp,          // Operation type ALU will perform
     input [4:0] AluControl,     // Exact operation ALU will perform
     input in_MemWrite,          // True or False depending if the operation Writes in the Memory or not
-    input Branch,              // True or False depending if the instruction is a Branch
     input in_MemRead,          // True or False depending if the operation Reads from the Memory or not
     input in_RegWrite,         // True or False depending if the operation writes in a Register or not
     input [4:0] in_RegDest,    // Determines which register to write the ALU result
     input in_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
-    input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
-    input [2:0] in_BranchOp,       // Determines what type of branch is being done
-    input [31:0] in_BranchOffset,
-    input [2:0] in_BranchType,
+    input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation 
+    input [2:0] in_BranchType, // Determines what type of branch is being done
 
 
     // Possible Fowarding Data
@@ -38,9 +32,6 @@ module execute (
     input [4:0] mem_wb_RegDest,
     input [31:0] mem_wb_data_out,
     input [31:0] mem_wb_AluResult,
-    input [31:0] rb_write_value,
-    input rb_write_enable,
-    input [4:0] rb_write_address,
 
     output reg out_MemWrite,         // True or False depending if the operation Writes in the Memory or not
     output reg out_MemRead,          // True or False depending if the operation Reads from the Memory or not
@@ -49,16 +40,13 @@ module execute (
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
     output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
-    output reg [31:0] out_BranchOffset,
     output reg [31:0] out_BranchTarget,
     output reg [31:0] _rs2_value,
 
-    output [31:0] result,
-    output reg [31:0] a,
-    output reg [31:0] b
+    output [31:0] result
 );
     reg [31:0] _rs1_value, _imm, _PC;
-    reg [2:0] _AluOp, _BranchOp, _BranchType;
+    reg [2:0] _AluOp, _BranchType;
     reg _AluSrc;
 
     reg [4:0] _AluControl;
@@ -68,6 +56,7 @@ module execute (
     wire zero;
     wire negative;
     wire borrow;
+    reg [31:0] a, b;
 
     alu alu(_AluControl, a, b, result, zero, negative, borrow);
 
@@ -96,8 +85,6 @@ module execute (
             out_RegDest    <= 0;
             out_MemToReg   <= 0;
             out_RegDataSrc <= 0;
-            out_BranchOffset <= 0;
-            out_PCSrc      <= 0;
             out_BranchTarget <= 0;
         end
         else
@@ -122,7 +109,6 @@ module execute (
             _AluSrc     <= AluSrc;
             _AluOp      <= AluOp;
             _AluControl <= AluControl;
-            _BranchOp <= in_BranchOp;
             _BranchType <= in_BranchType;
             _PCSrc <= in_PCSrc;
             
@@ -133,8 +119,6 @@ module execute (
             out_MemToReg   <= in_MemToReg;
             out_RegDataSrc <= in_RegDataSrc;
             out_BranchTarget <= PC + imm;
-            // out_PCSrc      <= in_PCSrc;
-            out_BranchOffset <= in_BranchOffset;
         end
     end
 
@@ -224,4 +208,3 @@ module execute (
         endcase
     end    
 endmodule
-`endif

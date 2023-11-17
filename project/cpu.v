@@ -1,22 +1,3 @@
-`ifndef TESTBENCH
-
-`include "ram.v"
-`include "rom.v"
-`include "cpu/register_bank.v"
-`include "cpu/alu.v"
-`include "cpu/fetch.v"
-`include "cpu/decode.v"
-`include "cpu/execute.v"
-`include "cpu/memory.v"
-`include "cpu/writeback.v"
-`include "peripheral/peripheral_manager.v"
-`include "peripheral/pwm_port.v"
-
-`endif
-
-`ifndef CPU
-`define CPU
-
 module cpu(
     input clock,
     input reset,
@@ -28,8 +9,7 @@ module cpu(
 );
     assign led[5:0] = ex_mem_result[5:0];
 
-    wire clock_real;
-    assign clock_real = clock & enable;
+    wire clock_real = clock & enable;
 
     // ### Component wires ###
 
@@ -62,6 +42,7 @@ module cpu(
         .data_out(ram_data_out)
     );
 
+    /*
     peripheral_manager Peripheral_manager(
         .clk(clock),
         .addr(ram_address),
@@ -70,8 +51,6 @@ module cpu(
         .pwm1_out(port_pwm1)
     );
 
-
-    /*
     rom Rom(
         .address(rom_address),
         .data(rom_data)
@@ -86,7 +65,6 @@ module cpu(
         .write_value(rb_write_value),
         .read_address1(rb_read_address1),
         .read_address2(rb_read_address2),
-        .led(led),
         .value1(rb_value1),
         .value2(rb_value2)
     );
@@ -107,7 +85,6 @@ module cpu(
     wire [2:0] de_ex_aluOp;         // Dies on execute
     wire de_ex_aluSrc;              // Dies on execute
     wire [4:0] de_ex_AluControl;    // Dies on execute
-    wire de_ex_Branch;              // Dies on Execute
     wire de_ex_MemWrite;            // Goes to MEM stage
     wire de_ex_MemRead;             // Goes to MEM stage
     wire de_ex_RegWrite;            // Goes to WB
@@ -180,7 +157,6 @@ module cpu(
         .AluOp(de_ex_aluOp),
         .AluSrc(de_ex_aluSrc),
         .AluControl(de_ex_AluControl),
-        .Branch(de_ex_Branch),
         .MemWrite(de_ex_MemWrite),
         .MemRead(de_ex_MemRead),
         .RegWrite(de_ex_RegWrite),
@@ -208,7 +184,6 @@ module cpu(
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
         .AluControl(de_ex_AluControl),
-        .Branch(de_ex_Branch),
         .in_MemWrite(de_ex_MemWrite),
         .in_MemRead(de_ex_MemRead),
         .in_RegWrite(de_ex_RegWrite),
@@ -320,4 +295,3 @@ module cpu(
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 endmodule
-`endif

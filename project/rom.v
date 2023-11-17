@@ -3,7 +3,7 @@
 `endif
 
 module rom (
-  input [7:0] address,
+  input [31:0] address,
   output wire [31:0] data
 );
 
@@ -17,9 +17,9 @@ module rom (
     $readmemh(`ROM_FILE, memory, 0, 255);
   end
   
-  wire [7:0] next_address = address + 4;
-  wire [31:0] data1 = memory[address[7:2]];
-  wire [31:0] data2 = memory[next_address[7:2]];
+  wire [31:0] next_address = address + 4;
+  wire [31:0] data1 = memory[address[31:2]];
+  wire [31:0] data2 = memory[next_address[31:2]];
 
   assign data = address[1:0] == 'b00 ? data1 :
                 address[1:0] == 'b01 ? {data2[7:0],  data1[31:8] } :
