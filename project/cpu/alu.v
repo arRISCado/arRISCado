@@ -13,9 +13,8 @@ module alu (
   output reg [31:0] remainder,
   output reg stall
 );
-
-  wire [31:0] u_a;
-  wire [31:0] u_b;
+  wire [31:0] u_a = a;
+  wire [31:0] u_b = b;
 
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
@@ -109,5 +108,4 @@ module alu (
     negative  = (result[31] == 1'b1);  
     stall = div_busy;
   end
-
 endmodule
