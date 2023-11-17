@@ -146,7 +146,7 @@ module execute (
         // Tipo Load ou Store
         3'b000 :
         begin
-            a <= rs1_value;
+            a <= _rs1_value;
             b <= _imm;
         end
 

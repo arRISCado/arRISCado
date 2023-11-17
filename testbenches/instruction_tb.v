@@ -143,6 +143,8 @@ module test();
             $display("");
 
             $display("Memory %0d", i-3);
+            $display("addr %0d", cpu.Memory.addr);
+            $display("MemWrite %0d", cpu.Memory.MemWrite);
             $display("in_RegWrite %b", cpu.Memory.in_RegWrite);
             $display("in_RegDest %0d", cpu.Memory.in_RegDest);
             $display("mem_read_data: %0d", cpu.Memory.mem_read_data);
@@ -191,6 +193,7 @@ module test();
 
             $display("");
             $display("RAM");
+            $display("address: %0d", cpu.Ram.address);
             $display("#3: %0d", cpu.Ram.storage[3]);
 
             $display("");
@@ -198,6 +201,8 @@ module test();
             $display("port_pwm1: %0d", cpu.port_pwm1);
             $display("manager.addr: %0d", cpu.Peripheral_manager.addr);
             $display("manager.data_in: %0d", cpu.Peripheral_manager.data_in);
+            $display("manager.write_pwm1_1: %0d", cpu.Peripheral_manager.write_pwm1_1);
+            $display("manager.write_pwm1_2: %0d", cpu.Peripheral_manager.write_pwm1_2);
             $display("pwm_port1.clk_per_cycle: %0d", cpu.Peripheral_manager.pwm_port1.clk_per_cycle);
             $display("pwm_port1.clk_on: %0d", cpu.Peripheral_manager.pwm_port1.clk_on);
 
