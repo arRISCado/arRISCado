@@ -4,6 +4,8 @@
 module memory (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
+    input stall,
+
     input [31:0] addr,         // Address input
     input [31:0] data_in,      // Data input to be written
     
@@ -21,6 +23,7 @@ module memory (
 
     output [31:0] data_out,       // Data output read from memory
     output reg mem_done,              // Memory operation done signal
+    output wire stall_pipeline,
 
     // Control Signals
     output reg out_MemToReg,
@@ -48,13 +51,13 @@ module memory (
 
     always @(posedge clk or posedge rst)
     begin
+
         if (rst)
         begin
             _addr <= 0;
             _data_in <= 0;
             _load <= 0;
             _store <= 0;
-            
             out_MemToReg <= 0;
             out_RegWrite <= 0;
             out_RegDest <= 0;
@@ -66,32 +69,34 @@ module memory (
         end
         else 
         begin
-            // Input signals from execute and control
-            _addr <= addr;
-            _data_in <= data_in;
-            _load <= MemRead;
-            _store <= MemWrite;
+            if (~stall) begin
+                // Input signals from execute and control
+                _addr <= addr;
+                _data_in <= data_in;
+                _load <= MemRead;
+                _store <= MemWrite;
 
-            // Control signals to the next step
-            out_MemToReg <= in_MemToReg;
-            out_RegWrite <= in_RegWrite;
-            out_RegDest <= in_RegDest;
-            out_RegDataSrc <= in_RegDataSrc;
-            out_PCSrc <= in_PCSrc;
-            out_BranchTarget <= in_BranchTarget;
-            mem_done <= 1;
+                // Control signals to the next step
+                out_MemToReg <= in_MemToReg;
+                out_RegWrite <= in_RegWrite;
+                out_RegDest <= in_RegDest;
+                out_RegDataSrc <= in_RegDataSrc;
+                out_PCSrc <= in_PCSrc;
+                out_BranchTarget <= in_BranchTarget;
+                mem_done <= 1;
 
-            if (mem_write_enable)
-                mem_write_enable <= 0;
+                if (mem_write_enable)
+                    mem_write_enable <= 0;
 
-            `ifdef TESTBENCH
-            if (MemWrite)
-            `elsif TEST
-            if (MemWrite)
-            `else
-            if (_store)
-            `endif
-                mem_write_enable <= 1;
+                `ifdef TESTBENCH
+                if (MemWrite)
+                `elsif TEST
+                if (MemWrite)
+                `else
+                if (_store)
+                `endif
+                    mem_write_enable <= 1;
+            end
         end
     end
 endmodule
