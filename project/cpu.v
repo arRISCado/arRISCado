@@ -13,6 +13,10 @@ module cpu(
 
     // ### Component wires ###
 
+    // Cache
+    wire [31:0] mem_address, mem_data_in, mem_data_out;
+    wire mem_write_enable, mem_data_ready;
+
     // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
     wire ram_write_enable;
@@ -24,13 +28,7 @@ module cpu(
 
     // ### Components ###
 
-
     // Memories
-
-    //Address map
-    //abcxxx...xxx
-    //abc = destiny (000 = ram, 001 = peripheral1, ..., 111 = peripheral7)
-    //xxx...xxx = addr
 
     ram Ram(
         .clk(clock_real), 
@@ -42,20 +40,19 @@ module cpu(
         .data_out(ram_data_out)
     );
 
-    /*
-    peripheral_manager Peripheral_manager(
-        .clk(clock),
-        .addr(ram_address),
-        .data_in(ram_data_in),
-        .write_enable(ram_write_enable),
-        .pwm1_out(port_pwm1)
+    mmu MMU(
+        .c_address(mem_address),
+        .c_data_in(mem_data_in),
+        .c_write_enable(mem_write_enable),
+        .c_data_ready(mem_data_ready),
+        .c_data_out(mem_data_out),
+        
+        .m_address(ram_address),
+        .m_data_in(ram_data_in),
+        .m_write_enable(ram_write_enable),
+        .m_data_ready(1),
+        .m_data_out(ram_data_out)
     );
-
-    rom Rom(
-        .address(rom_address),
-        .data(rom_data)
-    );
-    */
 
     register_bank RegisterBank(
         .clk(clock_real),
@@ -233,7 +230,8 @@ module cpu(
         .data_in(ex_mem_rs2_value), 
 
         // from RAM signals
-        .mem_read_data(ram_data_out),
+        .mem_read_data(mem_data_out),
+        .mem_data_ready(mem_data_ready),
 
         // control inputs
         .MemRead(ex_mem_MemRead), // sinal de load
@@ -260,12 +258,10 @@ module cpu(
         .out_BranchTarget(mem_wb_BranchTarget),
 
         // to RAM signals
-        .mem_addr(ram_address),
-        .mem_write_data(ram_data_in),
-        .mem_write_enable(ram_write_enable)
+        .mem_addr(mem_address),
+        .mem_write_data(mem_data_in),
+        .mem_write_enable(mem_write_enable)
     );
-
-    wire [4:0] wb_if_RegDest; //LIGAR
 
     writeback Writeback(
         // inputs
