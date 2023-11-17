@@ -59,7 +59,7 @@ module pwm_port(
     end
 
     //Update the port output
-    assign port_output = (counter >= clk_on) ? 0 : 1;
+    assign port_output = (counter > clk_on) ? 0 : 1;
 
 endmodule
 
