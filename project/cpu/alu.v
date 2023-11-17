@@ -7,7 +7,9 @@ module alu (
   output reg [31:0] result,
   output reg zero,
   output reg negative,
-  output reg borrow
+  output reg borrow,
+  output reg [31:0] remainder,
+  output wire done
 );
 
   wire [31:0] u_a;
@@ -36,6 +38,12 @@ module alu (
 
   assign u_a = a;
   assign u_b = b;
+
+  reg [31:0] div_result;
+  reg [31:0] div_remainder;
+  reg [31:0] div_done;
+
+  divider divider(a, b, div_result, div_remainder, div_done);
 
   always @(*)
   begin
@@ -69,12 +77,10 @@ module alu (
       MUL_HIGH: result = a * b;               //mulh
       MUL_SGN_USGN: result = a * u_b;         //mulhsu
       MUL_USGN_USGN: result = u_a * u_b;      //mulhu
-      /*
-      DIV_SGN: result = a / b;                //div
-      DIV_USGN: result = u_a / u_b;           //divu
-      REM_SGN: result = a % b;                //rem
-      REM_USGN: result = u_a % u_b;           //remu
-      */
+      DIV_SGN: result = div_result;           //div
+      DIV_USGN: result = div_result;          //divu
+      REM_SGN: result = div_remainder;        //rem
+      REM_USGN: result = div_remainder;       //remu
       SUB_USN: {result, borrow} = u_a - u_b;
 
       default: result = 32'b0; // Default output

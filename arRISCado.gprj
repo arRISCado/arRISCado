@@ -8,6 +8,7 @@
         <File path="project/cpu.v" type="file.verilog" enable="1"/>
         <File path="project/cpu/alu.v" type="file.verilog" enable="1"/>
         <File path="project/cpu/decode.v" type="file.verilog" enable="1"/>
+        <File path="project/cpu/divider.v" type="file.verilog" enable="1"/>
         <File path="project/cpu/execute.v" type="file.verilog" enable="1"/>
         <File path="project/cpu/fetch.v" type="file.verilog" enable="1"/>
         <File path="project/cpu/memory.v" type="file.verilog" enable="1"/>
