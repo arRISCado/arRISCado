@@ -2,15 +2,15 @@
 
 module alu (
   input [4:0] AluControl,
-  input signed [31:0] a,
+  input [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
   output zero,
   output negative,
   output reg borrow = 0
 );
-  wire [31:0] u_a = a;
-  wire [31:0] u_b = b;
+  wire signed [31:0] s_a = a;
+  wire signed [31:0] s_b = b;
 
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
@@ -38,7 +38,6 @@ module alu (
 
   always @(*)
   begin
-    borrow = 0;
     case (AluControl)
       BITWISE_AND:   result = a & b;     // Bitwise AND
       BITWISE_OR:    result = a | b;     // Bitwise OR
@@ -48,20 +47,20 @@ module alu (
       BITWISE_NOT:   result = ~a;        // Bitwise NOT
       SHIFT_LEFT:    result = a << b;    // Shift Left
       SHIFT_RIGHT:   result = a >> b;    // Shift Right
-      ARIT_SRIGHT:   result = a >>> b;   // Arithmetic Shift Right
-      SET_LESS:      result = a < b;     // SLT / SLTI
-      SET_LESS_U:    result = u_a < u_b; // SLTU / SLTIU
+      ARIT_SRIGHT:   result = s_a >>> b;   // Arithmetic Shift Right
+      SET_LESS:      result = s_a < s_b;     // SLT / SLTI
+      SET_LESS_U:    result = a < b; // SLTU / SLTIU
+      /*
       MUL_SGN_SGN:   result = a * b;     // mul
       MUL_HIGH:      result = a * b;     // mulh
-      MUL_SGN_USGN:  result = a * u_b;   // mulhsu
-      MUL_USGN_USGN: result = u_a * u_b; // mulhu
-      /*
+      MUL_SGN_USGN:  result = a * b;   // mulhsu
+      MUL_USGN_USGN: result = a * b; // mulhu
       DIV_SGN:       result = a / b;                //div
       DIV_USGN:      result = u_a / u_b;           //divu
       REM_SGN:       result = a % b;                //rem
       REM_USGN:      result = u_a % u_b;           //remu
       */
-      SUB_USN:      {result, borrow} = u_a - u_b;
+      SUB_USN:      {result, borrow} = a - b;
       default:       result = 32'b0;
     endcase
   end
