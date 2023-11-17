@@ -4,7 +4,7 @@ module alu (
   input clk,
   input rst,
   input [4:0] AluControl,
-  input signed [31:0] a,
+  input [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
   output reg zero,
@@ -13,8 +13,8 @@ module alu (
   output reg [31:0] remainder,
   output reg stall
 );
-  wire [31:0] u_a = a;
-  wire [31:0] u_b = b;
+  wire signed [31:0] s_a = a;
+  wire signed [31:0] s_b = b;
 
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
