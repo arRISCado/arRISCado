@@ -172,6 +172,7 @@ module test();
             $display("value1: %0d", cpu.RegisterBank.value1);
             $display("value2: %0d", cpu.RegisterBank.value2);
             $display("RegisterBank.REGS---------");
+            $display("zero=x0 %0d", cpu.RegisterBank.register[0]);
             for (integer j = 5; j < 8; j = j + 1)
             begin
                 $display("t%0d=x%0d %0d", j-5, j, cpu.RegisterBank.register[j]);
