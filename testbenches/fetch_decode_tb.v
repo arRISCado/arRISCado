@@ -36,9 +36,6 @@ module test;
         .next_instruction(instr),
         
         .imm(imm),
-        // .opcode(opcode),
-        // .func3(func3),
-        // .func7(func7),
         .AluOp(aluOp),
         .AluControl(aluControl)
     );

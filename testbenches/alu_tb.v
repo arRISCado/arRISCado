@@ -154,6 +154,37 @@ module test;
         #10;
         $display("a: %b, b: %b, result: %b, zero: %b, negative: %b, barrow: %b", a, b, result, zero, negative, borrow);
         $finish;
+
+        // RV32A Test
+
+        $display("Test Case 31: AMOMIN.W - Atomic Memory Operation Minimum Word");
+        AluControl = 5'b10011;
+        a = 32'b11000000000000000000000000000101;
+        b = 32'b0001;
+        #10;
+        $display("a: %b, b: %b, result: %b, zero: %b, negative: %b, barrow: %b", a, b, result, zero, negative, borrow);
+
+        $display("Test Case 32: AMOMAX.W - Atomic Memory Operation Maximum Word");
+        AluControl = 5'b10100;
+        a = 32'b11000000000000000000000000000101;
+        b = 32'b0001;
+        #10;
+        $display("a: %b, b: %b, result: %b, zero: %b, negative: %b, barrow: %b", a, b, result, zero, negative, borrow);
+
+        $display("Test Case 33: AMOMINU.W - Atomic Memory Operation Minimum Unsigned Word");
+        AluControl = 5'b10101;
+        a = 32'b11100000000000000000000000000110;
+        b = 32'b0101;
+        #10;
+        $display("a: %b, b: %b, result: %b, zero: %b, negative: %b, barrow: %b", a, b, result, zero, negative, borrow);
+
+        $display("Test Case 34: AMOMAXU.W - Atomic Memory Operation Maximum Unsigned Word");
+        AluControl = 5'b10110;
+        a = 32'b11100000000000000000000000000110;
+        b = 32'b0101;
+        #10;
+        $display("a: %b, b: %b, result: %b, zero: %b, negative: %b, barrow: %b", a, b, result, zero, negative, borrow);
+        $finish;
     end
 
 endmodule

@@ -35,6 +35,10 @@ module alu (
   localparam DIV_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
   localparam REM_USGN       = 5'b10010;
+  localparam AMOMAX_SGN     = 5'b10100;
+  localparam AMOMIN_USGN    = 5'b10101;
+  localparam AMOMAX_USGN    = 5'b10110;
+
   localparam SUB_USN        = 5'b10011;
 
   assign u_a = a;
@@ -99,6 +103,10 @@ module alu (
         div_op = 1;
         result = div_remainder;        //remu
       end
+      AMOMIN_SGN:    result = (s_a < s_b) ? s_a : s_b;  // amomin.w
+      AMOMAX_SGN:    result = (s_a > s_b) ? s_a : s_b;  // amomax.w
+      AMOMIN_USGN:   result = (a < b) ? a : b;          // amominu.w
+      AMOMAX_USGN:   result = (a > b) ? a : b;          // amomaxu.w
       SUB_USN: {result, borrow} = u_a - u_b;
 
       default: result = 32'b0; // Default output
