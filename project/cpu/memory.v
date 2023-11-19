@@ -9,6 +9,7 @@ module memory (
     input [31:0] data_in,      // Data input to be written
     
     input [31:0] mem_read_data, // Data from RAM
+    input        mem_data_ready,
 
     // Control Signals
     input MemRead,          // load command signal
