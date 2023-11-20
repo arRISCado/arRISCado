@@ -5,7 +5,6 @@
 module register_bank(
   input clk,
   input reset,
-  input stall,
   input write_enable,
   input [4:0] write_address,
   input [31:0] write_value,

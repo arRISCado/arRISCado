@@ -4,7 +4,6 @@
 module memory (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
-    input stall,
 
     input [31:0] addr,         // Address input
     input [31:0] data_in,      // Data input to be written
@@ -69,7 +68,6 @@ module memory (
         end
         else 
         begin
-            if (~stall) begin
                 // Input signals from execute and control
                 _addr <= addr;
                 _data_in <= data_in;
@@ -96,10 +94,9 @@ module memory (
                 if (_store)
                 `endif
                     mem_write_enable <= 1;
-            end
         end
     end
 
-    assign stall_pipeline <= ~mem_write_enable
+    assign stall_pipeline = ~mem_write_enable;
 endmodule
 `endif
