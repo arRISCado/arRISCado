@@ -43,7 +43,6 @@ module execute (
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     output reg [31:0] out_BranchTarget,
     output reg [31:0] _rs2_value,
-    output reg stall_pipline,
 
     output [31:0] result
 );

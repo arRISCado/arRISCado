@@ -28,7 +28,7 @@ module cpu(
 
 
     // ### Stall Control ###
-    wire stall = 0;
+    wire stall;
 
     // ### Components ###
 
@@ -226,8 +226,7 @@ module cpu(
 
         ._rs2_value(ex_mem_rs2_value),
         .result(ex_mem_result),
-        .PC(de_ex_PC),
-        .stall_pipeline(stall)
+        .PC(de_ex_PC)
     );
 
     wire [31:0] mem_wb_BranchTarget;
