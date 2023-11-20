@@ -99,5 +99,7 @@ module memory (
             end
         end
     end
+
+    assign stall_pipeline <= ~mem_write_enable
 endmodule
 `endif
