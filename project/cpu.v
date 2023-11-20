@@ -126,18 +126,20 @@ module cpu(
 
     // ### Pipeline ###
 
+    assign rst_with_bubble = reset || ex_mem_PCSrc;
+
     fetch Fetch(
         .clk(clock_real),
-        .rst(reset),
+        .rst(rst_with_bubble),
         .stall(stall),
         
-        .in_BranchTarget(wb_if_BranchTarget), // May come from writeback, but ideally from memory stage
+        .in_BranchTarget(wb_if_BranchTarget),
         .rom_data(rom_data),
         .rom_address(rom_address),
 
-        .PCSrc(wb_if_PCSrc), // May come from writeback, but ideally from memory stage
+        .PCSrc(wb_if_PCSrc),
 
-        .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
+        .pc(if_de_pc),
         .instr(if_de_instr)
     );
 
@@ -145,7 +147,7 @@ module cpu(
 
     decode Decode(
         .clk(clock_real),
-        .rst(reset),
+        .rst(rst_with_bubble),
         .stall(stall),
         
         .next_instruction(if_de_instr),
