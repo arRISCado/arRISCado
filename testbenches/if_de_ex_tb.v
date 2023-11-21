@@ -124,8 +124,8 @@ module test;
         for (i = 0; i < 10; i = i + 1)
         begin
             $display("Instr: %h, AluOp: %b, AluSrc: %b", if_de_instr, de_ex_aluOp, de_ex_aluSrc);
-            $display("1: Addr: %h, Value: %h, a: %h", rb_read_address1, rb_value1, a);
-            $display("2: Addr: %h, Value: %h, b: %h", rb_read_address2, rb_value2, b);
+            $display("1: Addr: %h, Value: %h, a: %h", rb_read_address1, rb_value1, execute.alu.a);
+            $display("2: Addr: %h, Value: %h, b: %h", rb_read_address2, rb_value2, execute.alu.b);
 
             clock = 1;
             #10;
