@@ -3,14 +3,14 @@
 Segue a baixo as instruções compactas adicionadas nessa extenção:
 
 **Instruções de Load:**
-- c.lw    rd, rs1, imm          // 32 bits
-- c.lwsp  rd, imm               // 32 bits
+- c.lw    rd, rs1, imm          
+- c.lwsp  rd, imm               
 - c.ld    rd, rs1, imm          // 64 bits
 - c.ldsp  rd, imm               // 64 bits
 
 **Instruções de Store:**
-- c.sw    rs1, rs2, imm         // 32 bits
-- c.swsp  rs2, imm              // 32 bits
+- c.sw    rs1, rs2, imm         
+- c.swsp  rs2, imm              
 - c.sd    rs1, rs2, imm         // 64 bits
 - c.sdsp  rs2, imm              // 64 bits
 
@@ -38,8 +38,8 @@ Segue a baixo as instruções compactas adicionadas nessa extenção:
 - c.srai      rd, imm
 
 **Instruções de Branche:**
-- c.beqz      rs1, imm
-- c.bnez      rs1, imm
+- c.beqz      rs1, offset
+- c.bnez      rs1, offset
 
 **Instruções de Controle de Fluxo:**
 - c.j         offset

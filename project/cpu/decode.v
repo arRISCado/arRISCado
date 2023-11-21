@@ -211,7 +211,7 @@ module decode (
                     imm <= {21'b0, _instruction[31:20]};
 
                     case (func3)
-                        // ADDI
+                        // ADDI, LI, MV
                         3'b000:
                         begin
                             AluControl <= 5'b00010;

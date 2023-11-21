@@ -19,100 +19,82 @@ _main:
     # Instruções comprimidas
 
     # c.lw    rd, rs1, imm
-    c.lw x10, 0(sp)
+    lw x10, 0(sp)
 
     # c.lwsp  rd, imm
-    c.lwsp x11, 0(sp)
-
-    # c.ld    rd, rs1, imm
-    c.ld x12, 0(sp)
-
-    # c.ldsp  rd, imm
-    c.ldsp x13, 0(sp)
+    # lwsp x11, 0(sp)           // unrecognized opcode
 
     # c.sw    rs1, rs2, imm
-    c.sw x5, 0(sp)
+    sw x5, 0(sp)
 
     # c.swsp  rs2, imm
-    c.swsp x6, 0(sp)
-
-    # c.sd    rs1, rs2, imm
-    c.sd x7, 0(sp)
-
-    # c.sdsp  rs2, imm
-    c.sdsp x7, 0(sp)
+    # swsp x6, 0(sp)            // unrecognized opcode
 
     # c.add       rd, rs1
-    c.add x14, x5
-
-    # c.addw      rd, rs1
-    c.addw x15, x6
+    # add x14, x5               // illegal operands
 
     # c.addi      rd, imm
-    c.addi x16, x7, 100
-
-    # c.addiw     rd, imm
-    c.addiw x17, x5, 200
+    # addi x16, 100             // illegal operands
 
     # c.addi16sp  rd, imm
-    c.addi16sp x18, 300
+    # addi16sp x18, 300             // illegal operands
 
     # c.addi4spn  rd, imm
-    c.addi4spn x19, x6, 400
+    # addi4spn x19, 400             // illegal operands
 
     # c.li        rd, imm
-    c.li x20, 500
+    li x20, 500
 
     # c.mv        rd, rs1
-    c.mv x21, x7
+    mv x21, x7
 
     # c.sub       rd, rs1
-    c.sub x22, x5
-
-    # c.subw      rd, rsw
-    c.subw x23, x6
+    # sub x22, x5               // illegal operands
 
     # c.slli      rd, imm
-    c.slli x24, x7, 2
+    # slli x24, 2               // illegal operands
 
     # c.srli      rd, imm
-    c.srli x25, x5, 1
+    # srli x25, 4               // illegal operands
 
     # c.srai      rd, imm
-    c.srai x26, x6, 1
+    # srai x26, 6               // illegal operands
 
     # c.and       rd, rs1
-    c.and x27, x7
+    # and x27, x7               // illegal operands
 
     # c.or        rd, rs1
-    c.or x10, x5
+    # or x10, x5                // illegal operands
 
     # c.xor       rd, rs1
-    c.xor x11, x6
+    # xor x11, x6               // illegal operands
 
     # c.andi      rd, imm
-    c.andi x12, x7, 15
+    # andi x12, 15              // illegal operands
 
-    # c.ori       rd, imm
-    c.ori x13, x5, 255
+    # c.beqz      rs1, offset
+    beqz x7, part1
 
-    # c.xori      rd, imm
-    c.xori x14, x6, 127
+part1:
+    # c.bnez      rs1, offset
+    bnez x5, part2
 
-    # c.beqz      rs1, imm
-    c.beqz x7, 100
+part2:
+    # c.j         offset
+    j part3
 
-    # c.bnez      rs1, imm
-    c.bnez x5, 200
-
-    # c.j         imm
-    c.j 300
-
+part3:
     # c.jr        rd, rs1
-    c.jr x6
+    jr x6
 
-    # c.jal       imm
-    c.jal 400
+part4:
+    # c.jal       offset
+    jal part5
 
+part5:
     # c.jalr      rd, rs1
-    c.jalr x7
+    jalr x7
+
+part6:
+    # c.nop
+    nop
