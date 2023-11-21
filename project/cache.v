@@ -15,9 +15,9 @@ module cache (
   output reg        fetch_write_enable,
   input      [31:0] fetch_read_data
 );
-  localparam IDLE   = 'b00;
-  localparam READ   = 'b01;
-  localparam WRITE  = 'b10;
+  localparam IDLE  = 'b00;
+  localparam READ  = 'b01;
+  localparam WRITE = 'b10;
 
   reg [1:0] current_state, next_state;
   reg [31:0] previous_address = 'hffffff;
@@ -44,7 +44,7 @@ module cache (
     case (current_state)
       IDLE:
       begin
-        data_ready <= 0;
+        data_ready <= 0; // Maybe move to inside of the following if
         fetch_write_enable <= 0;
         if (address != previous_address)
           if (write_enable)
@@ -202,21 +202,233 @@ module cache (
       end
       WRITE:
       begin
-        if (address[1:0] == 'b00)
+        if (~incomplete)
         begin
-          data [addr_index] <= data_in;
-          tag  [addr_index] <= addr_tag;
-          valid[addr_index] <= 1;
-          
-          fetch_write_data   <= data_in;
-          fetch_write_enable <= 1;
-          fetch_address      <= address;
+          if (tag[{addr_index[4:2], 2'b00}] == addr_tag && valid[{addr_index[4:2], 2'b00}])
+          begin 
+            case (address[1:0])
+              2'b01:
+              begin
+                data [{addr_index[4:2], 2'b00}] <= {data_in[31:8], data[{addr_index[4:2], 2'b00}][7:0]};
+                tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                valid[{addr_index[4:2], 2'b00}] <= 1;
 
-          next_state <= IDLE;
+                fetch_write_data   <= {data_in[31:8], data[{addr_index[4:2], 2'b00}][7:0]};
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2], 2'b00};
+
+                data_ready <= 0;
+                incomplete <= 1;
+              end
+              2'b10:
+              begin
+                data [{addr_index[4:2], 2'b00}] <= {data_in[31:16], data[{addr_index[4:2], 2'b00}][15:0]};
+                tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                valid[{addr_index[4:2], 2'b00}] <= 1;
+
+                fetch_write_data   <= {data_in[31:16], data[{addr_index[4:2], 2'b00}][15:0]};
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2], 2'b00};
+
+                data_ready <= 0;
+                incomplete <= 1;
+              end
+              2'b11:
+              begin
+                data [{addr_index[4:2], 2'b00}] <= {data_in[31:24], data[{addr_index[4:2], 2'b00}][23:0]};
+                tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                valid[{addr_index[4:2], 2'b00}] <= 1;
+
+                fetch_write_data   <= {data_in[31:24], data[{addr_index[4:2], 2'b00}][23:0]};;
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2], 2'b00};
+
+                data_ready <= 0;
+                incomplete <= 1;
+              end
+              default:
+              begin
+                data [{addr_index[4:2], 2'b00}] <= data_in;
+                tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                valid[{addr_index[4:2], 2'b00}] <= 1;
+                
+                fetch_write_data   <= data_in;
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2], 2'b00};
+
+                next_state <= IDLE;
+              end
+            endcase
+          end
+          else
+          begin
+            if (fetch_address == {address[31:2], 2'b00})
+            begin
+              case (address[1:0])
+                2'b01:
+                begin
+                  data [{addr_index[4:2], 2'b00}] <= {data_in[31:8], fetch_read_data[7:0]};
+                  tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                  valid[{addr_index[4:2], 2'b00}] <= 1;
+
+                  fetch_write_data   <= {data_in[31:8], fetch_read_data[7:0]};
+                  fetch_write_enable <= 1;
+                  fetch_address      <= {address[31:2], 2'b00};
+
+                  data_ready <= 0;
+                  incomplete <= 1;
+                end
+                2'b10:
+                begin
+                  data [{addr_index[4:2], 2'b00}] <= {data_in[31:16], fetch_read_data[15:0]};
+                  tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                  valid[{addr_index[4:2], 2'b00}] <= 1;
+
+                  fetch_write_data   <= {data_in[31:16], fetch_read_data[15:0]};
+                  fetch_write_enable <= 1;
+                  fetch_address      <= {address[31:2], 2'b00};
+
+                  data_ready <= 0;
+                  incomplete <= 1;
+                end
+                2'b11:
+                begin
+                  data [{addr_index[4:2], 2'b00}] <= {data_in[31:24], fetch_read_data[23:0]};
+                  tag  [{addr_index[4:2], 2'b00}] <= addr_tag;
+                  valid[{addr_index[4:2], 2'b00}] <= 1;
+
+                  fetch_write_data   <= {data_in[31:24], fetch_read_data[23:0]};
+                  fetch_write_enable <= 1;
+                  fetch_address      <= {address[31:2], 2'b00};
+
+                  data_ready <= 0;
+                  incomplete <= 1;
+                end
+                default:
+                begin
+                  // synthesis translate_off
+                  $display("Unexpected cache error.");
+                  // synthesis translate_on
+                end
+              endcase
+            end
+            else
+            begin
+              fetch_address <= {address[31:2], 2'b00};
+              data_ready    <= 0;
+            end
+          end
         end
         else
         begin
-          // MISALIGNED
+          if (tag[{addr_index[4:2] + 1, 2'b00}] == addr_tag && valid[{addr_index[4:2] + 1, 2'b00}])
+          begin 
+            case (address[1:0])
+              2'b01:
+              begin
+                data [{addr_index[4:2] + 1, 2'b00}] <= {data_in[31:8], data[{addr_index[4:2] + 1, 2'b00}][7:0]};
+                tag  [{addr_index[4:2] + 1, 2'b00}] <= addr_tag;
+                valid[{addr_index[4:2] + 1, 2'b00}] <= 1;
+
+                fetch_write_data   <= {data_in[31:8], data[{addr_index[4:2] + 1, 2'b00}][7:0]};
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2] + 1, 2'b00};
+
+                data_ready <= 0;
+                incomplete <= 1;
+              end
+              2'b10:
+              begin
+                data [{addr_index[4:2] + 1, 2'b00}] <= {data_in[31:16], data[{addr_index[4:2] + 1, 2'b00}][15:0]};
+                tag  [{addr_index[4:2] + 1, 2'b00}] <= addr_tag;
+                valid[{addr_index[4:2] + 1, 2'b00}] <= 1;
+
+                fetch_write_data   <= {data_in[31:16], data[{addr_index[4:2] + 1, 2'b00}][15:0]};
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2] + 1, 2'b00};
+
+                data_ready <= 0;
+                incomplete <= 1;
+              end
+              2'b11:
+              begin
+                data [{addr_index[4:2], 2'b00} + 1] <= {data_in[31:24], data[{addr_index[4:2] + 1, 2'b00}][23:0]};
+                tag  [{addr_index[4:2], 2'b00} + 1] <= addr_tag;
+                valid[{addr_index[4:2], 2'b00} + 1] <= 1;
+
+                fetch_write_data   <= {data_in[31:24], data[{addr_index[4:2] + 1, 2'b00}][23:0]};;
+                fetch_write_enable <= 1;
+                fetch_address      <= {address[31:2] + 1, 2'b00};
+
+                data_ready <= 0;
+                incomplete <= 1;
+              end
+              default:
+              begin
+                // synthesis translate_off
+                $display("Unexpected cache error.");
+                // synthesis translate_on
+              end
+            endcase
+          end
+          else
+          begin
+            if (fetch_address == {address[31:2] + 1, 2'b00})
+            begin
+              case (address[1:0])
+                2'b01:
+                begin
+                  data [{addr_index[4:2] + 1, 2'b00}] <= {data_in[31:8], fetch_read_data[7:0]};
+                  tag  [{addr_index[4:2] + 1, 2'b00}] <= addr_tag;
+                  valid[{addr_index[4:2] + 1, 2'b00}] <= 1;
+
+                  fetch_write_data   <= {data_in[31:8], fetch_read_data[7:0]};
+                  fetch_write_enable <= 1;
+                  fetch_address      <= {address[31:2] + 1, 2'b00};
+
+                  data_ready <= 0;
+                  incomplete <= 1;
+                end
+                2'b10:
+                begin
+                  data [{addr_index[4:2] + 1, 2'b00}] <= {data_in[31:16], fetch_read_data[15:0]};
+                  tag  [{addr_index[4:2] + 1, 2'b00}] <= addr_tag;
+                  valid[{addr_index[4:2] + 1, 2'b00}] <= 1;
+
+                  fetch_write_data   <= {data_in[31:16], fetch_read_data[15:0]};
+                  fetch_write_enable <= 1;
+                  fetch_address      <= {address[31:2] + 1, 2'b00};
+
+                  data_ready <= 0;
+                  incomplete <= 1;
+                end
+                2'b11:
+                begin
+                  data [{addr_index[4:2] + 1, 2'b00}] <= {data_in[31:24], fetch_read_data[23:0]};
+                  tag  [{addr_index[4:2] + 1, 2'b00}] <= addr_tag;
+                  valid[{addr_index[4:2] + 1, 2'b00}] <= 1;
+
+                  fetch_write_data   <= {data_in[31:24], fetch_read_data[23:0]};
+                  fetch_write_enable <= 1;
+                  fetch_address      <= {address[31:2] + 1, 2'b00};
+
+                  data_ready <= 0;
+                  incomplete <= 1;
+                end
+                default:
+                begin
+                  // synthesis translate_off
+                  $display("Unexpected cache error.");
+                  // synthesis translate_on
+                end
+              endcase
+            end
+            else
+            begin
+              fetch_address <= {address[31:2] + 1, 2'b00};
+              data_ready    <= 0;
+            end
+          end
         end
       end
       default: next_state <= IDLE;
