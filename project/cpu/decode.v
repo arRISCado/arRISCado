@@ -390,9 +390,9 @@ module decode (
                         // amoswap.w
                         7'b0000100:
                         begin
-                            // Não sei mto bem o que fazer aqui...
-                            // TODO: trocar (swap) o conteúdo de uma palavra na memória
-                            //      com o conteúdo de um registrador e retorna o valor original.
+                            // amoswap.w rd, addr, rs1
+                            // Salva em rd, o valor de rs1
+                            AluControl <= 5'b10011;
                         end
                         // amoadd.w
                         7'b0000000:
@@ -417,22 +417,22 @@ module decode (
                         // amomin.w
                         7'b1000000:
                         begin
-                            AluControl <= 5'b10011;
+                            AluControl <= 5'b10100;
                         end
                         // amomax.w
                         7'b1010000:
                         begin
-                            AluControl <= 5'b10100;
+                            AluControl <= 5'b10101;
                         end
                         // amominu.w
                         7'b1100000:
                         begin
-                            AluControl <= 5'b10101;
+                            AluControl <= 5'b10110;
                         end
                         // amomaxu.w
                         7'b1110000:
                         begin
-                            AluControl <= 5'b10110;
+                            AluControl <= 5'b10111;
                         end
                     endcase
                 end
