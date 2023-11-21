@@ -32,7 +32,7 @@ module nano9k (
     cpu Cpu(
         .clock(effClk),
         .reset(~btn1),
-        .led(led),
+        //.led(led),
         .enable(cpu_enable),    
         .rom_address(instruction_address),
         .rom_data(instruction_data),
@@ -47,7 +47,7 @@ module nano9k (
     uart Uart(
          .clk(clk), 
          .uart_rx(uart_rx), 
-         //.led(led), 
+         .led(led), 
          .cpu_enable(cpu_enable),
          .address(instruction_address),
          .data(instruction_data)

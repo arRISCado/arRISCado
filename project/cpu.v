@@ -1,23 +1,18 @@
 module cpu(
     input clock,
     input reset,
-    output [5:0] led,
+    //output [5:0] led,
     input enable,
     input [31:0] rom_data,
     output wire [7:0] rom_address,
     output port_pwm1
 );
-    assign led[4:0] = ex_mem_result[4:0];
-
-    
+    //assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
     reg test = 0;
 
-    always@(posedge clock_real) begin
-        test = ~test;
-    end
-    assign led[5] = test;
+    
 
     // ### Component wires ###
 
