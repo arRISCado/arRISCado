@@ -35,11 +35,13 @@ module alu (
   localparam DIV_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
   localparam REM_USGN       = 5'b10010;
-  localparam AMOMAX_SGN     = 5'b10100;
-  localparam AMOMIN_USGN    = 5'b10101;
-  localparam AMOMAX_USGN    = 5'b10110;
+  localparam AMOSWAP        = 5'b10011;
+  localparam AMOMIN_SGN     = 5'b10100;
+  localparam AMOMAX_SGN     = 5'b10101;
+  localparam AMOMIN_USGN    = 5'b10110;
+  localparam AMOMAX_USGN    = 5'b10111;
 
-  localparam SUB_USN        = 5'b10011;
+  localparam SUB_USN        = 5'b11000; // Apagar ? Nunca usado...
 
   assign u_a = a;
   assign u_b = b;
@@ -103,6 +105,7 @@ module alu (
         div_op = 1;
         result = div_remainder;        //remu
       end
+      AMOSWAP:       result = b;                        // amoswap.w
       AMOMIN_SGN:    result = (s_a < s_b) ? s_a : s_b;  // amomin.w
       AMOMAX_SGN:    result = (s_a > s_b) ? s_a : s_b;  // amomax.w
       AMOMIN_USGN:   result = (a < b) ? a : b;          // amominu.w
