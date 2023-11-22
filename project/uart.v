@@ -5,7 +5,7 @@ module uart
 (
     input clk,
     input uart_rx,
-    output [5:0] led,
+    //output reg [5:0] led,
     output reg cpu_enable = 0,
     input wire [7:0] address,
     output wire [31:0] data
@@ -41,22 +41,13 @@ localparam ROM_WRITE_4 = 3;
 localparam RECEIVE_SIZE = 4;
 localparam RECEIVE_DONE = 5;
 
-reg [31:0] dataOut;
 reg [2:0] romWriteState = RECEIVE_SIZE;
-//assign data = dataOut;
-assign led[5:0] = ~data[5:0];
-
-wire [7:0] next_address = address + 4;
-wire [31:0] data1 = instructionMemory[address[7:2]];
-wire [31:0] data2 = instructionMemory[next_address[7:2]];
-
-assign data = address[1:0] == 'b00 ? data1 :
-              address[1:0] == 'b01 ? {data2[7:0],  data1[31:8] } :
-              address[1:0] == 'b10 ? {data2[15:0], data1[31:16]} :
-                                     {data2[23:0], data1[31:24]};
-
 
 always @(posedge clk) begin
+    if (address <= 8'd127)
+        data <= instructionMemory[address];
+    else
+        data <= 32'b10011;
     case (rxState)
         RX_STATE_IDLE: begin
             if (uart_rx == 0) begin
@@ -142,7 +133,7 @@ always @(posedge clk) begin
 end
 
 initial begin
-    $readmemh(`UART_FILE, instructionMemory, 0, 127);
+    $readmemh(`UART_FILE, instructionMemory, 0, 255);
     //led[5:0] <= 6'b111111;
 end
 
