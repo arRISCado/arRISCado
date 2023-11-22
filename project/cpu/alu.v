@@ -39,9 +39,9 @@ module alu (
   assign u_a = a;
   assign u_b = b;
 
-  reg [31:0] div_result;
-  reg [31:0] div_remainder;
-  reg [31:0] div_done;
+  wire [31:0] div_result;
+  wire [31:0] div_remainder;
+  wire div_done;
 
   divider divider(a, b, div_result, div_remainder, div_done);
 

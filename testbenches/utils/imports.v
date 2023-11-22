@@ -14,3 +14,4 @@
 `include "../../project/cpu.v"
 `include "../../project/peripheral/peripheral_manager.v"
 `include "../../project/peripheral/pwm_port.v"
+`include "../../project/cpu/divider.v"

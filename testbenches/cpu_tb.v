@@ -38,7 +38,7 @@ module test;
     #5;
     reset = 0;
     
-    $monitor("%h %d %d", cpu.Fetch.pc, cpu.Execute.alu.a, cpu.Execute.alu.b);
+    $monitor("%h %d %d %d", cpu.Fetch.instr, cpu.Execute.alu.divider.quotient, cpu.Execute.alu.a, cpu.Execute.alu.b);
     #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
