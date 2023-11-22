@@ -57,7 +57,7 @@ module cpu(
         .m_address(ram_address),
         .m_data_in(ram_data_in),
         .m_write_enable(ram_write_enable),
-        .m_data_ready(1),
+        .m_data_ready(1'b1),
         .m_data_out(ram_data_out)
     );
 
@@ -243,7 +243,6 @@ module cpu(
 
         // from RAM signals
         .mem_read_data(mem_data_out),
-        .mem_data_ready(mem_data_ready),
 
         // control inputs
         .MemRead(ex_mem_MemRead), // sinal de load

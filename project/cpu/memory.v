@@ -68,32 +68,32 @@ module memory (
         end
         else 
         begin
-                // Input signals from execute and control
-                _addr <= addr;
-                _data_in <= data_in;
-                _load <= MemRead;
-                _store <= MemWrite;
+            // Input signals from execute and control
+            _addr <= addr;
+            _data_in <= data_in;
+            _load <= MemRead;
+            _store <= MemWrite;
 
-                // Control signals to the next step
-                out_MemToReg <= in_MemToReg;
-                out_RegWrite <= in_RegWrite;
-                out_RegDest <= in_RegDest;
-                out_RegDataSrc <= in_RegDataSrc;
-                out_PCSrc <= in_PCSrc;
-                out_BranchTarget <= in_BranchTarget;
-                mem_done <= 1;
+            // Control signals to the next step
+            out_MemToReg <= in_MemToReg;
+            out_RegWrite <= in_RegWrite;
+            out_RegDest <= in_RegDest;
+            out_RegDataSrc <= in_RegDataSrc;
+            out_PCSrc <= in_PCSrc;
+            out_BranchTarget <= in_BranchTarget;
+            mem_done <= 1;
 
-                if (mem_write_enable)
-                    mem_write_enable <= 0;
+            if (mem_write_enable)
+                mem_write_enable <= 0;
 
-                `ifdef TESTBENCH
-                if (MemWrite)
-                `elsif TEST
-                if (MemWrite)
-                `else
-                if (_store)
-                `endif
-                    mem_write_enable <= 1;
+            `ifdef TESTBENCH
+            if (MemWrite)
+            `elsif TEST
+            if (MemWrite)
+            `else
+            if (_store)
+            `endif
+                mem_write_enable <= 1;
         end
     end
 
