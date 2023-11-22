@@ -44,6 +44,7 @@ module alu (
 
   always @(*)
   begin
+    borrow = 0;
     case (AluControl)
       BITWISE_AND:   result = a & b;     // Bitwise AND
       BITWISE_OR:    result = a | b;     // Bitwise OR
