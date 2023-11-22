@@ -1,41 +1,54 @@
 // Multicycle Divider
 
 module divider(
+  input clk,
+  input div_op,
   input [31:0] dividend,
   input [31:0] divisor,
   output reg [31:0] quotient,
   output reg [31:0] remainder,
-  output reg done
+  output reg busy = 0
 );
 
-  reg [31:0] p1;
   reg [31:0] count;
-  reg [31:0] d1, d2;
-  integer i;
+  reg [31:0] a, b;
+  reg [31:0] q, r;
 
-  always @(dividend or divisor)
+  always @(posedge clk && div_op)
     begin
-    done = 0;
-    d1 = dividend;
-    d2 = divisor;
-    p1 = 0;
-    for(i = 0; i < 32; i=i+1)
-      begin
-        p1 = {p1[30:0], d1[31]};
-        d1[31:1] = d1[30:0];
-        p1 = p1 - d2;
-        
-        if(p1[31] == 1)
-          begin
-            d1[0] = 0;
-            p1 = p1+d2;
-          end
-          else
-            d1[0] = 1;
-      end
-      remainder = p1;
-      quotient = d1;
-      done = 1;
+        if(div_op && ~busy)
+        begin
+            busy = 1;
+            count = 0;
+            a = 32'b0;
+            b = divisor;
+            q = 32'b0;
+            r = dividend;
+        end
+        else 
+        begin
+            count = count+1;
+            a = {a, dividend[32-count]};
+            if (a >= b)
+            begin
+                q = q << 1;
+                q = q+1;
+                a = a-b;
+                r = a;
+            end
+            else
+            begin
+                q = q << 1;
+                r = a;
+            end
+            
+            if(count == 32)
+            begin
+                busy = 0;
+                quotient = q;
+                remainder = r;
+            end
+        end
     end
 
 endmodule

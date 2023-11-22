@@ -58,7 +58,7 @@ module execute (
     wire borrow;
     reg [31:0] a, b;
 
-    alu alu(_AluControl, a, b, result, zero, negative, borrow);
+    alu alu(clk, rst, _AluControl, a, b, result, zero, negative, borrow);
 
     localparam BEQ = 3'b000;
     localparam BNE = 3'b001;

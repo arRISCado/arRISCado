@@ -1,6 +1,8 @@
 // Arithmetic Logic Unit
 
 module alu (
+  input clk,
+  input rst,
   input [4:0] AluControl,
   input signed [31:0] a,
   input [31:0] b,
@@ -9,7 +11,7 @@ module alu (
   output reg negative,
   output reg borrow,
   output reg [31:0] remainder,
-  output wire done
+  output reg stall
 );
 
   wire [31:0] u_a;
@@ -41,14 +43,15 @@ module alu (
 
   wire [31:0] div_result;
   wire [31:0] div_remainder;
-  wire div_done;
+  wire div_busy;
+  reg div_op;
 
-  divider divider(a, b, div_result, div_remainder, div_done);
+  divider divider(clk, div_op, a, b, div_result, div_remainder, div_busy);
 
   always @(*)
   begin
     borrow = 0;                    // set initial value to 0
-
+    div_op = 0;
     case (AluControl)
       BITWISE_AND: result = a & b; // Bitwise AND
       BITWISE_OR: result = a | b; // Bitwise OR
@@ -77,10 +80,26 @@ module alu (
       MUL_HIGH: result = a * b;               //mulh
       MUL_SGN_USGN: result = a * u_b;         //mulhsu
       MUL_USGN_USGN: result = u_a * u_b;      //mulhu
-      DIV_SGN: result = div_result;           //div
-      DIV_USGN: result = div_result;          //divu
-      REM_SGN: result = div_remainder;        //rem
-      REM_USGN: result = div_remainder;       //remu
+      DIV_SGN:
+      begin
+        div_op = 1;
+        result = div_result;           //div
+      end
+      DIV_USGN: 
+      begin
+        div_op = 1;
+        result = div_result;           //divu
+      end
+      REM_SGN:
+      begin
+        div_op = 1;
+        result = div_remainder;        //rem
+      end
+      REM_USGN:
+      begin
+        div_op = 1;
+        result = div_remainder;        //remu
+      end
       SUB_USN: {result, borrow} = u_a - u_b;
 
       default: result = 32'b0; // Default output
@@ -88,6 +107,7 @@ module alu (
 
     zero      = (result == 32'b0);
     negative  = (result[31] == 1'b1);  
+    stall = div_busy;
   end
 
 endmodule

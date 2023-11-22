@@ -362,6 +362,7 @@ module decode (
                                 // div: divide signed rs1 by signed rs2
                                 3'b100:
                                     AluControl <= 5'b01111;
+                                    
                                 // divu: unsigned div
                                 3'b101:
                                     AluControl <= 5'b10000;    

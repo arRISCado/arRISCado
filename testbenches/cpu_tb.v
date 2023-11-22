@@ -38,12 +38,12 @@ module test;
     #5;
     reset = 0;
     
-    $monitor("%h %d %d %d", cpu.Fetch.instr, cpu.Execute.alu.divider.quotient, cpu.Execute.alu.a, cpu.Execute.alu.b);
+    $monitor("%h %d %d %d %b %b %b %b %b", cpu.Fetch.instr, cpu.Execute.alu.divider.q, cpu.Execute.alu.divider.dividend, cpu.Execute.alu.divider.divisor, cpu.Execute.alu.divider.q, cpu.Execute.alu.divider.a, cpu.Execute.alu.divider.b, cpu.Execute.alu.divider.div_op, cpu.Execute.alu.divider.busy);
     #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
 
-    #600;
+    #6000;
 
     $display("RAM");
     for (i = 0; i < 5; i++)
