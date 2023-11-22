@@ -84,7 +84,7 @@ module test;
         .rst(reset),
         
         .PCSrc(pc_src), // May come from writeback, but ideally from memory stage
-        .in_BranchTarget(branch_target), // May come from writeback, but ideally from memory stage
+        .branch_target(branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 

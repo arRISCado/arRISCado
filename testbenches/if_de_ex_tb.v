@@ -70,7 +70,7 @@ module test;
         .rst(reset),
         
         .PCSrc(pc_src), // May come from writeback, but ideally from memory stage
-        .in_BranchTarget(branch_target), // May come from writeback, but ideally from memory stage
+        .branch_target(branch_target), // May come from writeback, but ideally from memory stage
         .rom_data(rom_data),
         .rom_address(rom_address),
 
@@ -97,14 +97,16 @@ module test;
         .rst(reset),
         
         .rs1_value(rb_value1),
-        .rs2_value(rb_value2),
+        .rs2_value(rb_value1),
         .imm(de_ex_imm),
        
         // Control signals
         .AluSrc(de_ex_aluSrc),
         .AluOp(de_ex_aluOp),
 
-        .result(ex_mem_result)
+        .result(ex_mem_result),
+        .a(a),
+        .b(b)
     );
 
     wire [31:0] a;
@@ -121,11 +123,11 @@ module test;
         // Test case 1: Sequential fetch
         $display("Test Case 1");
 
-        for (i = 0; i < 10; i = i + 1)
+        for (i = 0; i < 8; i = i + 1)
         begin
             $display("Instr: %h, AluOp: %b, AluSrc: %b", if_de_instr, de_ex_aluOp, de_ex_aluSrc);
-            $display("1: Addr: %h, Value: %h, a: %h", rb_read_address1, rb_value1, execute.alu.a);
-            $display("2: Addr: %h, Value: %h, b: %h", rb_read_address2, rb_value2, execute.alu.b);
+            $display("1: Addr: %h, Value: %h, a: %h", rb_read_address1, rb_value1, a);
+            $display("2: Addr: %h, Value: %h, b: %h", rb_read_address2, rb_value2, b);
 
             clock = 1;
             #10;

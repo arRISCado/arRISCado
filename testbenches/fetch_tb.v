@@ -14,7 +14,7 @@ module test;
     fetch fetch_inst(
         .clk(clk),
         .PCSrc(pc_src),
-        .in_BranchTarget(branch_target),
+        .branch_target(branch_target),
         .pc(pc),
         .instr(instr),
         .rom_data(rom_data)
@@ -25,29 +25,31 @@ module test;
         .data(rom_data)
     );
 
-    integer i;
-
     // Testbench procedure
     initial begin
         // Initialize inputs
-        clk = 0;
         pc_src = 0;
-        branch_target = 32'h24; // Example branch target
+        branch_target = 32'h5; // Example branch target
 
         #10;
 
         // Test case 1: Sequential fetch
         $display("Test Case 1: Sequential fetch");
+        $display("PC: %h, Instruction: %h", pc, instr);
 
-        for (i = 0; i < 4; i = i + 1)
-        begin
-            $display("PC: %h, Instruction: %h", pc, instr);
+        clk = 0;
+        #10;
+        clk = 1;
+        #10;
+        clk = 0;
+        #10;
 
-            clk = 1;
-            #10;
-            clk = 0;
-            #10;
-        end
+        $display("PC: %h, Instruction: %h", pc, instr);
+
+        clk = 1;
+        #10;
+        clk = 0;
+        #10;
 
         $display("PC: %h, Instruction: %h", pc, instr);
 
