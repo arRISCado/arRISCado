@@ -5,6 +5,7 @@
 module register_bank(
   input clk,
   output [4:0] led,
+  input btn,
   input reset,
   input write_enable,
   input [4:0] write_address,
@@ -20,20 +21,25 @@ module register_bank(
   // stage to account for that.
   // (* ram_style = "logic" *) reg [31:0] register [31:0];
   reg [31:0] register [31:0];
+  reg [3:0] regadd = 10;
+  reg [4:0] ledval;
 
   integer i;
   initial
     for (i = 0; i < 32; i = i + 1)
       register[i] <= 0;
 
-  always @(posedge clk)
+  always @(posedge clk) begin
+    regadd = 10 + btn;
+    ledval <= register[regadd][4:0];
     if (write_enable == 1)
       if (write_address != 0)
         register[write_address] <= write_value;
+    end
 
   assign value1 = (write_enable && write_address == read_address1) ? write_value : register[read_address1];
   assign value2 = (write_enable && write_address == read_address2) ? write_value : register[read_address2];
-    assign led[4:0] = ~register[10][4:0];
+    assign led[4:0] = ~ledval;
 
 endmodule
 `endif

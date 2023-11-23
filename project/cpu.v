@@ -1,6 +1,7 @@
 module cpu(
     input clock,
     input reset,
+    input btn,
     output [5:0] led,
     input enable,
     input [31:0] rom_data,
@@ -65,6 +66,7 @@ module cpu(
     register_bank RegisterBank(
         .clk(clock_real),
         .led(led[4:0]),
+        .btn(btn),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),
