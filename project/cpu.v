@@ -1,13 +1,15 @@
 module cpu(
     input clock,
     input reset,
-    //output [5:0] led,
+    output [5:0] led,
     input enable,
     input [31:0] rom_data,
     output wire [7:0] rom_address,
     output port_pwm1
 );
     //assign led[5:0] = ~rom_data[5:0];
+    assign led[5] = ~clock_real;
+    //assign led[4:0] = ~rom_address[4:0];
 
     wire clock_real = clock & enable;
     reg test = 0;
@@ -62,6 +64,7 @@ module cpu(
 
     register_bank RegisterBank(
         .clk(clock_real),
+        .led(led[4:0]),
         .reset(reset),
         .write_enable(rb_write_enable),
         .write_address(rb_write_address),

@@ -4,6 +4,7 @@
 // Register Bank
 module register_bank(
   input clk,
+  output [4:0] led,
   input reset,
   input write_enable,
   input [4:0] write_address,
@@ -32,6 +33,7 @@ module register_bank(
 
   assign value1 = (write_enable && write_address == read_address1) ? write_value : register[read_address1];
   assign value2 = (write_enable && write_address == read_address2) ? write_value : register[read_address2];
+    assign led[4:0] = ~register[10][4:0];
 
 endmodule
 `endif

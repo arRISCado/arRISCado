@@ -5,7 +5,7 @@ module uart
 (
     input clk,
     input uart_rx,
-    output [5:0] led,
+    //output [5:0] led,
     output reg cpu_enable = 0,
     input wire [7:0] address,
     output wire [31:0] data
@@ -44,7 +44,7 @@ localparam RECEIVE_DONE = 5;
 reg [31:0] dataOut;
 reg [2:0] romWriteState = RECEIVE_SIZE;
 //assign data = dataOut;
-assign led[5:0] = ~data[5:0];
+//assign led[5:0] = ~data[5:0];
 
 wire [7:0] next_address = address + 4;
 wire [31:0] data1 = instructionMemory[address[7:2]];
