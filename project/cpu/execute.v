@@ -120,6 +120,10 @@ module execute (
                 out_RegDest    <= in_RegDest;
                 out_MemToReg   <= in_MemToReg;
                 out_RegDataSrc <= in_RegDataSrc;
+
+                if(AluOp == 3'b111)
+                out_BranchTarget <= rs1_value + imm;
+                else
                 out_BranchTarget <= PC + imm;
             end
         end
@@ -195,20 +199,19 @@ module execute (
             b <= _imm;
         end
 
-        // Aparentemente n precisa disso por questões de out_BranchTarget
-        // // Tipo J
-        // 3'b011:
-        // begin
-        //     a <= _PC;
-        //     b <= _imm;
-        // end
+        // Tipo J
+        3'b011:
+        begin
+            a <= _PC;
+            b <= 4;
+        end
 
-        // // TODO: JALR    
-        // 3'b111:
-        // begin
-        //     a <= _PC;
-        //     b <= _imm;
-        // end
+        // TODO: JALR    
+        3'b111:
+        begin
+            a <= _PC;
+            b <= 4;
+        end
 
         default:
         begin
