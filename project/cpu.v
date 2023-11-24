@@ -10,7 +10,13 @@ module cpu(
     output wire [31:0] rom_address,
     output port_pwm1
 );
-    assign led[5:0] = ex_mem_result[5:0];
+    assign led[5] = clock_real;
+    assign led[4] = port_pwm1;
+    assign led[3] = (ram_data_in == 32'd5) ? 0 : 1;
+    assign led[2] = (if_de_pc == 32'd72) ? 0 : 1;
+    assign led[1] = (ram_address == 32'd536870912) ? 0 : 1;
+    assign led[0] = (rb_value2 == 5) ? 0 : 1;
+    //assign led[5:0] = ex_mem_result[5:0];
 
     wire clock_real = clock & enable;
 
