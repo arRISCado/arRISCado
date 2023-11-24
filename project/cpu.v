@@ -11,9 +11,9 @@ module cpu(
     output wire [7:0] rom_address,
     output port_pwm1
 );
-    assign led[5] = clock_real;
-    assign led[4:0] = ex_mem_result[4:0];
-    //assign led[5:0] = ~rom_data[5:0];
+    //assign led[5] = clock_real;
+    //assign led[4:0] = ex_mem_result[4:0];
+    assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
     reg test = 0;
@@ -154,11 +154,9 @@ module cpu(
 
     // ### Pipeline ###
 
-    assign rst_with_bubble = reset || ex_mem_PCSrc;
-
     fetch Fetch(
         .clk(clock_real),
-        .rst(rst_with_bubble),
+        .rst(reset),
         .stall(stall),
         
         .in_BranchTarget(wb_if_BranchTarget),
@@ -175,7 +173,7 @@ module cpu(
 
     decode Decode(
         .clk(clock_real),
-        .rst(rst_with_bubble),
+        .rst(reset),
         .stall(stall),
         
         .next_instruction(if_de_instr),
