@@ -11,6 +11,7 @@ module test();
     
     cpu cpu(
         .clock(clk), 
+        .physical_clk(clk),
         .reset(rst), 
         .enable(1'b1),
         .led(led),

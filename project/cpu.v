@@ -3,6 +3,7 @@
 
 module cpu(
     input clock,
+    input physical_clk,
     input reset,
     output [5:0] led,
     input enable,
@@ -11,12 +12,7 @@ module cpu(
     output port_pwm1
 );
     assign led[5] = clock_real;
-    assign led[4] = port_pwm1;
-    assign led[3] = (ram_data_in == 32'd5) ? 0 : 1;
-    assign led[2] = (if_de_pc == 32'd72) ? 0 : 1;
-    assign led[1] = (ram_address == 32'd536870912) ? 0 : 1;
-    assign led[0] = (rb_value2 == 5) ? 0 : 1;
-    //assign led[5:0] = ex_mem_result[5:0];
+    assign led[4:0] = ex_mem_result[4:0];
     //assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
@@ -57,18 +53,19 @@ module cpu(
         .data_out(ram_data_out)
     );
 
-    
-    peripheral_manager Peripheral_manager(
-        .clk(clock),
-        .addr(ram_address),
-        .data_in(ram_data_in),
-        .write_enable(ram_write_enable),
-        .pwm1_out(port_pwm1)
-    );
-
     wire [31:0] mmu_p_address;
     wire [31:0] mmu_p_data_in;
     wire mmu_p_write_enable;
+    
+    peripheral_manager Peripheral_manager(
+        .clk(clock_real),
+        .physical_clk(physical_clk),
+        .addr(mmu_p_address),
+        .data_in(mmu_p_data_in),
+        .write_enable(mmu_p_write_enable),
+        .pwm1_out(port_pwm1)
+        //.debug_led(led)
+    );
 
     mmu MMU(
         .c_address(mem_address),
