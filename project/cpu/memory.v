@@ -4,6 +4,7 @@
 module memory (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
+
     input [31:0] addr,         // Address input
     input [31:0] data_in,      // Data input to be written
     
@@ -21,6 +22,7 @@ module memory (
 
     output [31:0] data_out,       // Data output read from memory
     output reg mem_done,              // Memory operation done signal
+    output wire stall_pipeline,
 
     // Control Signals
     output reg out_MemToReg,
@@ -48,13 +50,13 @@ module memory (
 
     always @(posedge clk or posedge rst)
     begin
+
         if (rst)
         begin
             _addr <= 0;
             _data_in <= 0;
             _load <= 0;
             _store <= 0;
-            
             out_MemToReg <= 0;
             out_RegWrite <= 0;
             out_RegDest <= 0;
@@ -94,5 +96,7 @@ module memory (
                 mem_write_enable <= 1;
         end
     end
+
+    assign stall_pipeline = ~mem_write_enable;
 endmodule
 `endif

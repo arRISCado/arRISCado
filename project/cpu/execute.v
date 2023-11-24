@@ -2,6 +2,7 @@
 module execute (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
+    input stall,
     
     input [31:0] rs1_value,
     input [31:0] rs2_value,
@@ -69,6 +70,7 @@ module execute (
 
     always @(posedge clk or posedge rst)
     begin
+        
         if (rst)
         begin
             _rs1_value  <= 0;
@@ -77,8 +79,7 @@ module execute (
             _AluSrc     <= 0;
             _AluOp      <= 0;
             _AluControl <= 0;
-            _imm        <= 0;
-
+            _imm        <= 0;   
             out_MemWrite   <= 0;
             out_MemRead    <= 0;
             out_RegWrite   <= 0;
@@ -89,36 +90,38 @@ module execute (
         end
         else
         begin
-            if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address1 == ex_mem_RegDest))
-                _rs1_value  <= in_result;
-            else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))
-                _rs1_value = mem_wb_AluResult;
-            else
-                _rs1_value <= rs1_value;
-
-
-            if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address2 == ex_mem_RegDest))
-                _rs2_value  <= in_result;
-            else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address2 == mem_wb_RegDest))
-                _rs2_value = mem_wb_AluResult;
-            else
-                _rs2_value <= rs2_value;
-
-            _imm        <= imm;
-            _PC         <= PC;
-            _AluSrc     <= AluSrc;
-            _AluOp      <= AluOp;
-            _AluControl <= AluControl;
-            _BranchType <= in_BranchType;
-            _PCSrc <= in_PCSrc;
-            
-            out_MemWrite   <= in_MemWrite;
-            out_MemRead    <= in_MemRead;
-            out_RegWrite   <= in_RegWrite;
-            out_RegDest    <= in_RegDest;
-            out_MemToReg   <= in_MemToReg;
-            out_RegDataSrc <= in_RegDataSrc;
-            out_BranchTarget <= PC + imm;
+            if (~stall) begin
+                if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address1 == ex_mem_RegDest))
+                    _rs1_value  <= in_result;
+                else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))
+                    _rs1_value = mem_wb_AluResult;
+                else
+                    _rs1_value <= rs1_value;
+    
+    
+                if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address2 == ex_mem_RegDest))
+                    _rs2_value  <= in_result;
+                else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address2 == mem_wb_RegDest))
+                    _rs2_value = mem_wb_AluResult;
+                else
+                    _rs2_value <= rs2_value;
+    
+                _imm        <= imm;
+                _PC         <= PC;
+                _AluSrc     <= AluSrc;
+                _AluOp      <= AluOp;
+                _AluControl <= AluControl;
+                _BranchType <= in_BranchType;
+                _PCSrc <= in_PCSrc;
+                
+                out_MemWrite   <= in_MemWrite;
+                out_MemRead    <= in_MemRead;
+                out_RegWrite   <= in_RegWrite;
+                out_RegDest    <= in_RegDest;
+                out_MemToReg   <= in_MemToReg;
+                out_RegDataSrc <= in_RegDataSrc;
+                out_BranchTarget <= PC + imm;
+            end
         end
     end
 

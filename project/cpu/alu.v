@@ -2,16 +2,15 @@
 
 module alu (
   input [4:0] AluControl,
-  input signed [31:0] a,
+  input [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
-  output reg zero,
-  output reg negative,
-  output reg borrow
+  output zero,
+  output negative,
+  output reg borrow = 0
 );
-
-  wire [31:0] u_a;
-  wire [31:0] u_b;
+  wire signed [31:0] s_a = a;
+  wire signed [31:0] s_b = b;
 
   localparam BITWISE_AND    = 5'b00000;
   localparam BITWISE_OR     = 5'b00001;
@@ -32,56 +31,50 @@ module alu (
   localparam DIV_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
   localparam REM_USGN       = 5'b10010;
-  localparam SUB_USN        = 5'b10011;
+  localparam AMOSWAP        = 5'b10011;
+  localparam AMOMIN_SGN     = 5'b10100;
+  localparam AMOMAX_SGN     = 5'b10101;
+  localparam AMOMIN_USGN    = 5'b10110;
+  localparam AMOMAX_USGN    = 5'b10111;
 
-  assign u_a = a;
-  assign u_b = b;
+  localparam SUB_USN        = 5'b11000; // Apagar ? Nunca usado...
+
+  assign zero     = (result == 32'b0);
+  assign negative = (result[31] == 1'b1);
 
   always @(*)
   begin
-    borrow = 0;                    // set initial value to 0
-
+    borrow = 0;
     case (AluControl)
-      BITWISE_AND: result = a & b; // Bitwise AND
-      BITWISE_OR: result = a | b; // Bitwise OR
-      ADDITION: result = a + b; // Addition
-      BITWISE_XOR: result = a ^ b; // Bitwise XOR
-      SUBTRACTION: result = a - b; // Subtraction
-      BITWISE_NOT: result = ~a; // Bitwise NOT
-      SHIFT_LEFT: result = a << b; // Shift Left
-      SHIFT_RIGHT: result = a >> b; // Shift Right
-      ARIT_SRIGHT: result = a >>> b; // Arithmetic Shift Right
-      SET_LESS:                       // SLT / SLTI
-      begin
-        if (a < b)
-        result = 1;
-        else
-        result = 0;
-      end
-      SET_LESS_U:                     // SLTU / SLTIU
-      begin
-        if (u_a < u_b)
-        result = 1;
-        else
-        result = 0;
-      end
-      MUL_SGN_SGN: result = a * b;            //mul
-      MUL_HIGH: result = a * b;               //mulh
-      MUL_SGN_USGN: result = a * u_b;         //mulhsu
-      MUL_USGN_USGN: result = u_a * u_b;      //mulhu
+      BITWISE_AND:   result = a & b;     // Bitwise AND
+      BITWISE_OR:    result = a | b;     // Bitwise OR
+      ADDITION:      result = a + b;     // Addition
+      BITWISE_XOR:   result = a ^ b;     // Bitwise XOR
+      SUBTRACTION:   result = a - b;     // Subtraction
+      BITWISE_NOT:   result = ~a;        // Bitwise NOT
+      SHIFT_LEFT:    result = a << b;    // Shift Left
+      SHIFT_RIGHT:   result = a >> b;    // Shift Right
+      ARIT_SRIGHT:   result = s_a >>> b;   // Arithmetic Shift Right
+      SET_LESS:      result = s_a < s_b;     // SLT / SLTI
+      SET_LESS_U:    result = a < b; // SLTU / SLTIU
       /*
-      DIV_SGN: result = a / b;                //div
-      DIV_USGN: result = u_a / u_b;           //divu
-      REM_SGN: result = a % b;                //rem
-      REM_USGN: result = u_a % u_b;           //remu
+      MUL_SGN_SGN:   result = a * b;     // mul
+      MUL_HIGH:      result = a * b;     // mulh
+      MUL_SGN_USGN:  result = a * b;   // mulhsu
+      MUL_USGN_USGN: result = a * b; // mulhu
+      DIV_SGN:       result = a / b;                //div
+      DIV_USGN:      result = u_a / u_b;           //divu
+      REM_SGN:       result = a % b;                //rem
+      REM_USGN:      result = u_a % u_b;           //remu
       */
-      SUB_USN: {result, borrow} = u_a - u_b;
+      AMOSWAP:       result = b;                        // amoswap.w
+      AMOMIN_SGN:    result = (s_a < s_b) ? s_a : s_b;  // amomin.w
+      AMOMAX_SGN:    result = (s_a > s_b) ? s_a : s_b;  // amomax.w
+      AMOMIN_USGN:   result = (a < b) ? a : b;          // amominu.w
+      AMOMAX_USGN:   result = (a > b) ? a : b;          // amomaxu.w
 
-      default: result = 32'b0; // Default output
+      SUB_USN:      {result, borrow} = a - b;
+      default:       result = 32'b0;
     endcase
-
-    zero      = (result == 32'b0);
-    negative  = (result[31] == 1'b1);  
   end
-
 endmodule

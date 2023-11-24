@@ -2,6 +2,7 @@
 module decode (
     input clk,                // Clock signal
     input rst,                // Reset signal
+    input stall,
 
     input [31:0] next_instruction,
     input [31:0] PC,
@@ -39,6 +40,7 @@ module decode (
     localparam CODE_SAVE_TYPE   = 7'b0100011;
     localparam CODE_I_TYPE      = 7'b0010011;
     localparam CODE_R_TYPE      = 7'b0110011;
+    localparam CODE_ATOMIC      = 7'b0101111;
     localparam CODE_SYS_CALL    = 7'b1110011;
 
 
@@ -57,6 +59,7 @@ module decode (
 
     always @(posedge clk or posedge rst)
     begin
+
         if (rst) 
         begin
             _instruction <= 0;
@@ -65,9 +68,11 @@ module decode (
         end
         else
         begin
-            _instruction <= next_instruction;
-            _value1 <= regbank_value1;
-            _value2 <= regbank_value2;
+            if (~stall) begin
+                _instruction <= next_instruction;
+                _value1 <= regbank_value1;
+                _value2 <= regbank_value2;
+            end
         end
     end
 
@@ -210,7 +215,7 @@ module decode (
                     imm <= {21'b0, _instruction[31:20]};
 
                     case (func3)
-                        // ADDI
+                        // ADDI, LI, MV
                         3'b000:
                         begin
                             AluControl <= 5'b00010;
@@ -275,72 +280,46 @@ module decode (
                     PCSrc <= 0;
 
                     case(func7)
-                        // ADD, SUB, SLL, SLT, SLTU, XOR, SRL, SRA, OR, AND (Tipo R)
-                        // SUB
+                        // SUB, SRA
                         7'b0100000 :
                         begin
                             case (func3)
-                                3'b000:
-                                AluControl <= 5'b00100;
+                                // SUB
+                                3'b000 :
+                                    AluControl <= 5'b00100;
+                                // SRA
+                                3'b101 :
+                                    AluControl <= 5'b01000;
                             endcase
                         end
+                        // ADD, SLL, SLT, SLTU, XOR, SRL, OR, AND (Tipo R)
                         7'b0000000 :
                         begin
                             case(func3)
+                                // ADD
                                 3'b000 :
-                                begin
-                                    case (func7)
-                                        // ADD
-                                        7'b0000000 :
-                                        begin
-                                            AluControl <= 5'b00010;
-                                        end
-                                    endcase
-                                end
+                                    AluControl <= 5'b00010;
                                 // AND
                                 3'b111 :
-                                begin
                                     AluControl <= 5'b00000;
-                                end
                                 // OR
                                 3'b110:
-                                begin
                                     AluControl <= 5'b00001;
-                                end
                                 // XOR
                                 3'b100:
-                                begin
                                     AluControl <= 5'b00011;
-                                end
                                 // SLL
                                 3'b001:
-                                begin
                                     AluControl <= 5'b00110;
-                                end
-                                // SRL, SRA
+                                // SRL
                                 3'b101 :
-                                begin
-                                    // SLR
-                                    if (func7 == 7'b0000000)
-                                    begin
-                                        AluControl <= 5'b00111;
-                                    end
-                                    // SRA
-                                    else if (func7 == 7'b0100000) 
-                                    begin
-                                        AluControl <= 5'b01000;
-                                    end
-                                end
+                                    AluControl <= 5'b00111;
                                 // SLT
                                 3'b010:
-                                begin
                                     AluControl <= 5'b01001;
-                                end
                                 // SLTU
                                 3'b011:
-                                begin
                                     AluControl <= 5'b01010;
-                                end
                             endcase
                         end
                         // MUL, MULH, MULHSU, MULHU, DIV, DIVU, REM, REMU (RV32M)
@@ -376,6 +355,91 @@ module decode (
                     endcase
                 end
 
+
+            // Instruções para operações atomicas (RV32A)
+            CODE_ATOMIC:
+                begin
+                    AluOp <= 3'b010;
+                    AluSrc  <= 0;
+                    MemToReg <= 0;
+                    RegWrite <= 1;
+                    MemRead <= 0;
+                    MemWrite <= 0;
+                    PCSrc <= 0;
+
+                    case(func7)
+                        // lr.w
+                        7'b0001000:
+                        begin
+                            AluOp <= 3'b000;
+                            AluSrc <= 1;
+                            MemToReg <= 1;
+                            // RegWrite <= 1;
+                            MemRead <= 1;
+                            // MemWrite <= 0;
+                            AluControl <= 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
+                            imm <= {20'b0, _instruction[31:20]};
+                        end
+                        // sc.w
+                        7'b0001100:
+                        begin
+                            AluOp <= 3'b000;
+                            AluSrc <= 1;
+                            RegWrite <= 0;
+                            // MemRead <= 0;
+                            MemWrite <= 1;
+                            AluControl <= 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
+                            imm <= {20'b0, _instruction[31:25], _instruction[11:7]};
+                        end
+                        // amoswap.w
+                        7'b0000100:
+                        begin
+                            // amoswap.w rd, addr, rs1
+                            // Salva em rd, o valor de rs1
+                            AluControl <= 5'b10011;
+                        end
+                        // amoadd.w
+                        7'b0000000:
+                        begin
+                            AluControl <= 5'b00010;
+                        end
+                        // amoxor.w
+                        7'b0010000:
+                        begin
+                            AluControl <= 5'b00011;
+                        end
+                        // amoand.w
+                        7'b0110000:
+                        begin
+                            AluControl <= 5'b00000;
+                        end
+                        // amoor.w
+                        7'b0100000:
+                        begin
+                            AluControl <= 5'b00001;
+                        end
+                        // amomin.w
+                        7'b1000000:
+                        begin
+                            AluControl <= 5'b10100;
+                        end
+                        // amomax.w
+                        7'b1010000:
+                        begin
+                            AluControl <= 5'b10101;
+                        end
+                        // amominu.w
+                        7'b1100000:
+                        begin
+                            AluControl <= 5'b10110;
+                        end
+                        // amomaxu.w
+                        7'b1110000:
+                        begin
+                            AluControl <= 5'b10111;
+                        end
+                    endcase
+                end
 
             // // FENCE: Synch Thread
             // 7'b000111 :

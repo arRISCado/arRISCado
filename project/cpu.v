@@ -4,10 +4,10 @@
 module cpu(
     input clock,
     input reset,
-    output [5:0] led,
+    //output [5:0] led,
     input enable,
-    input wire [31:0] rom_data,
-    output wire [31:0] rom_address,
+    input [31:0] rom_data,
+    output wire [7:0] rom_address,
     output port_pwm1
 );
     assign led[5] = clock_real;
@@ -17,10 +17,18 @@ module cpu(
     assign led[1] = (ram_address == 32'd536870912) ? 0 : 1;
     assign led[0] = (rb_value2 == 5) ? 0 : 1;
     //assign led[5:0] = ex_mem_result[5:0];
+    //assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
+    reg test = 0;
+
+    
 
     // ### Component wires ###
+
+    // Cache
+    wire [31:0] mem_address, mem_data_in, mem_data_out;
+    wire mem_write_enable, mem_data_ready;
 
     // RAM
     wire [31:0] ram_address, ram_data_in, ram_data_out;
@@ -31,15 +39,13 @@ module cpu(
     wire [4:0] rb_write_address, rb_read_address1, rb_read_address2;
     wire [31:0] rb_value1, rb_value2, rb_write_value;
 
+
+    // ### Stall Control ###
+    wire stall;
+
     // ### Components ###
 
-
     // Memories
-
-    //Address map
-    //abcxxx...xxx
-    //abc = destiny (000 = ram, 001 = peripheral1, ..., 111 = peripheral7)
-    //xxx...xxx = addr
 
     ram Ram(
         .clk(clock_real), 
@@ -60,12 +66,28 @@ module cpu(
         .pwm1_out(port_pwm1)
     );
 
-    /*
-    rom Rom(
-        .address(rom_address),
-        .data(rom_data)
+    wire [31:0] mmu_p_address;
+    wire [31:0] mmu_p_data_in;
+    wire mmu_p_write_enable;
+
+    mmu MMU(
+        .c_address(mem_address),
+        .c_data_in(mem_data_in),
+        .c_write_enable(mem_write_enable),
+        .c_data_ready(mem_data_ready),
+        .c_data_out(mem_data_out),
+        
+        .m_address(ram_address),
+        .m_data_in(ram_data_in),
+        .m_write_enable(ram_write_enable),
+        .m_data_ready(1'b1),
+        .m_data_out(ram_data_out),
+
+        .p_address(mmu_p_address),
+        .p_data_in(mmu_p_data_in),
+        .p_write_enable(mmu_p_write_enable),
+        .p_data_ready(1)
     );
-    */
 
     register_bank RegisterBank(
         .clk(clock_real),
@@ -135,17 +157,20 @@ module cpu(
 
     // ### Pipeline ###
 
+    assign rst_with_bubble = reset || ex_mem_PCSrc;
+
     fetch Fetch(
         .clk(clock_real),
-        .rst(reset),
+        .rst(rst_with_bubble),
+        .stall(stall),
         
-        .in_BranchTarget(wb_if_BranchTarget), // May come from writeback, but ideally from memory stage
+        .in_BranchTarget(wb_if_BranchTarget),
         .rom_data(rom_data),
         .rom_address(rom_address),
 
-        .PCSrc(wb_if_PCSrc), // May come from writeback, but ideally from memory stage
+        .PCSrc(wb_if_PCSrc),
 
-        .pc(if_de_pc), // TODO: goes to memory stage for auipc instruction
+        .pc(if_de_pc),
         .instr(if_de_instr)
     );
 
@@ -153,7 +178,8 @@ module cpu(
 
     decode Decode(
         .clk(clock_real),
-        .rst(reset),
+        .rst(rst_with_bubble),
+        .stall(stall),
         
         .next_instruction(if_de_instr),
         .PC(if_de_pc),
@@ -185,6 +211,7 @@ module cpu(
     execute Execute(
         .clk(clock_real),
         .rst(reset),
+        .stall(stall),
         
         .rs1_value(rb_value1),//(de_ex_value1),
         .rs2_value(rb_value2),//(de_ex_value2),
@@ -243,7 +270,7 @@ module cpu(
         .data_in(ex_mem_rs2_value), 
 
         // from RAM signals
-        .mem_read_data(ram_data_out),
+        .mem_read_data(mem_data_out),
 
         // control inputs
         .MemRead(ex_mem_MemRead), // sinal de load
@@ -270,17 +297,17 @@ module cpu(
         .out_BranchTarget(mem_wb_BranchTarget),
 
         // to RAM signals
-        .mem_addr(ram_address),
-        .mem_write_data(ram_data_in),
-        .mem_write_enable(ram_write_enable)
+        .mem_addr(mem_address),
+        .mem_write_data(mem_data_in),
+        .mem_write_enable(mem_write_enable),
+        .stall_pipeline(stall)
     );
-
-    wire [4:0] wb_if_RegDest; //LIGAR
 
     writeback Writeback(
         // inputs
         .clk(clock_real),
         .rst(reset),
+        .stall(stall),
 
         .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
