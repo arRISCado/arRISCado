@@ -7,4 +7,9 @@ main:
 	addi a0, a0, 1
     mul a1, a1, a3
     bne a0, a2, .loop
-    j main
+    nop
+    nop
+    nop
+    nop
+    nop
+    bne a0, zero, main
