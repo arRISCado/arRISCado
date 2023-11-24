@@ -4,7 +4,7 @@
 module cpu(
     input clock,
     input reset,
-    //output [5:0] led,
+    output [5:0] led,
     input enable,
     input [31:0] rom_data,
     output wire [7:0] rom_address,
@@ -86,7 +86,7 @@ module cpu(
         .p_address(mmu_p_address),
         .p_data_in(mmu_p_data_in),
         .p_write_enable(mmu_p_write_enable),
-        .p_data_ready(1)
+        .p_data_ready(1'd1)
     );
 
     register_bank RegisterBank(
