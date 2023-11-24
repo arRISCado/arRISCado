@@ -39,7 +39,6 @@ module test;
     reset = 0;
     
     $monitor("%h %d %d", cpu.Fetch.pc, cpu.Execute.alu.a, cpu.Execute.alu.b);
-    #600;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
 
@@ -49,7 +48,7 @@ module test;
     for (i = 0; i < 5; i++)
       $display("%d: %h", i, cpu.Ram.storage[i]);
     $display("Registers");
-    for (i = 1; i < 31; i++)
+    for (i = 1; i < 5; i++)
       $display("%d: %h", i, cpu.RegisterBank.register[i]);
 
     $finish;

@@ -97,6 +97,6 @@ module memory (
         end
     end
 
-    assign stall_pipeline = ~mem_write_enable;
+    assign stall_pipeline = 0;
 endmodule
 `endif
