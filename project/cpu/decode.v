@@ -133,7 +133,7 @@ module decode (
                 MemWrite <= 0;
                 PCSrc <= 1;
                 AluControl <= 5'b00010;
-                imm <= {12'b0, _instruction[31:12]};
+                imm <= {11'b0, _instruction[31], _instruction[19:12], _instruction[20], _instruction[30:21], 1'b0};
             end
 
             //JARL: Jump And Link Register (Tipo I)

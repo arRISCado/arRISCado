@@ -127,6 +127,8 @@ module execute (
 
     always @(*)
     begin
+        if(AluOp == 'b001)
+        begin
         case (_BranchType)
             'b000: // beq
                 out_PCSrc <= zero ? _PCSrc : 0;
@@ -141,6 +143,9 @@ module execute (
             default:
                 out_PCSrc <= 0;
         endcase
+        end
+        else 
+        out_PCSrc <= _PCSrc;
     end
 
     always @(*)
@@ -190,19 +195,21 @@ module execute (
             b <= _imm;
         end
 
-        // Tipo J
-        3'b011:
-        begin
-            a <= _PC;
-            b <= _imm;
-        end
+        // Aparentemente n precisa disso por questões de out_BranchTarget
+        // // Tipo J
+        // 3'b011:
+        // begin
+        //     a <= _PC;
+        //     b <= _imm;
+        // end
 
-        // TODO: JALR
-        3'b111:
-        begin
-            a <= _PC;
-            b <= _imm;
-        end
+        // // TODO: JALR    
+        // 3'b111:
+        // begin
+        //     a <= _PC;
+        //     b <= _imm;
+        // end
+
         default:
         begin
             a <= 0;
