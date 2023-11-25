@@ -20,9 +20,9 @@ module ram (
   always @(posedge clk)
   begin
     if (write_enable)
-      storage[address] <= data_in;
+      storage[{2'b0, address[31:2]}] <= data_in;
 
-    data_out <= storage[address];
+    data_out <= storage[{2'b0, address[31:2]}];
   end
 endmodule
 `endif

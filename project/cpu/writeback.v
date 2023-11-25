@@ -6,7 +6,6 @@ module writeback (
     input rst,                  // Reset signal
     input stall,
 
-    input mem_done,             // Memory operation done signal from the memory stage
     input [31:0] data_mem,      // Data read from memory
     input [31:0] result_alu,    // Result of ALU operation
 
@@ -25,7 +24,7 @@ module writeback (
     output reg [31:0] out_BranchTarget,
     output reg out_PCSrc
 );
-    reg _mem_done, _MemToReg;
+    reg _MemToReg;
     reg [31:0] _result_alu;
     reg [31:0] _data_mem;
 
@@ -33,7 +32,6 @@ module writeback (
     begin
         if (rst)
         begin
-            _mem_done <= 0;
             _MemToReg <= 0;
             _result_alu <= 0;
 
@@ -46,7 +44,6 @@ module writeback (
         else 
         begin
             if (~stall) begin
-                _mem_done <= mem_done;
                 _MemToReg <= MemToReg;
                 _result_alu <= result_alu;
 
