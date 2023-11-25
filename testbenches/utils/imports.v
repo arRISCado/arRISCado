@@ -24,6 +24,7 @@
 `include "../../project/rom.v"
 `include "../../project/cpu/register_bank.v"
 `include "../../project/cpu/alu.v"
+`include "../../project/cpu/divider.v"
 `include "../../project/cpu/fetch.v"
 `include "../../project/cpu/decode.v"
 `include "../../project/cpu/execute.v"
