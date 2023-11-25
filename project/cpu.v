@@ -47,18 +47,44 @@ module cpu(
         .data_out(ram_data_out)
     );
 
+    wire [31:0] l1d_address;
+    wire [31:0] l1d_data_in;
+    wire [31:0] l1d_data_out;
+    wire l1d_data_ready;
+    wire l1d_write_enable;
+
+    cache L1D(
+        .clk(clock_real),
+
+        // Core
+        .address(l1d_address),
+        .data_in(l1d_data_in),
+        .write_enable(l1d_write_enable),
+        .read_enable(mem_wb_MemToReg),
+        .data_ready(l1d_data_ready),
+        .data_out(l1d_data_out),
+
+        // RAM
+        .fetch_address(ram_address),
+        .fetch_write_data(ram_data_in),
+        .fetch_write_enable(ram_write_enable),
+        .fetch_read_data(ram_data_out)
+    );
+
     mmu MMU(
+        // Core
         .c_address(mem_address),
         .c_data_in(mem_data_in),
         .c_write_enable(mem_write_enable),
         .c_data_ready(mem_data_ready),
         .c_data_out(mem_data_out),
         
-        .m_address(ram_address),
-        .m_data_in(ram_data_in),
-        .m_write_enable(ram_write_enable),
-        .m_data_ready(1'b1),
-        .m_data_out(ram_data_out)
+        // Memory
+        .m_address(l1d_address),
+        .m_data_in(l1d_data_in),
+        .m_write_enable(l1d_write_enable),
+        .m_data_ready(l1d_data_ready),
+        .m_data_out(l1d_data_out)
     );
 
     register_bank RegisterBank(
@@ -255,7 +281,7 @@ module cpu(
 
         // outputs
         .data_out(mem_wb_data_out),
-        .mem_done(mem_wb_mem_done),
+        .mem_done(mem_data_ready),
 
         // control outputs
         .out_MemToReg(mem_wb_MemToReg),
@@ -279,7 +305,6 @@ module cpu(
         .rst(reset),
         .stall(stall),
 
-        .mem_done(mem_wb_mem_done),
         .data_mem(mem_wb_data_out),
         .result_alu(mem_wb_AluResult),
 

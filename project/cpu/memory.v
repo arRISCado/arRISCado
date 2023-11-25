@@ -22,8 +22,7 @@ module memory (
     input [31:0] in_BranchTarget,
 
     output [31:0] data_out,       // Data output read from memory
-    output reg mem_done,              // Memory operation done signal
-    output wire stall_pipeline,
+    output reg stall_pipeline,
 
     // Control Signals
     output reg out_MemToReg,
@@ -32,11 +31,12 @@ module memory (
     output reg out_RegDataSrc,
     output reg out_PCSrc,
     output reg [31:0] out_BranchTarget,
+    output [31:0] out_AluResult,       // Propagate ALU result
 
     // to RAM signals
     output [31:0] mem_addr,       // Send   address to RAM
-    output [31:0] out_AluResult,       // Propagate ALU result
-    output [31:0] mem_write_data, // Send data to write in RAM
+    output reg [31:0] mem_write_data, // Send data to write in RAM
+    input mem_done,              // Memory operation done signal
     output reg mem_write_enable      // Send signal to enable writing in RAM
 );
 
@@ -45,19 +45,18 @@ module memory (
     reg [4:0] _RegDest;
 
     assign mem_addr = _addr;
-    assign mem_write_data = _data_in;
     assign data_out = mem_read_data;
     assign out_AluResult = _addr;
 
     always @(posedge clk or posedge rst)
     begin
-
         if (rst)
         begin
             _addr <= 0;
             _data_in <= 0;
             _load <= 0;
             _store <= 0;
+            stall_pipeline <= 0;
             out_MemToReg <= 0;
             out_RegWrite <= 0;
             out_RegDest <= 0;
@@ -65,39 +64,55 @@ module memory (
             out_PCSrc <= 0;
             out_BranchTarget <= 0;
             mem_write_enable <= 0;
-            mem_done <= 0;
+            mem_write_data <= 0;
         end
         else 
         begin
-            // Input signals from execute and control
-            _addr <= addr;
-            _data_in <= data_in;
-            _load <= MemRead;
-            _store <= MemWrite;
+            if (~stall_pipeline)
+            begin
+                if (MemWrite || MemRead)
+                    stall_pipeline <= 1;
+                else
+                    mem_write_data <= data_in;
 
-            // Control signals to the next step
-            out_MemToReg <= in_MemToReg;
-            out_RegWrite <= in_RegWrite;
-            out_RegDest <= in_RegDest;
-            out_RegDataSrc <= in_RegDataSrc;
-            out_PCSrc <= in_PCSrc;
-            out_BranchTarget <= in_BranchTarget;
-            mem_done <= 1;
+
+                // Input signals from execute and control
+                _addr <= addr;
+                _data_in <= data_in;
+                _load <= MemRead;
+                _store <= MemWrite;
+
+                // Control signals to the next step
+                out_MemToReg <= in_MemToReg;
+                out_RegWrite <= in_RegWrite;
+                out_RegDest <= in_RegDest;
+                out_RegDataSrc <= in_RegDataSrc;
+                out_PCSrc <= in_PCSrc;
+                out_BranchTarget <= in_BranchTarget;
+
+                `ifdef TESTBENCH
+                if (MemWrite)
+                `elsif TEST
+                if (MemWrite)
+                `else
+                if (_store)
+                `endif
+                    mem_write_enable <= 1;
+            end
+
+            if (stall_pipeline && mem_done)
+                stall_pipeline <= 0;
 
             if (mem_write_enable)
                 mem_write_enable <= 0;
-
-            `ifdef TESTBENCH
-            if (MemWrite)
-            `elsif TEST
-            if (MemWrite)
-            `else
-            if (_store)
-            `endif
-                mem_write_enable <= 1;
         end
     end
 
-    assign stall_pipeline = 0;
+    // This may cause problems later
+    always @(negedge clk)
+    begin
+        if (~stall_pipeline && (MemWrite || MemRead))
+            mem_write_data <= data_in;
+    end
 endmodule
 `endif
