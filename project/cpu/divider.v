@@ -5,8 +5,8 @@ module divider(
     input [31:0]    dividend,
     input [31:0]    divisor,
     output [31:0]   result,
+    output [31:0]   reminder,
     output          done, // 1 quando a divisão estiver completa será usado como stall
-    output          err
 );
 
     reg active;    // Verdadeiro se o divisor estiver em execução
@@ -17,10 +17,10 @@ module divider(
 
     // Calcula o dígito atual
     wire [32:0] sub = {work[30:0], _result[31]} - _divider;
-    assign err = !divisor;
 
     // Envia os resultados para nosso mestre
     assign result = _result;
+    assign reminder = work;
     assign done = ~active;
 
     always @(posedge clk or posedge reset) begin

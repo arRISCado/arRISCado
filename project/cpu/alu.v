@@ -1,13 +1,16 @@
 // Arithmetic Logic Unit
 
 module alu (
+  input clk,
+  input rst,
   input [4:0] AluControl,
   input [31:0] a,
   input [31:0] b,
   output reg [31:0] result,
   output zero,
   output negative,
-  output reg borrow = 0
+  output reg borrow = 0,
+  output stall
 );
   wire signed [31:0] s_a = a;
   wire signed [31:0] s_b = b;
@@ -39,8 +42,18 @@ module alu (
 
   localparam SUB_USN        = 5'b11000; // Apagar ? Nunca usado...
 
+  assign u_a = a;
+  assign u_b = b;
+
+  wire [31:0] div_result;
+  wire div_busy;
+  reg div_op;
+
+  divider divider(clk, rst, div_op, a, b, div_result, div_remainder, div_busy);
+
   assign zero     = (result == 32'b0);
   assign negative = (result[31] == 1'b1);
+  assign stall = div_busy;
 
   always @(*)
   begin
@@ -55,26 +68,55 @@ module alu (
       SHIFT_LEFT:    result = a << b;    // Shift Left
       SHIFT_RIGHT:   result = a >> b;    // Shift Right
       ARIT_SRIGHT:   result = s_a >>> b;   // Arithmetic Shift Right
-      SET_LESS:      result = s_a < s_b;     // SLT / SLTI
-      SET_LESS_U:    result = a < b; // SLTU / SLTIU
-      /*
-      MUL_SGN_SGN:   result = a * b;     // mul
-      MUL_HIGH:      result = a * b;     // mulh
-      MUL_SGN_USGN:  result = a * b;   // mulhsu
-      MUL_USGN_USGN: result = a * b; // mulhu
-      DIV_SGN:       result = a / b;                //div
-      DIV_USGN:      result = u_a / u_b;           //divu
-      REM_SGN:       result = a % b;                //rem
-      REM_USGN:      result = u_a % u_b;           //remu
-      */
+      SET_LESS:                       // SLT / SLTI
+      begin
+        if (a < b)
+        result = 1;
+        else
+        result = 0;
+      end
+      SET_LESS_U:                     // SLTU / SLTIU
+      begin
+        if (u_a < u_b)
+        result = 1;
+        else
+        result = 0;
+      end
+      MUL_SGN_SGN: result = a * b;            //mul
+      MUL_HIGH: result = a * b;               //mulh
+      MUL_SGN_USGN: result = a * u_b;         //mulhsu
+      MUL_USGN_USGN: result = u_a * u_b;      //mulhu
+      DIV_SGN:
+      begin
+        div_op = 1;
+        result = div_result;           //div
+      end
+      DIV_USGN: 
+      begin
+        div_op = 1;
+        result = div_result;           //divu
+      end
+      REM_SGN:
+      begin
+        div_op = 1;
+        result = div_remainder;        //rem
+      end
+      REM_USGN:
+      begin
+        div_op = 1;
+        result = div_remainder;        //remu
+      end
       AMOSWAP:       result = b;                        // amoswap.w
       AMOMIN_SGN:    result = (s_a < s_b) ? s_a : s_b;  // amomin.w
       AMOMAX_SGN:    result = (s_a > s_b) ? s_a : s_b;  // amomax.w
       AMOMIN_USGN:   result = (a < b) ? a : b;          // amominu.w
       AMOMAX_USGN:   result = (a > b) ? a : b;          // amomaxu.w
+      SUB_USN: {result, borrow} = u_a - u_b;
 
-      SUB_USN:      {result, borrow} = a - b;
-      default:       result = 32'b0;
+      default: result = 32'b0; // Default output
     endcase
+
+    //zero      = (result == 32'b0);
+    //negative  = (result[31] == 1'b1);
   end
 endmodule

@@ -44,7 +44,8 @@ module execute (
     output reg [31:0] out_BranchTarget,
     output reg [31:0] _rs2_value,
 
-    output [31:0] result
+    output [31:0] result,
+    output stall_pipeline
 );
     reg [31:0] _rs1_value, _imm, _PC;
     reg [2:0] _AluOp, _BranchType;
@@ -59,7 +60,7 @@ module execute (
     wire borrow;
     reg [31:0] a, b;
 
-    alu alu(_AluControl, a, b, result, zero, negative, borrow);
+    alu alu(clk, rst, _AluControl, a, b, result, zero, negative, borrow, stall_pipeline);
 
     localparam BEQ = 3'b000;
     localparam BNE = 3'b001;
