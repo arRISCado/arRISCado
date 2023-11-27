@@ -7,6 +7,8 @@ module cpu(
     input reset,
     output [5:0] led,
     input enable,
+    input btn1,
+    input btn2,
     input [31:0] rom_data,
     output wire [7:0] rom_address,
     output port_pwm1
@@ -63,6 +65,8 @@ module cpu(
         .addr(mmu_p_address),
         .data_in(mmu_p_data_in),
         .write_enable(mmu_p_write_enable),
+        .btn1(btn1),
+        .btn2(btn2),
         .pwm1_out(port_pwm1)
         //.debug_led(led)
     );

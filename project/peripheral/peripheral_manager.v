@@ -18,6 +18,8 @@ module peripheral_manager(
     input [31:0] addr, //Address
     input [31:0] data_in, //Data to write
     input write_enable, //Write if 1
+    input btn1,
+    input btn2,
 
     output [5:0] debug_led,
     output pwm1_out //Output of PWM port 1
@@ -43,6 +45,8 @@ module peripheral_manager(
 
     buttons buttons(
         .clk(clk),
+        .btn1(btn1),
+        .btn2(btn2),
         .buttons_output(buttons_out)
     );
 
