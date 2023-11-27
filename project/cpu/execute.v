@@ -121,17 +121,17 @@ module execute (
                 out_MemToReg   <= in_MemToReg;
                 out_RegDataSrc <= in_RegDataSrc;
 
-                if(AluOp == 3'b111)
-                out_BranchTarget <= rs1_value + imm;
+                if(_AluOp == 'b111)
+                    out_BranchTarget <= rs1_value + imm;
                 else
-                out_BranchTarget <= PC + imm;
+                    out_BranchTarget <= PC + imm;
             end
         end
     end
 
     always @(*)
     begin
-        if(AluOp == 'b001)
+        if(_AluOp == 'b001)
         begin
         case (_BranchType)
             'b000: // beq
@@ -139,17 +139,17 @@ module execute (
             'b001: // bne
                 out_PCSrc <= zero ? 0 : _PCSrc;
             'b100: // blt
-                out_PCSrc <= result[31] ? _PCSrc : 0;
+                out_PCSrc <= negative ? _PCSrc : 0;
             'b101: // bge
-                out_PCSrc <= result[31] ? 0 : _PCSrc;
+                out_PCSrc <= negative ? 0 : _PCSrc;
             // 110: // bltu
             // 111: // bgeu
             default:
                 out_PCSrc <= 0;
         endcase
         end
-        else 
-        out_PCSrc <= _PCSrc;
+        else
+            out_PCSrc <= _PCSrc;
     end
 
     always @(*)
@@ -158,7 +158,7 @@ module execute (
         // Tipo Load ou Store
         3'b000 :
         begin
-            a <= rs1_value;
+            a <= _rs1_value;
             b <= _imm;
         end
 
@@ -199,7 +199,7 @@ module execute (
             b <= _imm;
         end
 
-        // Tipo J
+        // Tipo JAL
         3'b011:
         begin
             a <= _PC;

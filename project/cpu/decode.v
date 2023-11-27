@@ -126,14 +126,14 @@ module decode (
             CODE_JAL : 
             begin
                 AluOp <= 3'b011;
-                AluSrc <= 1;
-                MemToReg <= 1;
-                RegWrite <= 0;
+                AluSrc <= 0;
+                MemToReg <= 0;
+                RegWrite <= 1;
                 MemRead <= 0;
                 MemWrite <= 0;
                 PCSrc <= 1;
                 AluControl <= 5'b00010;
-                imm <= {11'b0, _instruction[31], _instruction[19:12], _instruction[20], _instruction[30:21], 1'b0};
+                imm <= {_instruction[31] ? 11'b11111111111 : 11'b0, _instruction[31], _instruction[19:12], _instruction[20], _instruction[30:21], 1'b0};
             end
 
             //JARL: Jump And Link Register (Tipo I)
@@ -141,9 +141,9 @@ module decode (
             CODE_JARL :
             begin
                 AluOp <= 3'b111;
-                AluSrc <= 1;
-                MemToReg <= 1;
-                RegWrite <= 0;
+                AluSrc <= 0;
+                MemToReg <= 0;
+                RegWrite <= 1;
                 MemRead <= 0;
                 MemWrite <= 0;
                 PCSrc <= 1;
@@ -476,11 +476,11 @@ module decode (
             // end
 
             // ECALL and EBREAK: chamada de sistema (Tipo I)
-            CODE_SYS_CALL :
-            begin
-                AluOp <= 3'b001;
-                imm <= {20'b0, _instruction[31:20]};
-            end
+            // CODE_SYS_CALL :
+            // begin
+            //     AluOp <= 3'b000;
+            //     imm <= {20'b0, _instruction[31:20]};
+            // end
 
 
             // Should traslate to NOP
