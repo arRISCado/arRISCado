@@ -27,7 +27,6 @@ module test;
         .dividend(dividend),
         .divisor(divisor),
         .result(result),
-        .reminder(reminder),
         .done(done),
         .err(err)
     );
@@ -49,11 +48,13 @@ module test;
         reset = 0;
         start = 1;
         #5000;
+        start = 0;
+        #1000
         $finish;
     end
 
     always @(posedge clock) begin
-        $display("clock=%d, reset=%d, start=%d, dividend=%d, divisor=%d, result=%d, reminder=%d, done=%d, err=%d",
-                 clock, reset, start, dividend, divisor, result, reminder, done, err);
+        $display("clock=%d, reset=%d, start=%d, dividend=%d, divisor=%d, result=%d, done=%d, err=%d",
+                 clock, reset, start, dividend, divisor, result, done, err);
     end
 endmodule
