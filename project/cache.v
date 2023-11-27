@@ -366,7 +366,7 @@ module cache (
                   tag  [{n_addr_index, 2'b00}] <= addr_tag;
                   valid[{n_addr_index, 2'b00}] <= 1;
 
-                  fetch_write_data   <= {data[{n_addr_index, 2'b00}][31:24], _data_in[31:08]}
+                  fetch_write_data   <= {data[{n_addr_index, 2'b00}][31:24], _data_in[31:08]};
                   fetch_write_enable <= 1;
                   fetch_address      <= {n_addr, 2'b00};
 

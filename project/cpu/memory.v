@@ -106,10 +106,11 @@ module memory (
     end
 
     // This may cause problems later
-    always @(negedge clk)
-    begin
-        if (~stall_pipeline && (MemWrite || MemRead))
-            mem_write_data <= data_in;
-    end
+    // we need to find a solution taht can be sinthesized
+    // always @(negedge clk)
+    // begin
+    //     if (~stall_pipeline && (MemWrite || MemRead))
+    //         mem_write_data <= data_in;
+    // end
 endmodule
 `endif
