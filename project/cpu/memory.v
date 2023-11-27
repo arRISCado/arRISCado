@@ -4,6 +4,7 @@
 module memory (
     input clk,                 // Clock signal
     input rst,                 // Reset signal
+    input stall,
 
     input [31:0] addr,         // Address input
     input [31:0] data_in,      // Data input to be written
@@ -65,13 +66,12 @@ module memory (
         end
         else 
         begin
-            if (~stall_pipeline)
+            if (~stall)
             begin
                 if (MemWrite || MemRead)
                     stall_pipeline <= 1;
                 else
                     mem_write_data <= data_in;
-
 
                 // Input signals from execute and control
                 _addr <= addr;
@@ -95,22 +95,14 @@ module memory (
                 if (_store)
                 `endif
                     mem_write_enable <= 1;
-            end
 
             if (stall_pipeline && mem_done)
                 stall_pipeline <= 0;
 
             if (mem_write_enable)
                 mem_write_enable <= 0;
+            end
         end
     end
-
-    // This may cause problems later
-    // we need to find a solution taht can be sinthesized
-    // always @(negedge clk)
-    // begin
-    //     if (~stall_pipeline && (MemWrite || MemRead))
-    //         mem_write_data <= data_in;
-    // end
 endmodule
 `endif

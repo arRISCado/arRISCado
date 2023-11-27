@@ -35,6 +35,10 @@ module cpu(
 
     // ### Stall Control ###
     wire stall;
+    wire stall_from_memory;
+    wire stall_from_ex;
+
+    assign stall = stall_from_memory || stall_from_ex;
 
     // ### Components ###
 
@@ -226,7 +230,7 @@ module cpu(
     execute Execute(
         .clk(clock_real),
         .rst(reset),
-        .stall(stall),
+        .stall(stall_from_memory),
         
         .rs1_value(rb_value1),//(de_ex_value1),
         .rs2_value(rb_value2),//(de_ex_value2),
@@ -278,6 +282,7 @@ module cpu(
     memory Memory(
         .clk(clock_real),
         .rst(reset),
+        .stall(stall_from_execute),
 
         .addr(ex_mem_result), // deve ser atualizado
         .data_in(ex_mem_rs2_value), 
@@ -311,7 +316,7 @@ module cpu(
         .mem_addr(mem_address),
         .mem_write_data(mem_data_in),
         .mem_write_enable(mem_write_enable),
-        .stall_pipeline(stall)
+        .stall_pipeline(stall_from_mmory)
     );
 
     writeback Writeback(
