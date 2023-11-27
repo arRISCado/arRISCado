@@ -16,6 +16,7 @@
         <File path="project/cpu/writeback.v" type="file.verilog" enable="1"/>
         <File path="project/flash.v" type="file.verilog" enable="0"/>
         <File path="project/mmu.v" type="file.verilog" enable="1"/>
+        <File path="project/peripheral/buttons.v" type="file.verilog" enable="1"/>
         <File path="project/peripheral/peripheral_manager.v" type="file.verilog" enable="1"/>
         <File path="project/peripheral/pwm_port.v" type="file.verilog" enable="1"/>
         <File path="project/ram.v" type="file.verilog" enable="1"/>

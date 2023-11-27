@@ -39,6 +39,13 @@ module peripheral_manager(
         .debug_led(debug_led)
     );
 
+    wire [1:0] buttons_out;
+
+    buttons buttons(
+        .clk(clk),
+        .buttons_output(buttons_out)
+    );
+
     assign write_pwm1_1 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 0) ? 1 : 0;
     assign write_pwm1_2 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 1) ? 1 : 0;
 
