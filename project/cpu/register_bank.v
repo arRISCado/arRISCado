@@ -30,8 +30,8 @@ module register_bank(
       if (write_address != 0)
         register[write_address] <= write_value;
 
-  assign value1 = (write_enable && write_address == read_address1) ? write_value : register[read_address1];
-  assign value2 = (write_enable && write_address == read_address2) ? write_value : register[read_address2];
+  assign value1 = (write_enable && write_address == read_address1 && write_address != 0) ? write_value : register[read_address1];
+  assign value2 = (write_enable && write_address == read_address2 && write_address != 0) ? write_value : register[read_address2];
 
 endmodule
 `endif

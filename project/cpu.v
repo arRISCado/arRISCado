@@ -1,5 +1,9 @@
+`ifndef CPU
+`define CPU
+
 module cpu(
     input clock,
+    input physical_clk,
     input reset,
     output [5:0] led,
     input enable,
@@ -7,6 +11,8 @@ module cpu(
     output wire [7:0] rom_address,
     output port_pwm1
 );
+    //assign led[5] = clock_real;
+    //assign led[4:0] = ex_mem_result[4:0];
     assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
@@ -47,6 +53,20 @@ module cpu(
         .data_out(ram_data_out)
     );
 
+    wire [31:0] mmu_p_address;
+    wire [31:0] mmu_p_data_in;
+    wire mmu_p_write_enable;
+    
+    peripheral_manager Peripheral_manager(
+        .clk(clock_real),
+        .physical_clk(physical_clk),
+        .addr(mmu_p_address),
+        .data_in(mmu_p_data_in),
+        .write_enable(mmu_p_write_enable),
+        .pwm1_out(port_pwm1)
+        //.debug_led(led)
+    );
+
     mmu MMU(
         .c_address(mem_address),
         .c_data_in(mem_data_in),
@@ -58,7 +78,12 @@ module cpu(
         .m_data_in(ram_data_in),
         .m_write_enable(ram_write_enable),
         .m_data_ready(1'b1),
-        .m_data_out(ram_data_out)
+        .m_data_out(ram_data_out),
+
+        .p_address(mmu_p_address),
+        .p_data_in(mmu_p_data_in),
+        .p_write_enable(mmu_p_write_enable),
+        .p_data_ready(1'd1)
     );
 
     register_bank RegisterBank(
@@ -302,3 +327,5 @@ module cpu(
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 endmodule
+
+`endif
