@@ -58,6 +58,8 @@ module cpu(
     wire [31:0] mmu_p_address;
     wire [31:0] mmu_p_data_in;
     wire mmu_p_write_enable;
+    wire [31:0] p_mmu_data;
+    wire p_mmu_data_ready;
     
     peripheral_manager Peripheral_manager(
         .clk(clock_real),
@@ -67,7 +69,8 @@ module cpu(
         .write_enable(mmu_p_write_enable),
         .btn1(btn1),
         .btn2(btn2),
-        .pwm1_out(port_pwm1)
+        .pwm1_out(port_pwm1),
+        .data_out(p_mmu_data)
         //.debug_led(led)
     );
 
@@ -87,7 +90,8 @@ module cpu(
         .p_address(mmu_p_address),
         .p_data_in(mmu_p_data_in),
         .p_write_enable(mmu_p_write_enable),
-        .p_data_ready(1'd1)
+        .p_data_ready(1'd1),
+        .p_data_out(p_mmu_data)
     );
 
     register_bank RegisterBank(

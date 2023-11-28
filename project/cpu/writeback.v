@@ -27,6 +27,7 @@ module writeback (
 );
     reg _mem_done, _MemToReg;
     reg [31:0] _result_alu;
+    reg [31:0] _data_mem;
 
     always @(posedge clk or posedge rst) 
     begin
@@ -35,6 +36,7 @@ module writeback (
             _mem_done <= 0;
             _MemToReg <= 0;
             _result_alu <= 0;
+            _data_mem <= 0;
 
             out_RegDest <= 0;
             out_PCSrc <= 0;
@@ -47,6 +49,7 @@ module writeback (
                 _mem_done <= mem_done;
                 _MemToReg <= MemToReg;
                 _result_alu <= result_alu;
+                _data_mem <= data_mem;
 
                 // Control Signal
                 out_RegDest <= in_RegDest;
@@ -57,6 +60,6 @@ module writeback (
         end
     end
 
-    assign data_wb = (_MemToReg) ? data_mem : _result_alu;
+    assign data_wb = (_MemToReg) ? _data_mem : _result_alu;
 endmodule
 `endif
