@@ -126,14 +126,14 @@ module decode (
             CODE_JAL : 
             begin
                 AluOp <= 3'b011;
-                AluSrc <= 1;
-                MemToReg <= 1;
-                RegWrite <= 0;
+                AluSrc <= 0;
+                MemToReg <= 0;
+                RegWrite <= 1;
                 MemRead <= 0;
                 MemWrite <= 0;
                 PCSrc <= 1;
                 AluControl <= 5'b00010;
-                imm <= {12'b0, _instruction[31:12]};
+                imm <= {_instruction[31] ? 11'b11111111111 : 11'b0, _instruction[31], _instruction[19:12], _instruction[20], _instruction[30:21], 1'b0};
             end
 
             //JARL: Jump And Link Register (Tipo I)
@@ -141,9 +141,9 @@ module decode (
             CODE_JARL :
             begin
                 AluOp <= 3'b111;
-                AluSrc <= 1;
-                MemToReg <= 1;
-                RegWrite <= 0;
+                AluSrc <= 0;
+                MemToReg <= 0;
+                RegWrite <= 1;
                 MemRead <= 0;
                 MemWrite <= 0;
                 PCSrc <= 1;
@@ -151,7 +151,7 @@ module decode (
                 case (func3)
                 7'b000 :
                     begin
-                        imm <= {20'b0, _instruction[31:20]};
+                        imm <= {_instruction[31] ? 20'b11111111111111111111 : 20'b0, _instruction[31:20]};
                     end
 
                 endcase
@@ -182,7 +182,7 @@ module decode (
                     MemWrite <= 0;
                     PCSrc <= 0;
                     AluControl <= 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
-                    imm <= {20'b0, _instruction[31:20]};
+                    imm <= {_instruction[31] ? 20'b11111111111111111111 : 20'b0, _instruction[31:20]};
                 end
             
             // Instruções pros tipos de Save: dependem do func3 (Tipo S)
@@ -195,7 +195,7 @@ module decode (
                     MemWrite <= 1;
                     PCSrc <= 0;
                     AluControl <= 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
-                    imm <= {20'b0, _instruction[31:25], _instruction[11:7]};
+                    imm <= {_instruction[31] ? 20'b11111111111111111111 : 20'b0, _instruction[31:25], _instruction[11:7]};
                     
                     // Esse sinal irá indicar pra ALU/MEM qual o tipo de store
                     // (Não sei oq fazer pra diferenciar os tipos de store ainda, então o padrão vai ser SW por hora)
@@ -212,7 +212,7 @@ module decode (
                     MemRead <= 0;
                     MemWrite <= 0;
                     PCSrc <= 0;
-                    imm <= {21'b0, _instruction[31:20]};
+                    imm <= {_instruction[31] ? 20'b11111111111111111111 : 20'b0, _instruction[31:20]};
 
                     case (func3)
                         // ADDI, LI, MV
@@ -378,7 +378,7 @@ module decode (
                             MemRead <= 1;
                             // MemWrite <= 0;
                             AluControl <= 5'b00010; // LW performa uma soma na ALU pra calculcar endereço
-                            imm <= {20'b0, _instruction[31:20]};
+                            imm <= {_instruction[31] ? 20'b11111111111111111111 : 20'b0, _instruction[31:20]};
                         end
                         // sc.w
                         7'b0001100:
@@ -389,7 +389,7 @@ module decode (
                             // MemRead <= 0;
                             MemWrite <= 1;
                             AluControl <= 5'b00010; // SW performa uma soma na ALU pra calculcar endereço
-                            imm <= {20'b0, _instruction[31:25], _instruction[11:7]};
+                            imm <= {_instruction[31] ? 20'b11111111111111111111 : 20'b0, _instruction[31:25], _instruction[11:7]};
                         end
                         // amoswap.w
                         7'b0000100:
@@ -476,11 +476,11 @@ module decode (
             // end
 
             // ECALL and EBREAK: chamada de sistema (Tipo I)
-            CODE_SYS_CALL :
-            begin
-                AluOp <= 3'b001;
-                imm <= {20'b0, _instruction[31:20]};
-            end
+            // CODE_SYS_CALL :
+            // begin
+            //     AluOp <= 3'b000;
+            //     imm <= {20'b0, _instruction[31:20]};
+            // end
 
 
             // Should traslate to NOP
