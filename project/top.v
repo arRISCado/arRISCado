@@ -32,9 +32,9 @@ module nano9k (
     cpu Cpu(
         .clock(effClk),
         .physical_clk(clk),
-        .reset(0),
+        .reset(1'd0),
         .led(led),
-        .enable(1),//cpu_enable),   
+        .enable(1'd1),//cpu_enable),   
         .btn1(~btn1),
         .btn2(~btn2), 
         .rom_address(instruction_address),

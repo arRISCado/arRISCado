@@ -41,8 +41,8 @@ module peripheral_manager(
         .mem_write2(write_pwm1_2),
         .mem_data(data_in), 
         .mem_data2(data_in),
-        .port_output(pwm1_out),
-        .debug_led(debug_led)
+        .port_output(pwm1_out)
+        //.debug_led(debug_led)
     );
 
     wire [31:0] buttons_output;
@@ -58,7 +58,8 @@ module peripheral_manager(
         .btn2(btn2),
         .read_btn1(read_btn1),
         .read_btn2(read_btn2),
-        .buttons_output(buttons_output)
+        .buttons_output(buttons_output),
+        .debug_led(debug_led)
     );
 
     assign write_pwm1_1 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 0) ? 1 : 0;

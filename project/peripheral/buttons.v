@@ -7,16 +7,17 @@ module buttons(
     input btn2,
     input read_btn1,
     input read_btn2,
-    output reg [31:0] buttons_output //The output from the buttons
+    output reg [31:0] buttons_output, //The output from the buttons
+    output [5:0] debug_led
 );
+
+assign debug_led[5] = btn1_counter[0];
+assign debug_led[4] = btn2_counter[0];
+assign debug_led[3:0] = 3'd0;
 
 reg [31:0] btn1_counter;
 reg [31:0] btn2_counter;
 
-initial begin
-    btn1_counter <= 32'd6348;
-    btn2_counter <= 32'd123456;
-end
 
 always @(posedge btn1) begin
     btn1_counter <= btn1_counter+1;
