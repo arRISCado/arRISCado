@@ -37,7 +37,7 @@ module cpu(
     // ### Stall Control ###
     wire stall;
     wire stall_from_memory;
-    wire stall_from_ex;
+    wire stall_from_ex = 0;
 
     assign stall = stall_from_memory || stall_from_ex;
 

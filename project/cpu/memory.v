@@ -70,8 +70,7 @@ module memory (
             begin
                 if (MemWrite || MemRead)
                     stall_pipeline <= 1;
-                else
-                    mem_write_data <= data_in;
+                mem_write_data <= data_in;
 
                 // Input signals from execute and control
                 _addr <= addr;
