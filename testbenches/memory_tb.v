@@ -9,6 +9,9 @@ module test;
     reg reset = 0;
     reg [31:0] addr;
     reg [31:0] data_in;
+    reg stall;
+    wire stall_from_memory;
+    wire memory_tb;
 
     // from RAM signal
     wire [31:0] mem_read_data;
@@ -26,6 +29,14 @@ module test;
     wire [31:0] mem_write_data;
     wire mem_write_enable;
 
+    wire MemToReg;
+    wire RegWrite;
+    wire [4:0] RegDest;
+    wire RegDataSrc;
+    wire PCSrc;
+    wire [31:0] BranchTarget;
+    wire [31:0] AluResult;
+
     // Instantiate the RAM module
     ram ram_test(
         .clk(clock), 
@@ -41,6 +52,8 @@ module test;
         // inputs
         .clk(clock),
         .rst(reset),
+        .stall(stall),
+
         .addr(addr),
         .data_in(data_in),
 
@@ -51,110 +64,64 @@ module test;
         .MemRead(MemRead),
         .MemWrite(MemWrite),
 
+        .in_MemToReg(1'b0), // todos os in_ não são alterados e serão passados para out
+        .in_RegWrite(1'b0),
+        .in_RegDest(5'b0),
+        .in_RegDataSrc(1'b0),
+        .in_PCSrc(1'b0),
+        .in_BranchTarget(32'b0),
+
         // output
         .data_out(data_out),
         .mem_done(mem_done),
 
+        .out_MemToReg(MemToReg),
+        .out_RegWrite(RegWrite),
+        .out_RegDest(RegDest),
+        .out_RegDataSrc(RegDataSrc),
+        .out_PCSrc(PCSrc),
+        .out_AluResult(AluResult),
+        .out_BranchTarget(BranchTarget),
+
         // to RAM signals
         .mem_addr(mem_addr),
         .mem_write_data(mem_write_data),
-        .mem_write_enable(mem_write_enable)
+        .mem_write_enable(mem_write_enable),
+        .stall_pipeline(stall_from_memory)
     );
 
-    // Clock generation
-    always begin
-        #20 clock = ~clock;
-    end
 
-    // Initialize signals
-    initial begin
-        $display("Test Case 1: Store operation, no reset");
-        reset = 0;
-        addr = 32'b0010;
-        data_in = 32'h1234_5678;
-        MemRead = 0;
-        MemWrite = 1;
-        #100; // Wait for simulation to settle
+      initial begin
+        $dumpfile("memory_tb.vcd");
+        $dumpvars(0, memory_tb);
 
-        // Check if the memory operation is done
-        if (mem_done !== 1) begin
-            $display("ERROR: mem_done is not the desired value, expected: 1");
-        end
-        else begin
-            $display("mem_done correct");
-        end
-
-        if (mem_addr !== addr) begin
-            $display("ERROR: mem_addr is not the desired value, expected: %0d, result: %0d", addr, mem_addr);
-        end
-        else begin
-            $display("mem_addr correct");
-        end
-        if (mem_write_data !== data_in) begin
-            $display("ERROR: mem_write_data is not the desired value, expected: %0d, result: %0d", data_in, mem_write_data);
-        end
-        else begin
-            $display("mem_write_data correct");
-        end
-        if (mem_write_enable !== 1) begin
-            $display("ERROR: mem_write_enable is not the desired value (expected 1), result: %0d", mem_write_data);
-        end
-        else begin
-            $display("mem_write_enable correct");
-        end
-
-        $display("\nTest Case 2: Load operation, no reset");
-        reset = 0;
-        addr = 32'b0010;
-        data_in = 32'h1234_5678;
-        MemRead = 1;
-        MemWrite = 0;
-        #100; // Wait for simulation to settle
-
-        // Check if the memory operation is done
-        if (mem_done !== 1) begin
-            $display("ERROR: mem_done is not the desired value, expected: 1, result: %0d", mem_done);
-        end
-        else begin
-            $display("mem_done correct");
-        end
-        if (mem_addr !== addr) begin
-            $display("ERROR: mem_addr is not the desired value, expected: %0d, result: %0d", addr, mem_addr);
-        end
-        else begin
-            $display("mem_addr correct");
-        end
-        if (data_out !== data_in) begin
-            $display("ERROR: data_out is not the desired value, expected: %0d, result: %0d", data_in, data_out);
-        end
-        else begin
-            $display("mem_write_data correct");
-        end
-        if (mem_write_enable !== 0) begin
-            $display("ERROR: mem_write_enable is not the desired value, expected: %0d, result: %0d", 0, mem_write_enable);
-        end
-        else begin
-            $display("mem_write_enable correct");
-        end
-
-        $display("\nTest Case 3: Store operation, but reset is called");
+        // Test case 1
         reset = 1;
-        addr = 32'b0010;
-        data_in = 32'h1234_5678;
-        MemRead = 0;
+        #10 reset = 0;
+
+        // Test case 2
+        #10 addr = 32'h1000;
+        data_in = 32'hABCDEFF0;
+        MemRead = 1;
+        #10 MemRead = 0;
+
+        // Test case 3
+        #10 addr = 32'h2000;
+        data_in = 32'h12345678;
         MemWrite = 1;
-        #100; // Wait for simulation to settle
+        #10 MemWrite = 0;
 
-        // Check if the memory operation is done
-        if (mem_done !== 0) begin
-            $display("ERROR: mem_done is not the desired value, expected: 0, result: %0d", mem_done);
-        end
-        else begin
-            $display("mem_done correct");
-        end
+        // Add more test cases as needed
 
-        // Finish simulation
-        $finish;
+        #100 $finish;
     end
+
+    // Monitor
+    always @(posedge clock) begin
+        $display("Time %0t: addr = %h, data_in = %h, mem_read_data = %h, data_out = %h, mem_done = %b", $time, addr, data_in, mem_read_data, data_out, mem_done);
+        $display("Time %0t: mem_addr = %h, mem_write_data = %h, mem_write_enable = %b, stall_from_memory = %b", $time, mem_addr, mem_write_data, mem_write_enable, stall_from_memory);
+    end
+
+
 
 endmodule

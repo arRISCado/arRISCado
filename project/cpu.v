@@ -15,6 +15,7 @@ module cpu(
 );
     assign led[5:0] = ~rom_data[5:0];
 
+    wire mem_wb_MemToReg;            // Dies on WB
     wire clock_real = clock & enable;
 
     // ### Component wires ###
@@ -282,7 +283,7 @@ module cpu(
     memory Memory(
         .clk(clock_real),
         .rst(reset),
-        .stall(stall_from_execute),
+        .stall(stall_from_ex),
 
         .addr(ex_mem_result), // deve ser atualizado
         .data_in(ex_mem_rs2_value), 
@@ -316,7 +317,7 @@ module cpu(
         .mem_addr(mem_address),
         .mem_write_data(mem_data_in),
         .mem_write_enable(mem_write_enable),
-        .stall_pipeline(stall_from_mmory)
+        .stall_pipeline(stall_from_memory)
     );
 
     writeback Writeback(
