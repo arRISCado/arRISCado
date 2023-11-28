@@ -9,7 +9,13 @@ main:
 	addi zero, zero, 0
 	addi zero, zero, 0
     addi a1, a0, 1
+	addi zero, zero, 0
+	addi zero, zero, 0
+	addi zero, zero, 0
     addi t0, zero, 5
+	addi zero, zero, 0
+	addi zero, zero, 0
+	addi zero, zero, 0
     addi t1, zero, 10
     addi zero, zero, 0
 	addi zero, zero, 0

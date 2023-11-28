@@ -14,10 +14,12 @@
 
 module peripheral_manager(
     input clk, //Clock
+    input physical_clk,  // Real FPGA clock
     input [31:0] addr, //Address
     input [31:0] data_in, //Data to write
     input write_enable, //Write if 1
 
+    output [5:0] debug_led,
     output pwm1_out //Output of PWM port 1
 );
 
@@ -26,36 +28,19 @@ module peripheral_manager(
     //xxx...xxx = addr
 
     //Peripherals
-    reg write_pwm1_1 = 0;
-    reg write_pwm1_2 = 0;
     pwm_port pwm_port1(
         .clk(clk), 
+        .physical_clk(physical_clk),
         .mem_write(write_pwm1_1),
         .mem_write2(write_pwm1_2),
         .mem_data(data_in), 
         .mem_data2(data_in),
-        .port_output(pwm1_out)
+        .port_output(pwm1_out),
+        .debug_led(debug_led)
     );
 
-    //Write/read peripheral
-    always @(*) begin
-        if(write_enable) begin
+    assign write_pwm1_1 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 0) ? 1 : 0;
+    assign write_pwm1_2 = (write_enable && addr[31:29] == 3'b001 && addr[0] == 1) ? 1 : 0;
 
-            if(addr[31:29] == 3'b001) begin //pwm_port1
-                if(addr[0] == 0) begin
-                    write_pwm1_1 = 1;
-                end
-                else begin
-                    write_pwm1_2 = 1;
-                end
-
-                write_pwm1_1 = 0;
-                write_pwm1_2 = 0;
-            end
-
-
-        end
-    
-    end
 
 endmodule

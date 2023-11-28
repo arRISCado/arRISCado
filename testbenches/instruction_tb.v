@@ -1,6 +1,6 @@
 `define TEST
 `define ROM_FILE "../testbenches/instruction_tb_rom.txt"
-//`include "../../testbenches/utils/imports.v"
+`include "../testbenches/utils/imports.v"
 
 module test();
     reg clk;
@@ -11,6 +11,7 @@ module test();
     
     cpu cpu(
         .clock(clk), 
+        .physical_clk(clk),
         .reset(rst), 
         .enable(1'b1),
         .led(led),
@@ -25,11 +26,13 @@ module test();
 
     // Testbench procedure
     initial begin
-        //#10
-        //rst = 1'b1;
-        //#10
-        //rst = 1'b0;
-        //#10
+        #10
+        rst = 1'b1;
+        clk = 0;
+        #10
+        rst = ~rst;
+        clk = ~clk;
+        #10
 
         clk = 0;
         #10;        
@@ -72,7 +75,7 @@ module test();
             $display("AluSrc: %0d", cpu.Decode.AluSrc);
             $display("AluOp: %0d", cpu.Decode.AluOp);
             $display("AluControl: %0d", cpu.Decode.AluControl);
-            $display("Branch: %0d", cpu.Decode.Branch);
+            //$display("Branch: %0d", cpu.Decode.Branch);
             $display("MemToReg: %0d", cpu.Decode.MemToReg);
             $display("RegDataSrc: %0d", cpu.Decode.RegDataSrc);
             $display("PCSrc: %0d", cpu.Decode.PCSrc);
@@ -94,7 +97,7 @@ module test();
             $display("AluOp: %0d", cpu.Execute.AluOp);
             $display("AluControl: %0d", cpu.Execute.AluControl);
             $display("in_MemWrite: %0d", cpu.Execute.in_MemWrite);
-            $display("Branch: %0d", cpu.Execute.Branch);
+            //$display("Branch: %0d", cpu.Execute.Branch);
             $display("in_MemRead: %0d", cpu.Execute.in_MemRead);
             $display("in_RegWrite: %0d", cpu.Execute.in_RegWrite);
             $display("in_RegDest: %0d", cpu.Execute.in_RegDest);
@@ -141,6 +144,8 @@ module test();
             $display("");
 
             $display("Memory %0d", i-3);
+            $display("addr %0d", cpu.Memory.addr);
+            $display("MemWrite %0d", cpu.Memory.MemWrite);
             $display("in_RegWrite %b", cpu.Memory.in_RegWrite);
             $display("in_RegDest %0d", cpu.Memory.in_RegDest);
             $display("mem_read_data: %0d", cpu.Memory.mem_read_data);
@@ -170,6 +175,7 @@ module test();
             $display("value1: %0d", cpu.RegisterBank.value1);
             $display("value2: %0d", cpu.RegisterBank.value2);
             $display("RegisterBank.REGS---------");
+            $display("zero=x0 %0d", cpu.RegisterBank.register[0]);
             for (integer j = 5; j < 8; j = j + 1)
             begin
                 $display("t%0d=x%0d %0d", j-5, j, cpu.RegisterBank.register[j]);
@@ -188,6 +194,7 @@ module test();
 
             $display("");
             $display("RAM");
+            $display("address: %0d", cpu.Ram.address);
             $display("#3: %0d", cpu.Ram.storage[3]);
 
             $display("");
@@ -195,6 +202,8 @@ module test();
             $display("port_pwm1: %0d", cpu.port_pwm1);
             $display("manager.addr: %0d", cpu.Peripheral_manager.addr);
             $display("manager.data_in: %0d", cpu.Peripheral_manager.data_in);
+            $display("manager.write_pwm1_1: %0d", cpu.Peripheral_manager.write_pwm1_1);
+            $display("manager.write_pwm1_2: %0d", cpu.Peripheral_manager.write_pwm1_2);
             $display("pwm_port1.clk_per_cycle: %0d", cpu.Peripheral_manager.pwm_port1.clk_per_cycle);
             $display("pwm_port1.clk_on: %0d", cpu.Peripheral_manager.pwm_port1.clk_on);
 
