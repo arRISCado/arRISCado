@@ -27,7 +27,7 @@ module cache (
   reg        valid [4:0]; // TODO: Create channel to invalid positons, like when DCache changes something in ICache
   reg incomplete = 0;
 
-  reg [31:0] _address, _data_in;
+  reg  [31:0] _address = 0, _data_in = 0;
   wire [29:0] n_addr       = {_address[31:2] + 1'b1};
   wire [4:0]  n_addr_index = {addr_index[4:2] + 1'b1};
   wire [4:0]  addr_index = _address[4:0];
@@ -48,6 +48,7 @@ module cache (
         begin
           data_ready <= 0; // Maybe move to inside of the following if
           fetch_write_enable <= 0;
+          incomplete <= 0;
           _address <= address;
           _data_in <= data_in;
           if (write_enable)
