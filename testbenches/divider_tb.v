@@ -17,19 +17,16 @@ module test;
     wire [31:0] result;
     wire [31:0] reminder;
     wire done;
-    wire err;
 
     // Instantiate the Unit Under Test (UUT)
     divider uut (
         .clk(clock),
-        .start(start),
         .reset(reset),
         .dividend(dividend),
         .divisor(divisor),
-        .result(result),
-        .reminder(reminder),
-        .done(done),
-        .err(err)
+        .Q(result),
+        .R(reminder),
+        .ready(done)
     );
 
     initial begin
@@ -38,9 +35,11 @@ module test;
     end
 
     initial begin
+        $dumpfile("divider_tb.vcd");
+        $dumpvars(0, test);
         // Initialize Inputs
         start = 0;
-        dividend = 32'd12;
+        dividend = 32'd13;
         divisor = 32'd3;
         reset = 1;
 
@@ -55,7 +54,7 @@ module test;
     end
 
     always @(posedge clock) begin
-        $display("clock=%d, reset=%d, start=%d, dividend=%d, divisor=%d, result=%d, reminder=%d, done=%d, err=%d",
-                 clock, reset, start, dividend, divisor, result, reminder, done, err);
+    $display("clock=%d, reset=%d, dividend=%d, divisor=%d, result=%d, reminder=%d, done=%d",
+                 clock, reset, dividend, divisor, result, reminder, done);
     end
 endmodule
