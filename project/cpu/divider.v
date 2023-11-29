@@ -6,7 +6,7 @@ module divider(
 
     output [31:0]   Q,
     output [31:0]   R,
-    output          ready // 1 quando a divisão estiver completa será usado como stall
+    output          ready // 0 quando a divisão estiver completa será usado como stall
 );
 
     reg [31:0] _Q;

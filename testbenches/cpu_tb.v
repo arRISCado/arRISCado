@@ -38,11 +38,11 @@ module test;
     #5;
     reset = 0;
     
-    $monitor("%h %d %d", cpu.Fetch.pc, cpu.Execute.alu.a, cpu.Execute.alu.b);
+    $monitor("%h %h, %d %d", cpu.Fetch.pc, cpu.Fetch.instr, cpu.Execute.alu.a, cpu.Execute.alu.b);
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
 
-    #600;
+    #600000;
 
     $display("RAM");
     for (i = 0; i < 5; i++)

@@ -45,19 +45,21 @@ module alu (
   assign u_a = a;
   assign u_b = b;
 
-  wire [31:0] div_result;
-  wire div_busy;
-  reg div_op;
+  wire [31:0] div_result, div_remainder;
+  wire div_ready; // se for 1 quer dizer que está disponível/terminou de calcular o resultado
+  reg div_op = 0;
 
-  divider divider(clk, rst, div_op, a, b, div_result, div_remainder, div_busy);
+  divider divider(clk, rst, a, b, div_result, div_remainder, div_ready);
 
   assign zero     = (result == 32'b0);
   assign negative = (result[31] == 1'b1);
-  assign stall = div_busy;
+
+  assign stall = (~div_ready) && div_op;
 
   always @(*)
   begin
     borrow = 0;
+    div_op = 0;
     case (AluControl)
       BITWISE_AND:   result = a & b;     // Bitwise AND
       BITWISE_OR:    result = a | b;     // Bitwise OR
