@@ -1,6 +1,7 @@
 // Memory Management Unit
 module mmu (
   // Core
+  input             clk,
   input [31:0]      c_address,
   input [31:0]      c_data_in,
   input             c_write_enable,
@@ -22,9 +23,15 @@ module mmu (
   input [31:0]      p_data_out
 
 );
+  reg [31:0] _c_address;
+
+  always @(posedge clk) begin
+    _c_address <= c_address;
+  end
+
   always @(*)
   begin
-    case (c_address[31:27])
+    case (_c_address[31:27])
       'b00000: // Memory
       begin
         p_address      <= 0;

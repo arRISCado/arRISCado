@@ -75,6 +75,8 @@ module cpu(
     );
 
     mmu MMU(
+        .clk(clk),
+        
         .c_address(mem_address),
         .c_data_in(mem_data_in),
         .c_write_enable(mem_write_enable),

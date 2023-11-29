@@ -21,7 +21,7 @@ module peripheral_manager(
     input btn1,
     input btn2,
 
-    output [31:0] data_out,
+    output reg [31:0] data_out,
     output [5:0] debug_led,
     output pwm1_out //Output of PWM port 1
 );
@@ -68,7 +68,13 @@ module peripheral_manager(
     assign read_btn1 = (addr[31:29] == 3'b010 && addr[0] == 1) ? 1 : 0;
     assign read_btn2 = (addr[31:29] == 3'b010 && addr[0] == 0) ? 1 : 0;
 
-    assign data_out = (read_btn1) ? buttons_output : 
+    wire [31:0] _data_out;
+    assign _data_out = (read_btn1) ? buttons_output : 
                         read_btn2 ? buttons_output :
                         32'd0;
+
+    always @(posedge clk) begin
+        data_out <= _data_out;
+    end
+
 endmodule

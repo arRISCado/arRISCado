@@ -18,6 +18,11 @@ assign debug_led[3:0] = 3'd0;
 reg [31:0] btn1_counter;
 reg [31:0] btn2_counter;
 
+//initial begin
+//    btn1_counter <= 32'd6348;
+//    btn2_counter <= 32'd123456;
+//end
+
 
 always @(posedge btn1) begin
     btn1_counter <= btn1_counter+1;
