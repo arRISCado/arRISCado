@@ -16,7 +16,6 @@ module memory (
     input in_MemToReg,      // Just goes to the next stage
     input in_RegWrite,      // Just goes to the next stage
     input [4:0] in_RegDest, // Just goes to the next stage
-    input in_RegDataSrc,    // Just goes to the next stage
     input in_PCSrc,         // Just goes to the next stage
     input [31:0] in_BranchTarget,
 
@@ -28,7 +27,6 @@ module memory (
     output reg out_MemToReg,
     output reg out_RegWrite,
     output reg [4:0] out_RegDest,
-    output reg out_RegDataSrc,
     output reg out_PCSrc,
     output reg [31:0] out_BranchTarget,
 
@@ -60,7 +58,6 @@ module memory (
             out_MemToReg <= 0;
             out_RegWrite <= 0;
             out_RegDest <= 0;
-            out_RegDataSrc <= 0;
             out_PCSrc <= 0;
             out_BranchTarget <= 0;
             mem_write_enable <= 0;
