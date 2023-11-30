@@ -12,8 +12,8 @@ module cpu(
     output port_pwm1
 );
     //assign led[5] = clock_real;
-    //assign led[4:0] = ex_mem_result[4:0];
-    assign led[5:0] = ~rom_data[5:0];
+    assign led[4:0] = ex_mem_result[4:0];
+    //assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
     reg test = 0;

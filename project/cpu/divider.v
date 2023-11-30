@@ -23,7 +23,7 @@ module divider (
   initial state = 0;
   reg [6:0] bit = 32;
 
-  always @(posedge clk or posedge reset) begin
+  always @(negedge clk or posedge reset) begin
     if (reset) begin
       // Reset logic here
     end
@@ -36,7 +36,7 @@ module divider (
             p_b = divisor;
             inner_a  = {32'b0, dividend};
             inner_b = {1'b0, divisor, 31'b0};
-            bit = 33;
+            bit = 32;
             inner_q = 0;
           end
         end
@@ -53,7 +53,7 @@ module divider (
             inner_b = inner_b >> 1;
             bit = bit - 1;
           
-          if (bit <= 1) begin
+          if (bit <= 0) begin
             state <= IDLE;
           end
         end
