@@ -50,6 +50,17 @@ module test;
         #5000;
         start = 0;
         #1000
+
+        start = 0;
+        dividend = 32'd12;
+        divisor = 32'd12;
+        reset = 1;
+        #1000;
+        reset = 0;
+        start = 1;
+        #5000;
+        start = 0;
+        #1000
         $finish;
     end
 

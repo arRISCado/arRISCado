@@ -1,53 +1,64 @@
-module divider(
-    input           clk,
-    input           reset,
-    input [31:0]    dividend,
-    input [31:0]    divisor,
+module divider (
+  input clk,
+  input reset,
 
-    output [31:0]   Q,
-    output [31:0]   R,
-    output          ready // 0 quando a divisão estiver completa será usado como stall
+  input [31:0] dividend,
+  input [31:0] divisor,
+
+  output [31:0] Q,
+  output [31:0] R,
+  output ready
 );
+  localparam IDLE = 'b0;
+  localparam DOING = 'b1;
 
-    reg [31:0] _Q;
+  assign ready = state;
+  reg [31:0] p_a = 0;
+  reg [31:0] p_b = 0; 
+  reg [63:0] inner_a, inner_b, diff;
+  reg [31:0] inner_q = 0;
 
-    reg [63:0] dividend_copy, divisor_copy, diff;
+  reg state;
+  initial state = 0;
+  reg [6:0] bit = 32;
 
-    wire [31:0] remainder = dividend_copy[31:0];
-
-    reg [63:0] bit;
-    initial bit = 0;
-
-    assign ready = !bit;
-
-    assign Q = _Q;
-
-    always @ (posedge clk) 
-        begin
-            if (ready)
-            begin
-                bit = 32;
-                _Q = 0;
-                dividend_copy = {32'b0, dividend};
-                divisor_copy = {1'b0, divisor, 31'b0};
-            end
-            else
-            begin
-                diff = dividend_copy - divisor_copy;
-
-                _Q = _Q << 1;
+  always @(posedge clk or posedge reset) begin
+    if (reset) begin
+      // Reset logic here
+    end
+    else begin
+      case (state)
+        IDLE: begin
+          if ((p_a != dividend) || (p_b != divisor)) begin
+            state = DOING;
+            p_a = dividend;
+            p_b = divisor;
+            inner_a  = {32'b0, dividend};
+            inner_b = {1'b0, divisor, 31'b0};
+            bit = 33;
+            inner_q = 0;
+          end
+        end
+        DOING: begin
+            diff = inner_a - inner_b;
+            inner_q = inner_q << 1;
 
             if(!diff[63])
             begin
-                dividend_copy = diff;
-                _Q[0] = 1'd1;
+                inner_a = diff;
+                inner_q[0] = 1'd1;
             end
 
-            divisor_copy= divisor_copy >> 1;
+            inner_b = inner_b >> 1;
             bit = bit - 1;
-            end
+          
+          if (bit <= 1) begin
+            state <= IDLE;
+          end
         end
-
-    assign R = remainder;
-
-endmodule
+      endcase
+    end
+  end
+  assign Q = inner_q;
+  assign R = inner_a;
+endmodule;
