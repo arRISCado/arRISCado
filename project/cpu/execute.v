@@ -91,7 +91,7 @@ module execute (
         end
         else
         begin
-            if (~stall) begin
+            if (~stall && ~stall_pipeline) begin
                 if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address1 == ex_mem_RegDest))
                     _rs1_value  <= in_result;
                 else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))

@@ -4,6 +4,7 @@ module divider (
 
   input [31:0] dividend,
   input [31:0] divisor,
+    input div_op,
 
   output [31:0] Q,
   output [31:0] R,
@@ -29,7 +30,7 @@ module divider (
     else begin
       case (state)
         IDLE: begin
-          if ((p_a != dividend) || (p_b != divisor)) begin
+          if (((p_a != dividend) || (p_b != divisor)) && div_op) begin
             state = DOING;
             p_a = dividend;
             p_b = divisor;

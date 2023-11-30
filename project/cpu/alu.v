@@ -49,12 +49,12 @@ module alu (
   wire div_ready; // se for 1 quer dizer que está disponível/terminou de calcular o resultado
   reg div_op = 0;
 
-  divider divider(clk, rst, a, b, div_result, div_remainder, div_ready);
+  divider divider(clk, rst, a, b, div_op, div_result, div_remainder, div_ready);
 
   assign zero     = (result == 32'b0);
   assign negative = (result[31] == 1'b1);
 
-  assign stall = (~div_ready) && div_op;
+  assign stall = div_ready && div_op;
 
   always @(*)
   begin
