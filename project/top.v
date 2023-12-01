@@ -34,7 +34,7 @@ module nano9k (
         .physical_clk(clk),
         .reset(1'd0),
         .led(led),
-        .enable(1'd1),//cpu_enable),   
+        .enable(cpu_enable),   
         .btn1(~btn1),
         .btn2(~btn2), 
         .rom_address(instruction_address),
@@ -42,18 +42,18 @@ module nano9k (
         .port_pwm1(pwm1)
     );
 
-    rom rom(
+    /*rom rom(
         .address(instruction_address),
         .data(instruction_data)
-    );
+    );*/
 
-    /*uart Uart(
+    uart Uart(
          .clk(clk), 
          .uart_rx(uart_rx), 
          //.led(led), 
          .cpu_enable(cpu_enable),
          .address(instruction_address),
          .data(instruction_data)
-    );*/
+    );
 
 endmodule
