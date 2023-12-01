@@ -51,10 +51,9 @@ wire [31:0] data1 = instructionMemory[address[7:2]];
 wire [31:0] data2 = instructionMemory[next_address[7:2]];
 
 assign data = address[1:0] == 'b00 ? data1 :
-              address[1:0] == 'b01 ? {data2[7:0],  data1[31:8] } :
-              address[1:0] == 'b10 ? {data2[15:0], data1[31:16]} :
-                                     {data2[23:0], data1[31:24]};
-
+              address[1:0] == 'b01 ? {data1[23:0], data2[31:24]} :
+              address[1:0] == 'b10 ? {data1[15:0], data2[31:16]} :
+                                     {data1[7:0],  data2[31:8]};
 
 always @(posedge clk) begin
     case (rxState)
