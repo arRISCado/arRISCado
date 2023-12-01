@@ -201,9 +201,26 @@ module test();
 
             $display("");
             $display("MMU");
-            $display("p_data_out: %0d", cpu.MMU.p_data_out);
-            $display("p_data_out: %0d", cpu.MMU.p_data_out);
+            $display("INPUT---");
+            $display("c_address: %0d", cpu.MMU.c_address);
+            $display("c_data_in: %0d", cpu.MMU.c_data_in);
+            $display("c_write_enable: %0d", cpu.MMU.c_write_enable);
+            $display("m_data_ready: %0d", cpu.MMU.m_data_ready);
             $display("m_data_out: %0d", cpu.MMU.m_data_out);
+            $display("p_data_ready: %0d", cpu.MMU.p_data_ready);
+            $display("p_data_out: %0d", cpu.MMU.p_data_out);
+            $display("INTERNAL---");
+            $display("_next_is_periph: %0d", cpu.MMU._next_is_periph);
+            $display("OUTPUT---");
+            $display("c_data_ready: %0d", cpu.MMU.c_data_ready);
+            $display("c_data_out: %0d", cpu.MMU.c_data_out);
+            $display("m_address: %0d", cpu.MMU.m_address);
+            $display("m_data_in: %0d", cpu.MMU.m_data_in);
+            $display("m_write_enable: %0d", cpu.MMU.m_write_enable);
+            $display("p_address: %0d", cpu.MMU.p_address);
+            $display("p_data_in: %0d", cpu.MMU.p_data_in);
+            $display("p_write_enable: %0d", cpu.MMU.p_write_enable);
+
 
             $display("");
             $display("PERIPHERALS");

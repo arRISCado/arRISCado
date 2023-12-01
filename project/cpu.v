@@ -75,7 +75,7 @@ module cpu(
     );
 
     mmu MMU(
-        .clk(clk),
+        .clk(clock_real),
         
         .c_address(mem_address),
         .c_data_in(mem_data_in),
