@@ -18,7 +18,6 @@ module execute (
     input in_RegWrite,         // True or False depending if the operation writes in a Register or not
     input [4:0] in_RegDest,    // Determines which register to write the ALU result
     input in_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    input in_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     input in_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation 
     input [2:0] in_BranchType, // Determines what type of branch is being done
 
@@ -39,7 +38,6 @@ module execute (
     output reg out_RegWrite,         // True or False depending if the operation writes in a Register or not
     output reg [4:0] out_RegDest,    // Determines which register to write the ALU result
     output reg out_MemToReg,         // True or False depending if the operation writes from the Memory into the Resgister Bank
-    output reg out_RegDataSrc,       // Determines where the register data to be writen will come from: memory or ALU result
     output reg out_PCSrc,            // Determines if the PC will come from the PC+4 or from a Branch calculation
     output reg [31:0] out_BranchTarget,
     output reg [31:0] _rs2_value,
@@ -53,7 +51,7 @@ module execute (
 
     reg [4:0] _AluControl;
     reg [4:0] _RegDest;
-    reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _RegDataSrc, _PCSrc;
+    reg _MemWrite, _MemRead, _RegWrite, _MemToReg, _PCSrc;
 
     wire zero;
     wire negative;
@@ -86,7 +84,6 @@ module execute (
             out_RegWrite   <= 0;
             out_RegDest    <= 0;
             out_MemToReg   <= 0;
-            out_RegDataSrc <= 0;
             out_BranchTarget <= 0;
         end
         else
@@ -120,28 +117,36 @@ module execute (
                 out_RegWrite   <= in_RegWrite;
                 out_RegDest    <= in_RegDest;
                 out_MemToReg   <= in_MemToReg;
-                out_RegDataSrc <= in_RegDataSrc;
-                out_BranchTarget <= PC + imm;
+
+                if(_AluOp == 'b111)
+                    out_BranchTarget <= rs1_value + imm;
+                else
+                    out_BranchTarget <= PC + imm;
             end
         end
     end
 
     always @(*)
     begin
+        if(_AluOp == 'b001)
+        begin
         case (_BranchType)
             'b000: // beq
                 out_PCSrc <= zero ? _PCSrc : 0;
             'b001: // bne
                 out_PCSrc <= zero ? 0 : _PCSrc;
             'b100: // blt
-                out_PCSrc <= result[31] ? _PCSrc : 0;
+                out_PCSrc <= negative ? _PCSrc : 0;
             'b101: // bge
-                out_PCSrc <= result[31] ? 0 : _PCSrc;
+                out_PCSrc <= negative ? 0 : _PCSrc;
             // 110: // bltu
             // 111: // bgeu
             default:
                 out_PCSrc <= 0;
         endcase
+        end
+        else
+            out_PCSrc <= _PCSrc;
     end
 
     always @(*)
@@ -191,19 +196,20 @@ module execute (
             b <= _imm;
         end
 
-        // Tipo J
+        // Tipo JAL
         3'b011:
         begin
             a <= _PC;
-            b <= _imm;
+            b <= 4;
         end
 
-        // TODO: JALR
+        // TODO: JALR    
         3'b111:
         begin
             a <= _PC;
-            b <= _imm;
+            b <= 4;
         end
+
         default:
         begin
             a <= 0;

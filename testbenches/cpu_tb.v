@@ -17,7 +17,7 @@ module test;
   );
 
   wire [31:0] rom_data;
-  wire [31:0] rom_address;
+  wire [7:0] rom_address;
 
   rom rom(
     .address(rom_address),
@@ -42,7 +42,7 @@ module test;
 
     // $monitor("%h %h %h %h", cpu.Fetch.pc, cpu.Memory._load, cpu.Memory.mem_done, cpu.Writeback.mem_done);
 
-    #600000;
+    #6000;
 
     $display("RAM");
     for (i = 0; i < 5; i++)

@@ -7,6 +7,8 @@ module cpu(
     input reset,
     output [5:0] led,
     input enable,
+    input btn1,
+    input btn2,
     input [31:0] rom_data,
     output wire [7:0] rom_address,
     output port_pwm1
@@ -16,9 +18,6 @@ module cpu(
     //assign led[5:0] = ~rom_data[5:0];
 
     wire clock_real = clock & enable;
-    reg test = 0;
-
-    
 
     // ### Component wires ###
 
@@ -60,6 +59,8 @@ module cpu(
     wire [31:0] mmu_p_address;
     wire [31:0] mmu_p_data_in;
     wire mmu_p_write_enable;
+    wire [31:0] p_mmu_data;
+    wire p_mmu_data_ready;
     
     peripheral_manager Peripheral_manager(
         .clk(clock_real),
@@ -67,11 +68,16 @@ module cpu(
         .addr(mmu_p_address),
         .data_in(mmu_p_data_in),
         .write_enable(mmu_p_write_enable),
-        .pwm1_out(port_pwm1)
-        //.debug_led(led)
+        .btn1(btn1),
+        .btn2(btn2),
+        .pwm1_out(port_pwm1),
+        .data_out(p_mmu_data)
+        //,.debug_led(led)
     );
 
     mmu MMU(
+        .clk(clock_real),
+        
         .c_address(mem_address),
         .c_data_in(mem_data_in),
         .c_write_enable(mem_write_enable),
@@ -87,7 +93,8 @@ module cpu(
         .p_address(mmu_p_address),
         .p_data_in(mmu_p_data_in),
         .p_write_enable(mmu_p_write_enable),
-        .p_data_ready(1'd1)
+        .p_data_ready(1'd1),
+        .p_data_out(p_mmu_data)
     );
 
     register_bank RegisterBank(
@@ -113,6 +120,7 @@ module cpu(
     wire if_rb_RegDest;             // Dies on Register Bank
 
     // Decode -> Execute
+    wire [2:0] de_ex_BranchType;
     wire [31:0] de_ex_imm;          // Dies on execute
     wire [4:0] de_ex_rd;
     wire [2:0] de_ex_aluOp;         // Dies on execute
@@ -123,31 +131,26 @@ module cpu(
     wire de_ex_RegWrite;            // Goes to WB
     wire [4:0] de_ex_RegDest;       // Goes to WB
     wire de_ex_MemToReg;            // Goes to MEM
-    wire de_ex_RegDataSrc;          // Goes to WB
     wire de_ex_PCSrc;               // Goes to next Fetch
     wire [31:0] de_ex_PC;
     wire [31:0] de_ex_value1;
     wire [31:0] de_ex_value2;
 
     // Execute -> Memory
+    wire [31:0] ex_mem_BranchTarget;
     wire [31:0] ex_mem_result;
-
     wire ex_mem_MemRead;             // Dies on MEM: There's load operation
     wire ex_mem_MemWrite;            // Dies on MEM: There's store operation
     wire ex_mem_MemToReg;            // Goes to WB: 1 = result to register, 0: result is from ALU (execute stage)
     wire ex_mem_RegWrite;            // Goes to WB
     wire [4:0] ex_mem_RegDest;       // Goes to WB
-    wire ex_mem_RegDataSrc;          // Goes to WB
     wire ex_mem_PCSrc;               // Goes to next Fetch
     wire [31:0] ex_mem_rs2_value;
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
-    wire mem_wb_mem_done;
-
+    wire mem_wb_MemToReg;
     wire mem_wb_RegWrite;            // Dies on WB
-    wire mem_wb_RegDataSrc;          // Dies on WB
-    wire mem_wb_MemToReg;            // Dies on WB
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch
     wire [31:0] mem_wb_AluResult;
@@ -173,8 +176,6 @@ module cpu(
         .instr(if_de_instr)
     );
 
-    wire [2:0] de_ex_BranchType;
-
     decode Decode(
         .clk(clock_real),
         .rst(reset),
@@ -197,15 +198,12 @@ module cpu(
         .RegWrite(de_ex_RegWrite),
         .RegDest(de_ex_RegDest),
         .MemToReg(de_ex_MemToReg),
-        .RegDataSrc(de_ex_RegDataSrc),
         .PCSrc(de_ex_PCSrc),
         .BranchType(de_ex_BranchType),
         .PC_out(de_ex_PC),
         .value1(de_ex_value1),
         .value2(de_ex_value2)
     );
-
-    wire [31:0] ex_mem_BranchTarget;
 
     execute Execute(
         .clk(clock_real),
@@ -225,7 +223,6 @@ module cpu(
         .in_RegWrite(de_ex_RegWrite),
         .in_RegDest(de_ex_RegDest),
         .in_MemToReg(de_ex_MemToReg),
-        .in_RegDataSrc(de_ex_RegDataSrc),
         .in_PCSrc(de_ex_PCSrc),
         .in_BranchType(de_ex_BranchType),
 
@@ -250,7 +247,6 @@ module cpu(
         .out_RegWrite(ex_mem_RegWrite),
         .out_RegDest(ex_mem_RegDest),
         .out_MemToReg(ex_mem_MemToReg),
-        .out_RegDataSrc(ex_mem_RegDataSrc),
         .out_PCSrc(ex_mem_PCSrc),
         .out_BranchTarget(ex_mem_BranchTarget),
 
@@ -279,7 +275,6 @@ module cpu(
         .in_MemToReg(ex_mem_MemToReg), // todos os in_ não são alterados e serão passados para out
         .in_RegWrite(ex_mem_RegWrite),
         .in_RegDest(ex_mem_RegDest),
-        .in_RegDataSrc(ex_mem_RegDataSrc),
         .in_PCSrc(ex_mem_PCSrc),
         .in_BranchTarget(ex_mem_BranchTarget),
 
@@ -291,7 +286,6 @@ module cpu(
         .out_MemToReg(mem_wb_MemToReg),
         .out_RegWrite(mem_wb_RegWrite),
         .out_RegDest(mem_wb_RegDest),
-        .out_RegDataSrc(mem_wb_RegDataSrc),
         .out_PCSrc(mem_wb_PCSrc),
         .out_AluResult(mem_wb_AluResult),
         .out_BranchTarget(mem_wb_BranchTarget),

@@ -27,6 +27,7 @@ module writeback (
 );
     reg _mem_done, _MemToReg;
     reg [31:0] _result_alu;
+    reg [31:0] _data_mem;
 
     always @(posedge clk or posedge rst) 
     begin
@@ -35,6 +36,7 @@ module writeback (
             _mem_done <= 0;
             _MemToReg <= 0;
             _result_alu <= 0;
+
 
             out_RegDest <= 0;
             out_PCSrc <= 0;
