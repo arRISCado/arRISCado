@@ -21,7 +21,6 @@ module decode (
     output reg AluSrc,          // Determines if the value comes from the Register Bank or is an IMM
     output reg [2:0] AluOp,     // Operation type ALU will perform
     output reg MemToReg,        // True or False depending if the operation writes from the Memory into the Resgister Bank
-    output reg RegDataSrc,      // Determines where the register data to be writen will come from: memory or ALU result
     output reg PCSrc,       // Determines where the PC will come from
     output reg [2:0] BranchType = 0,
     output reg [4:0] AluControl = 0,
@@ -88,7 +87,6 @@ module decode (
         AluControl <= 0;
         BranchType <= 0;
         MemToReg   <= 0; 
-        RegDataSrc <= 0;    
         PCSrc      <= 0;
         PC_out <= PC-4;
         value1 <= _value1;
