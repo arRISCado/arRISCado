@@ -13,7 +13,8 @@ module cpu(
     output wire [7:0] rom_address,
     output port_pwm1
 );
-    //assign led[5] = clock_real;
+    assign led[5] = clock_real;
+    assign led[4] = ~enable;
     //assign led[4:0] = ex_mem_result[4:0];
     //assign led[5:0] = ~rom_data[5:0];
 
@@ -115,7 +116,7 @@ module cpu(
         .read_address2(rb_read_address2),
         .value1(rb_value1),
         .value2(rb_value2)
-        ,.debug_led(led)
+        //,.debug_led(led)
     );
 
     // ### Pipeline wires ###
