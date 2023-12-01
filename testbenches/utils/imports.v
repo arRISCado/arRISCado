@@ -36,6 +36,7 @@
 `include "../../project/mmu.v"
 // `include "../../project/cache.v"
 `include "../../project/peripheral/peripheral_manager.v"
+`include "../../project/peripheral/buttons.v"
 `include "../../project/peripheral/pwm_port.v"
 `include "../../project/peripheral/buttons.v"
 

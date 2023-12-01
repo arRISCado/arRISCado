@@ -16,10 +16,15 @@ module fetch (
     always @(posedge clk or posedge rst) begin
         if (rst)
             pc <= 0;
-        else if (PCSrc && ~stall)
-            pc <= in_BranchTarget; // Use non-blocking assignment here
-        else if (~stall)
-            pc <= pc + 4; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+        else if (~stall) begin
+            $display("%h %h", pc, instr);
+            if (PCSrc)
+                pc <= in_BranchTarget;
+            else if (instr[1:0] == 2'b11)
+                pc <= pc + 4; // Increment PC by 4 to fetch the next sequential instruction (10-bit offset)
+            else
+                pc <= pc + 2;
+        end
     end
 
     assign instr = rom_data;
