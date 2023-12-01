@@ -18,7 +18,7 @@ module nano9k (
     wire [31:0] instruction_data;
     wire [7:0] instruction_address;
     
-    localparam WAIT_TIME = 5000000;
+    localparam WAIT_TIME = 2;//5000000;
     reg effClk;
     reg [23:0] clockCounter = 0;
     always @(posedge clk) begin
@@ -42,18 +42,18 @@ module nano9k (
         .port_pwm1(pwm1)
     );
 
-    /*rom rom(
+    rom rom(
         .address(instruction_address),
         .data(instruction_data)
-    );*/
+    );
 
-    uart Uart(
+    /*uart Uart(
          .clk(clk), 
          .uart_rx(uart_rx), 
          //.led(led), 
          .cpu_enable(cpu_enable),
          .address(instruction_address),
          .data(instruction_data)
-    );
+    );*/
 
 endmodule

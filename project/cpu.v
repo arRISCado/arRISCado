@@ -14,8 +14,16 @@ module cpu(
     output port_pwm1
 );
     //assign led[5] = clock_real;
-    assign led[4:0] = ex_mem_result[4:0];
+    //assign led[4:0] = ex_mem_result[4:0];
     //assign led[5:0] = ~rom_data[5:0];
+
+    //assign led[5] = (if_de_instr == 32'd99) ? 0 : 1;
+    //assign led[4] = (mem_data_in == 32'd5) ? 0 : 1;
+    //assign led[3] = (mmu_p_data_in == 32'd5) ? 0 : 1;
+    //assign led[2] = (mmu_p_write_enable == 1) ? 0 : 1;
+    ////assign led[1] = (ram_write_enable == 1) ? 0 : 1;
+    //assign led[1] = (mem_address == 32'd536870912) ? 0 : 1;
+    ////assign led[0] = (mem_write_enable == 1) ? 0 : 1;
 
     wire clock_real = clock & enable;
 
@@ -72,7 +80,7 @@ module cpu(
         .btn2(btn2),
         .pwm1_out(port_pwm1),
         .data_out(p_mmu_data)
-        //,.debug_led(led)
+        //,.debug_led(led[4:0])
     );
 
     mmu MMU(
@@ -107,6 +115,7 @@ module cpu(
         .read_address2(rb_read_address2),
         .value1(rb_value1),
         .value2(rb_value2)
+        ,.debug_led(led)
     );
 
     // ### Pipeline wires ###

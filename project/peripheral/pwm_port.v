@@ -21,10 +21,11 @@ module pwm_port(
     assign debug_led[4] = port_output;
     assign debug_led[3] = ~mem_write;
     assign debug_led[2] = ~mem_write2;
-    assign debug_led[1] = (clk_per_cycle == 32'd10) ? 0 : 1; //mem_data2, clk_per_cycle
-    //assign debug_led[1] = (last_mem_data == 32'd5) ? 0 : 1;
-    assign debug_led[0] = (clk_on == 32'd5) ? 0 : 1; //mem_data, clk_on, last_mem_data
-    
+    //assign debug_led[1] = (clk_per_cycle == 32'd10) ? 0 : 1; //mem_data2, clk_per_cycle
+    assign debug_led[1] = (mem_data2 == 32'd10) ? 0 : 1;
+    //assign debug_led[0] = (last_mem_data == 32'd5) ? 0 : 1;
+    //assign debug_led[0] = (clk_on == 32'd5) ? 0 : 1; //mem_data, clk_on, last_mem_data
+    assign debug_led[0] = (mem_data == 32'd5) ? 0 : 1;
 
     //Number of clk in one duty cycle
     //More clk in one duty cycle gives more resolution, but it worsens the perception of an analog signal

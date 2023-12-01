@@ -23,7 +23,7 @@
         <File path="project/ram.v" type="file.verilog" enable="1"/>
         <File path="project/rom.v" type="file.verilog" enable="1"/>
         <File path="project/top.v" type="file.verilog" enable="1"/>
-        <File path="project/uart.v" type="file.verilog" enable="1"/>
+        <File path="project/uart.v" type="file.verilog" enable="0"/>
         <File path="project/constraints.cst" type="file.cst" enable="1"/>
         <File path="project/init_rom.txt" type="file.other" enable="1"/>
         <File path="project/init_uart.txt" type="file.other" enable="1"/>
