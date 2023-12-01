@@ -22,7 +22,7 @@ module nano9k (
     reg effClk;
     reg [23:0] clockCounter = 0;
     always @(posedge clk) begin
-        clockCounter <= clockCounter + 1;
+        clockCounter <= clockCounter + 1'b1;
         if (clockCounter == WAIT_TIME) begin
             clockCounter <= 0;
             effClk <= ~effClk;
@@ -48,12 +48,11 @@ module nano9k (
     );*/
 
     uart Uart(
-         .clk(clk), 
-         .uart_rx(uart_rx), 
-         //.led(led), 
-         .cpu_enable(cpu_enable),
-         .address(instruction_address),
-         .data(instruction_data)
+        .clk(clk), 
+        .uart_rx(uart_rx), 
+        //.led(led), 
+        .cpu_enable(cpu_enable),
+        .address(instruction_address),
+        .data(instruction_data)
     );
-
 endmodule

@@ -43,7 +43,7 @@ module decode (
     localparam CODE_SYS_CALL    = 7'b1110011;
 
 
-    reg [31:0] _instruction = 'h00000013;
+    reg [31:0] _instruction = 0;
     reg [31:0] _value1 = 0;
     reg [31:0] _value2 = 0;
 
@@ -491,7 +491,7 @@ module decode (
                 MemWrite <= 0;
                 PCSrc <= 0;
                 // synthesis translate_off
-                $display("Instrução inválida: %h", _instruction);
+                // $display("Instrução inválida: %h", _instruction);
                 // synthesis translate_on
             end
             

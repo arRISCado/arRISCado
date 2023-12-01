@@ -46,7 +46,7 @@ reg [2:0] romWriteState = RECEIVE_SIZE;
 //assign data = dataOut;
 assign led[5:0] = ~data[5:0];
 
-wire [7:0] next_address = address + 4;
+wire [7:0] next_address = address + 4'd4;
 wire [31:0] data1 = instructionMemory[address[7:2]];
 wire [31:0] data2 = instructionMemory[next_address[7:2]];
 
@@ -70,11 +70,11 @@ always @(posedge clk) begin
                 rxState <= RX_STATE_READ_WAIT;
                 rxCounter <= 1;
             end else 
-                rxCounter <= rxCounter + 1;
+                rxCounter <= rxCounter + 1'b1;
         end
         RX_STATE_READ_WAIT: begin
-            rxCounter <= rxCounter + 1;
-            if ((rxCounter + 1) == DELAY_FRAMES) begin
+            rxCounter <= rxCounter + 1'b1;
+            if ((rxCounter + 1'b1) == DELAY_FRAMES) begin
                 rxState <= RX_STATE_READ;
             end
         end
@@ -87,16 +87,16 @@ always @(posedge clk) begin
             if(dataInCount == 7)
                 dataInCount = 0;
             else
-                dataInCount = dataInCount + 1;
-            rxBitNumber <= rxBitNumber + 1;
+                dataInCount = dataInCount + 1'b1;
+            rxBitNumber <= rxBitNumber + 1'b1;
             if (rxBitNumber == 3'b111)
                 rxState <= RX_STATE_STOP_BIT;
             else
                 rxState <= RX_STATE_READ_WAIT;
         end
         RX_STATE_STOP_BIT: begin
-            rxCounter <= rxCounter + 1;
-            if ((rxCounter + 1) == DELAY_FRAMES) begin
+            rxCounter <= rxCounter + 1'b1;
+            if ((rxCounter + 1'b1) == DELAY_FRAMES) begin
                 rxState <= RX_STATE_IDLE;
                 rxCounter <= 0;
                 case(romWriteState)
@@ -127,7 +127,7 @@ always @(posedge clk) begin
                         //led[3] = ~led[3];
                         inst4 = dataIn;
                         instructionMemory[currentInst] = {inst1, inst2, inst3, inst4};
-                        currentInst = currentInst + 1;
+                        currentInst = currentInst + 1'b1;
                         if(currentInst == fullsize) begin
                             cpu_enable = 1;
                             romWriteState <= RECEIVE_DONE;

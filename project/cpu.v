@@ -15,7 +15,6 @@ module cpu(
 );
     assign led[5:0] = ~rom_data[5:0];
 
-    wire mem_wb_MemToReg;            // Dies on WB
     wire clock_real = clock & enable;
 
     // ### Component wires ###
@@ -79,6 +78,7 @@ module cpu(
     wire [31:0] l1d_data_out;
     wire l1d_data_ready;
     wire l1d_write_enable;
+    wire mem_wb_MemToReg;
 
     cache L1D(
         .clk(clock_real),
@@ -173,7 +173,6 @@ module cpu(
 
     // Memory -> Writeback
     wire [31:0] mem_wb_data_out;
-    wire mem_wb_MemToReg;
     wire mem_wb_RegWrite;            // Dies on WB
     wire [4:0] mem_wb_RegDest;       // Goes to RB
     wire mem_wb_PCSrc;               // Goes to next Fetch

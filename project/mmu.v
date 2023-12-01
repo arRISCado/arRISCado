@@ -5,7 +5,7 @@ module mmu (
   input [31:0]      c_address,
   input [31:0]      c_data_in,
   input             c_write_enable,
-  output reg        c_data_ready,
+  output reg        c_data_ready = 0,
   output reg [31:0] c_data_out,
 
   // Memory
