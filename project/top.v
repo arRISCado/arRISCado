@@ -18,7 +18,7 @@ module nano9k (
     wire [31:0] instruction_data;
     wire [7:0] instruction_address;
     
-    localparam WAIT_TIME = 5000000;
+    localparam WAIT_TIME = 2;//5000000;
     reg effClk;
     reg [23:0] clockCounter = 0;
     always @(posedge clk) begin
@@ -34,7 +34,7 @@ module nano9k (
         .physical_clk(clk),
         .reset(1'd0),
         .led(led),
-        .enable(1'd1),//cpu_enable),   
+        .enable(cpu_enable),   
         .btn1(~btn1),
         .btn2(~btn2), 
         .rom_address(instruction_address),

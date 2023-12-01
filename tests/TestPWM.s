@@ -28,3 +28,5 @@ main:
 	addi zero, zero, 0
 	addi zero, zero, 0
 	addi zero, zero, 0
+loop:
+	beq zero, zero, loop 

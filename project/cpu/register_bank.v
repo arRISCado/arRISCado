@@ -10,6 +10,7 @@ module register_bank(
   input [31:0] write_value,
   input [4:0] read_address1,
   input [4:0] read_address2,
+  output [5:0] debug_led,
   output [31:0] value1,
   output [31:0] value2
 );
@@ -32,6 +33,15 @@ module register_bank(
 
   assign value1 = (write_enable && write_address == read_address1 && write_address != 0) ? write_value : register[read_address1];
   assign value2 = (write_enable && write_address == read_address2 && write_address != 0) ? write_value : register[read_address2];
+
+  assign debug_led[0] = (register[5] == 5) ? 0 : 1;
+  assign debug_led[1] = (register[6] == 10) ? 0 : 1;
+  assign debug_led[2] = (register[10] == 536870912) ? 0 : 1;
+  assign debug_led[3] = (register[11] == 536870913) ? 0 : 1;
+  assign debug_led[4] = (write_address == 11) ? 0 : 1;
+  assign debug_led[5] = (write_address == 10) ? 0 : 1;
+  //assign debug_led[5] = (write_value == 536870912) ? 0 : 1;
+
 
 endmodule
 `endif
