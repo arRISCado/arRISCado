@@ -43,9 +43,9 @@ module decode (
     localparam CODE_SYS_CALL    = 7'b1110011;
 
 
-    reg [31:0] _instruction;
-    reg [31:0] _value1;
-    reg [31:0] _value2;
+    reg [31:0] _instruction = 0;
+    reg [31:0] _value1 = 0;
+    reg [31:0] _value2 = 0;
 
     // Divide each possible part of an instruction
     wire [6:0] opcode = _instruction[6:0];
@@ -58,7 +58,6 @@ module decode (
 
     always @(posedge clk or posedge rst)
     begin
-
         if (rst) 
         begin
             _instruction <= 0;
@@ -492,7 +491,7 @@ module decode (
                 MemWrite <= 0;
                 PCSrc <= 0;
                 // synthesis translate_off
-                $display("INSTRUÇÃO INVÁLIDA! INSTRUÇÃO INVÁLIDA!");
+                // $display("Instrução inválida: %h", _instruction);
                 // synthesis translate_on
             end
             

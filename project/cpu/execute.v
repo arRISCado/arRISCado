@@ -91,7 +91,7 @@ module execute (
                 if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address1 == ex_mem_RegDest))
                     _rs1_value  <= in_result;
                 else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address1 == mem_wb_RegDest))
-                    _rs1_value = mem_wb_AluResult;
+                    _rs1_value <= mem_wb_AluResult;
                 else
                     _rs1_value <= rs1_value;
     
@@ -99,7 +99,7 @@ module execute (
                 if(ex_mem_RegWrite && (ex_mem_RegDest != 0) && (rb_read_address2 == ex_mem_RegDest))
                     _rs2_value  <= in_result;
                 else if(mem_wb_RegWrite && (mem_wb_RegDest != 0) && (rb_read_address2 == mem_wb_RegDest))
-                    _rs2_value = mem_wb_AluResult;
+                    _rs2_value <= mem_wb_AluResult;
                 else
                     _rs2_value <= rs2_value;
     

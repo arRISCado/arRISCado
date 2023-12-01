@@ -23,6 +23,6 @@ module fetch (
     end
 
     assign instr = rom_data;
-    assign rom_address = pc;
+    assign rom_address = pc[7:0];
 
 endmodule
