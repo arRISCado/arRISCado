@@ -17,12 +17,18 @@ module ram (
     for (i = 0; i <= 255; i = i + 1)
       storage[i] <= 0;
 
-  always @(posedge clk)
+  always @(posedge clk or posedge reset)
   begin
-    if (write_enable)
-      storage[{2'b0, address[31:2]}] <= data_in;
+    if (reset)
+      for (i = 0; i <= 255; i = i + 1)
+        storage[i] <= 0;
+    else
+    begin
+      if (write_enable)
+        storage[{2'b0, address[31:2]}] <= data_in;
 
-    data_out <= storage[{2'b0, address[31:2]}];
+      data_out <= storage[{2'b0, address[31:2]}];
+    end
   end
 endmodule
 `endif
