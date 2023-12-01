@@ -20,7 +20,7 @@ module cache (
   localparam READ  = 'b01;
   localparam WRITE = 'b10;
 
-  reg [1:0] current_state;
+  reg [1:0] current_state = IDLE;
 
   reg [26:0] tag  [4:0];
   reg [31:0] data [4:0];
@@ -28,11 +28,12 @@ module cache (
   reg incomplete = 0;
 
   reg  [31:0] _address = 0, _data_in = 0;
-  wire [29:0] n_addr       = {_address[31:2] + 1'b1};
-  wire [4:0]  n_addr_index = {addr_index[4:2] + 1'b1};
+  wire [29:0] n_addr       = _address[31:2] + 1'b1;
+  wire [4:0]  n_addr_index = addr_index[4:2] + 1'b1;
   wire [4:0]  addr_index = _address[4:0];
   wire [26:0] addr_tag   = _address[31:5];
 
+  integer i;
   always @(posedge clk or posedge reset)
   begin
     if (reset)
@@ -40,6 +41,19 @@ module cache (
       current_state <= IDLE;
       _address <= 0;
       _data_in <= 0;
+      incomplete <= 0;
+
+      data_ready <= 0;
+      data_out <= 0;
+      fetch_address <= 0;
+      fetch_write_data <= 0;
+      fetch_write_enable <= 0;
+
+      for (i = 0; i <= 4; i = i + 1) begin
+        valid[i] <= 0;
+        data[i] <= 0;
+        tag[i] <= 0;
+      end
     end
     else
     begin
@@ -168,7 +182,7 @@ module cache (
                 data [addr_index] <= fetch_read_data;
                 tag  [addr_index] <= addr_tag;
                 valid[addr_index] <= 1;
-                case (address[1:0])
+                case (_address[1:0])
                   2'b01:
                   begin
                     data_out   <= {fetch_read_data[7:0], data_out[23:0]};
@@ -325,7 +339,7 @@ module cache (
               end
               else
               begin
-                fetch_address <= {address[31:2], 2'b00};
+                fetch_address <= {_address[31:2], 2'b00};
                 data_ready    <= 0;
               end
             end
@@ -334,14 +348,14 @@ module cache (
           begin
             if (tag[{n_addr_index, 2'b00}] == addr_tag && valid[{n_addr_index, 2'b00}])
             begin
-              case (address[1:0])
+              case (_address[1:0])
                 2'b01:
                 begin
                   data [{n_addr_index, 2'b00}] <= {data[{n_addr_index, 2'b00}][31:8], _data_in[31:24]};
                   tag  [{n_addr_index, 2'b00}] <= addr_tag;
                   valid[{n_addr_index, 2'b00}] <= 1;
 
-                  fetch_write_data   <= {data_in[7:0], data[{n_addr_index, 2'b00}][23:0]};
+                  fetch_write_data   <= {_data_in[7:0], data[{n_addr_index, 2'b00}][23:0]};
                   fetch_write_enable <= 1;
                   fetch_address      <= {n_addr, 2'b00};
 

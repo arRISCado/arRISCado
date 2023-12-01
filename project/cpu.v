@@ -82,6 +82,7 @@ module cpu(
 
     cache L1D(
         .clk(clock_real),
+        .reset(reset),
 
         // Core
         .address(l1d_address),
@@ -348,5 +349,4 @@ module cpu(
         .out_RegDest(rb_write_address)  // vai para o Register Bank
     );
 endmodule
-
 `endif
