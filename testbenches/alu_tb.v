@@ -2,6 +2,8 @@
 
 module test;
     // Outputs
+    input clk;                 // Clock signal
+    input rst;                 // Reset signal
     reg [4:0] AluControl;
     reg [31:0] a;
     reg [31:0] b;
@@ -9,8 +11,9 @@ module test;
     output zero;
     output negative;
     output borrow;
+    output stall_pipeline;
 
-    alu alu(AluControl, a, b, result, zero, negative, borrow);
+    alu alu(clk, rst, AluControl, a, b, result, zero, negative, borrow, stall_pipeline);
 
     // Testbench procedure
     initial begin

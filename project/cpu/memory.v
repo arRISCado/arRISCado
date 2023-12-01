@@ -75,7 +75,7 @@ module memory (
             out_MemToReg <= in_MemToReg;
             out_RegWrite <= in_RegWrite;
             out_RegDest <= in_RegDest;
-            out_RegDataSrc <= in_RegDataSrc;
+            // out_RegDataSrc <= in_RegDataSrc;
             out_PCSrc <= in_PCSrc;
             out_BranchTarget <= in_BranchTarget;
             mem_done <= 1;

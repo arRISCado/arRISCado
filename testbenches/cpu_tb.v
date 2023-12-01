@@ -45,10 +45,10 @@ module test;
     #6000;
 
     $display("RAM");
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < 10; i++)
       $display("%d: %h", i, cpu.Ram.storage[i]);
     $display("Registers");
-    for (i = 1; i < 5; i++)
+    for (i = 1; i < 17; i++)
       $display("%d: %h", i, cpu.RegisterBank.register[i]);
 
     $finish;

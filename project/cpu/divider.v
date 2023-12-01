@@ -4,7 +4,7 @@ module divider (
 
   input [31:0] dividend,
   input [31:0] divisor,
-    input div_op,
+  input div_op,
 
   output [31:0] Q,
   output [31:0] R,
@@ -62,4 +62,4 @@ module divider (
   end
   assign Q = inner_q;
   assign R = inner_a;
-endmodule;
+endmodule

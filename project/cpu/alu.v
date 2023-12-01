@@ -26,10 +26,10 @@ module alu (
   localparam ARIT_SRIGHT    = 5'b01000;
   localparam SET_LESS       = 5'b01001;
   localparam SET_LESS_U     = 5'b01010;
-  localparam MUL_SGN_SGN    = 5'b01011;
+  localparam MUL            = 5'b01011;
   localparam MUL_HIGH       = 5'b01100;
   localparam MUL_SGN_USGN   = 5'b01101;
-  localparam MUL_USGN_USGN  = 5'b01110;
+  localparam MUL_HIGH_USGN  = 5'b01110;
   localparam DIV_SGN        = 5'b01111;
   localparam DIV_USGN       = 5'b10000;
   localparam REM_SGN        = 5'b10001;
@@ -41,9 +41,6 @@ module alu (
   localparam AMOMAX_USGN    = 5'b10111;
 
   localparam SUB_USN        = 5'b11000; // Apagar ? Nunca usado...
-
-  assign u_a = a;
-  assign u_b = b;
 
   wire [31:0] div_result, div_remainder;
   wire div_ready; // se for 1 quer dizer que está disponível/terminou de calcular o resultado
@@ -61,64 +58,49 @@ module alu (
     borrow = 0;
     div_op = 0;
     case (AluControl)
-      BITWISE_AND:   result = a & b;     // Bitwise AND
-      BITWISE_OR:    result = a | b;     // Bitwise OR
-      ADDITION:      result = a + b;     // Addition
-      BITWISE_XOR:   result = a ^ b;     // Bitwise XOR
-      SUBTRACTION:   result = a - b;     // Subtraction
-      BITWISE_NOT:   result = ~a;        // Bitwise NOT
-      SHIFT_LEFT:    result = a << b;    // Shift Left
-      SHIFT_RIGHT:   result = a >> b;    // Shift Right
-      ARIT_SRIGHT:   result = s_a >>> b;   // Arithmetic Shift Right
-      SET_LESS:                       // SLT / SLTI
-      begin
-        if (a < b)
-        result = 1;
-        else
-        result = 0;
-      end
-      SET_LESS_U:                     // SLTU / SLTIU
-      begin
-        if (u_a < u_b)
-        result = 1;
-        else
-        result = 0;
-      end
-      MUL_SGN_SGN: result = a * b;            //mul
-      MUL_HIGH: result = a * b;               //mulh
-      MUL_SGN_USGN: result = a * u_b;         //mulhsu
-      MUL_USGN_USGN: result = u_a * u_b;      //mulhu
+      BITWISE_AND:   result = a & b;        // Bitwise AND
+      BITWISE_OR:    result = a | b;        // Bitwise OR
+      ADDITION:      result = a + b;        // Addition
+      BITWISE_XOR:   result = a ^ b;        // Bitwise XOR
+      SUBTRACTION:   result = a - b;        // Subtraction
+      BITWISE_NOT:   result = ~a;           // Bitwise NOT
+      SHIFT_LEFT:    result = a << b;       // Shift Left
+      SHIFT_RIGHT:   result = a >> b;       // Shift Right
+      ARIT_SRIGHT:   result = s_a >>> b;    // Arithmetic Shift Right
+      SET_LESS:      result = s_a < s_b;    // SLT / SLTI
+      SET_LESS_U:    result = a < b;        // SLTU / SLTIU
+      MUL:           result = a * b;        //mul
+      MUL_HIGH:      result = s_a * s_b;    //mulh
+      MUL_SGN_USGN:  result = s_a * b;      //mulhsu
+      MUL_HIGH_USGN: result = a * b;        //mulhu
       DIV_SGN:
       begin
         div_op = 1;
-        result = div_result;           //div
+        result = div_result;                //div
       end
       DIV_USGN: 
       begin
         div_op = 1;
-        result = div_result;           //divu
+        result = div_result;                //divu
       end
       REM_SGN:
       begin
         div_op = 1;
-        result = div_remainder;        //rem
+        result = div_remainder;             //rem
       end
       REM_USGN:
       begin
         div_op = 1;
-        result = div_remainder;        //remu
+        result = div_remainder;             //remu
       end
       AMOSWAP:       result = b;                        // amoswap.w
       AMOMIN_SGN:    result = (s_a < s_b) ? s_a : s_b;  // amomin.w
       AMOMAX_SGN:    result = (s_a > s_b) ? s_a : s_b;  // amomax.w
       AMOMIN_USGN:   result = (a < b) ? a : b;          // amominu.w
       AMOMAX_USGN:   result = (a > b) ? a : b;          // amomaxu.w
-      SUB_USN: {result, borrow} = u_a - u_b;
+      SUB_USN: {result, borrow} = a - b;
 
       default: result = 32'b0; // Default output
     endcase
-
-    //zero      = (result == 32'b0);
-    //negative  = (result[31] == 1'b1);
   end
 endmodule
