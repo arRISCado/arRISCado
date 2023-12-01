@@ -159,8 +159,10 @@ module test();
             $display("WB %0d", i-4);
             $display("in_RegWrite %b", cpu.Writeback.in_RegWrite);
             $display("in_RegDest %0d", cpu.Writeback.in_RegDest);
+            $display("data_mem %0d", cpu.Writeback.data_mem);
             $display("out_RegWrite %b", cpu.Writeback.out_RegWrite);
             $display("out_RegDest %0d", cpu.Writeback.out_RegDest);
+            $display("data_wb %0d", cpu.Writeback.data_wb);
 
             $display("");
 
@@ -198,14 +200,44 @@ module test();
             $display("#3: %0d", cpu.Ram.storage[3]);
 
             $display("");
+            $display("MMU");
+            $display("INPUT---");
+            $display("c_address: %0d", cpu.MMU.c_address);
+            $display("c_data_in: %0d", cpu.MMU.c_data_in);
+            $display("c_write_enable: %0d", cpu.MMU.c_write_enable);
+            $display("m_data_ready: %0d", cpu.MMU.m_data_ready);
+            $display("m_data_out: %0d", cpu.MMU.m_data_out);
+            $display("p_data_ready: %0d", cpu.MMU.p_data_ready);
+            $display("p_data_out: %0d", cpu.MMU.p_data_out);
+            $display("INTERNAL---");
+            $display("_next_is_periph: %0d", cpu.MMU._next_is_periph);
+            $display("OUTPUT---");
+            $display("c_data_ready: %0d", cpu.MMU.c_data_ready);
+            $display("c_data_out: %0d", cpu.MMU.c_data_out);
+            $display("m_address: %0d", cpu.MMU.m_address);
+            $display("m_data_in: %0d", cpu.MMU.m_data_in);
+            $display("m_write_enable: %0d", cpu.MMU.m_write_enable);
+            $display("p_address: %0d", cpu.MMU.p_address);
+            $display("p_data_in: %0d", cpu.MMU.p_data_in);
+            $display("p_write_enable: %0d", cpu.MMU.p_write_enable);
+
+
+            $display("");
             $display("PERIPHERALS");
             $display("port_pwm1: %0d", cpu.port_pwm1);
             $display("manager.addr: %0d", cpu.Peripheral_manager.addr);
             $display("manager.data_in: %0d", cpu.Peripheral_manager.data_in);
+            $display("manager.data_out: %0d", cpu.Peripheral_manager.data_out);
+            $display("manager._data_out: %0d", cpu.Peripheral_manager._data_out);
             $display("manager.write_pwm1_1: %0d", cpu.Peripheral_manager.write_pwm1_1);
             $display("manager.write_pwm1_2: %0d", cpu.Peripheral_manager.write_pwm1_2);
+            $display("manager.read_btn1: %0d", cpu.Peripheral_manager.read_btn1);
+            $display("manager.buttons_output: %0d", cpu.Peripheral_manager.buttons_output);
             $display("pwm_port1.clk_per_cycle: %0d", cpu.Peripheral_manager.pwm_port1.clk_per_cycle);
             $display("pwm_port1.clk_on: %0d", cpu.Peripheral_manager.pwm_port1.clk_on);
+            $display("buttons1.btn1_counter: %0d", cpu.Peripheral_manager.buttons1.btn1_counter);
+            $display("buttons1.btn2_counter: %0d", cpu.Peripheral_manager.buttons1.btn2_counter);
+            $display("buttons1.buttons_output: %0d", cpu.Peripheral_manager.buttons1.btn2_counter);
 
             
             $display("");
