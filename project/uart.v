@@ -3,9 +3,9 @@ module uart
     parameter DELAY_FRAMES = 234  // Delay frames expecting a 115200 Baud rate
 )
 (
-    input clk,
-    input uart_rx,
-    output [5:0] led,
+    input wire clk,
+    input wire uart_rx,
+    output wire [5:0] led,
     output reg cpu_enable = 0,
     input wire [7:0] address,
     output wire [31:0] data

@@ -6,14 +6,14 @@ module flash
   parameter STARTUP_WAIT = 32'd10000000
 )
 (
-    input clk,
+    input wire clk,
     output reg flashClk = 0,
-    input flashMiso,
+    input wire flashMiso,
     output reg flashMosi = 0,
     output reg flashCs = 1,
-    input [10:0] addr,
+    input wire [10:0] addr,
     output reg [7:0] byteRead = 0,
-    input enable,
+    input wire enable,
     output reg dataReady = 0
 );
 
@@ -93,7 +93,7 @@ module flash
         dataReady <= 1;
         flashCs <= 1;
         counter <= STARTUP_WAIT;
-        if (~enable) begin 
+        if (!enable) begin 
           state <= STATE_INIT_POWER;
         end
       end
